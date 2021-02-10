@@ -6,7 +6,7 @@
 - [ ] Web app
 
 ## Ideas
-- Format note:
+### Format note:
  - Heading (#, ##, ...)
  - p
  - link
@@ -19,3 +19,5 @@
   - 3: Thumb: Overview of all notes (small sizes truncated)
   - 4: Big one: All the notes on the same scroll view
 - Filter by tag / by date / by title
+
+### Logo
