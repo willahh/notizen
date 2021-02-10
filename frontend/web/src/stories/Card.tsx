@@ -16,21 +16,5 @@ export const Card: React.FC<CardProps> = ({
   onLogout,
   onCreateAccount,
 }) => (
-  <header>
-    <div>
-      {user ? (
-        <Button size="small" onClick={onLogout} label="Log out" />
-      ) : (
-        <>
-          <Button size="small" onClick={onLogin} label="Log in" />
-          <Button
-            primary
-            size="small"
-            onClick={onCreateAccount}
-            label="Sign up"
-          />
-        </>
-      )}
-    </div>
-  </header>
+  <Button size="small" onClick={onLogin} label="Log in" />
 );

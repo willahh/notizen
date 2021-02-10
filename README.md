@@ -2,7 +2,9 @@
 
 Notizen means notes in Luxembourgish.
 
-Monorepo
+- Monorepo
+
+- Light and dark mode
 
 Infra
  - Backend
@@ -11,3 +13,9 @@ Infra
  - Docker
  - Logstash
  - GCP ?
+
+
+## Startup
+- Start the backend
+- Start the frontend web app
+- Start storybook
