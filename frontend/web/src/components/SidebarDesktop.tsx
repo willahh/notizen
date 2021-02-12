@@ -7,7 +7,7 @@ export type ISidebarDesktopProps = {};
 const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
   return (
     <div className="hidden lg:flex lg:flex-shrink-0">
-      <div className="flex flex-col w-64">
+      <div className="flex flex-col w-44">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-gray-100">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
@@ -38,7 +38,7 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                   </svg>
-                  Dashboard
+                  Home
                 </a>
                 <a
                   href="#"
@@ -60,7 +60,7 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  Calendar
+                  Notes
                 </a>
                 <a
                   href="#"

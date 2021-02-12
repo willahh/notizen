@@ -1,6 +1,4 @@
 import React from 'react';
-import { AreaSecondary } from './AreaSecondary';
-import { MainArea } from './MainArea';
 import { SidebarOpen } from './SidebarOpen';
 
 interface IMainProps {
