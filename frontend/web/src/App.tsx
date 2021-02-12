@@ -1,19 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import logo2 from './assets/notizen.svg'
 import { Counter } from './features/counter/Counter';
-import './App.css';
 import { Card } from './components/Card';
-
+import { SidebarDesktop } from './components/SidebarDesktop';
+import { MainArea } from './components/MainArea';
+import { AreaSecondary } from './components/AreaSecondary';
+import { MenuMobile } from './components/MenuMobile';
+import { Main } from './components/Main';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo2} className="App-logo" alt="logo" />
-        <Counter />
-        <Card></Card>
-      </header>
+    <div className="h-screen flex overflow-hidden bg-white">
+      <MenuMobile></MenuMobile>
+      <SidebarDesktop></SidebarDesktop>
+      <Main>
+        <MainArea>
+          <Counter />
+          <Card />
+        </MainArea>
+        <AreaSecondary>
+        </AreaSecondary>
+      </Main>
     </div>
   );
 }
