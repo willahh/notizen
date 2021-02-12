@@ -56,7 +56,7 @@ function App() {
                               clipRule="evenodd"
                             />
                           </svg>
-                          <span>Reply</span>
+                          <span>+note</span>
                         </button>
                         <button
                           type="button"
@@ -265,9 +265,7 @@ function App() {
                   >
                     Re: New pricing for existing customers
                   </h1>
-                  <p className="mt-1 text-sm text-gray-500 truncate">
-                    joearmstrong@example.com
-                  </p>
+                  
                 </div>
                 <div className="mt-4 flex items-center justify-between sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:justify-start">
                   <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-cyan-100 text-cyan-800">
@@ -369,7 +367,6 @@ function App() {
               </div>
             </li>
           </ul>
-          <Counter />
         </MainArea>
       </Main>
     </div>
