@@ -5,10 +5,6 @@ export type INoteFilterProps = {};
 const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
   return (
     <div className="px-6 pt-6 pb-4">
-      <h2 className="text-lg font-medium text-gray-900">Directory</h2>
-      <p className="mt-1 text-sm text-gray-600">
-        Search directory of 3,018 employees
-      </p>
       <form className="mt-6 flex space-x-4" action="#">
         <div className="flex-1 min-w-0">
           <label htmlFor="search" className="sr-only">
