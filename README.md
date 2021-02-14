@@ -27,7 +27,7 @@
     <a href="https://github.com/willahh/notizen"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/willahh/notizen">View Demo</a>
+    <a href="https://willahh.github.io/notizen/">View Demo</a>
     ·
     <a href="https://github.com/willahh/notizen/issues">Report Bug</a>
     ·
