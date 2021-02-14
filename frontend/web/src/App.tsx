@@ -20,7 +20,6 @@ function App() {
     <div className="h-screen flex overflow-hidden bg-white dark:bg-black">
       <MenuMobile></MenuMobile>
       <SidebarDesktop></SidebarDesktop>
-
       <Main>
         <AreaSecondary>
           <NoteFilter />
