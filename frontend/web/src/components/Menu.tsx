@@ -6,10 +6,9 @@ const Menu: React.FC<IMenuProps> = ({}) => {
   return (
     <nav aria-label="Sidebar" className="mt-5">
       <div className="px-2 space-y-1">
-        {/* Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" */}
         <a
           href="#"
-          className="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md"
+          className="group flex items-center px-2 py-2 text-base font-medium rounded-md bg-gray-100 text-gray-900 dark:bg-gray-900"
         >
           {/* Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500" */}
           {/* Heroicon name: outline/home */}

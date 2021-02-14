@@ -20,11 +20,11 @@ const NoteItem: React.FC<INoteItemProps> = ({
   isSelected,
 }) => {
   let className =
-    'relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ';
+    'relative py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 bg-white dark:bg-black';
   if (isSelected) {
-    className += ' border-l-4 border-indigo-700';
+    className += ' border-l-4 border-indigo-700 dark:border-black';
   } else {
-    className += ' border-white';
+    className += ' border-white dark:border-black';
   }
   return (
     <li className={className}>
@@ -32,21 +32,21 @@ const NoteItem: React.FC<INoteItemProps> = ({
         <div className="min-w-0 flex-1">
           <a href="#" className="block focus:outline-none">
             <span className="absolute inset-0" aria-hidden="true" />
-            <p className="text-sm font-medium text-gray-900 truncate">
+            <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-200">
               {title}
             </p>
-            <p className="text-sm text-gray-500 truncate">{tags}</p>
+            <p className="text-sm truncate text-gray-500 dark:text-gray-300">{tags}</p>
           </a>
         </div>
         <time
           dateTime="2021-01-27T16:35"
-          className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500"
+          className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300"
         >
           1d ago
         </time>
       </div>
       <div className="mt-1 max-h-10 overflow-hidden">
-        <p className="line-clamp-2 text-sm text-gray-600">
+        <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-500">
           {truncateString(text, 64)}
         </p>
       </div>

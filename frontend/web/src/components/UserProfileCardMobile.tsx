@@ -4,7 +4,7 @@ export type IUserProfileCardMobileProps = {};
 
 const UserProfileCardMobile: React.FC<IUserProfileCardMobileProps> = ({}) => {
   return (
-    <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
+    <div className="flex-shrink-0 flex border-t-1 border-gray-200 p-4 dark:border-gray-800">
       <a href="#" className="flex-shrink-0 group block">
         <div className="flex items-center">
           <div>

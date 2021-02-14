@@ -3,8 +3,8 @@ import React from 'react';
 export type IUserProfileCardProps = {};
 
 const UserProfileCard: React.FC<IUserProfileCardProps> = ({}) => {
-  return (
-    <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
+  return ( 
+    <div className="flex-shrink-0 flex border-t-1 border-gray-200 p-4 dark:border-gray-800">
       <a href="#" className="flex-shrink-0 w-full group block">
         <div className="flex items-center">
           <div>

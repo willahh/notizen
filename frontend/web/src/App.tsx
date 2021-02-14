@@ -17,7 +17,7 @@ function App() {
   const splitPos = localStorage.getItem('splitPos');
 
   return (
-    <div className="h-screen flex overflow-hidden bg-white">
+    <div className="h-screen flex overflow-hidden bg-white dark:bg-black">
       <MenuMobile></MenuMobile>
       <SidebarDesktop></SidebarDesktop>
 
@@ -79,7 +79,7 @@ function App() {
           </ItemList>
         </AreaSecondary>
         <MainArea>
-          <div className="sticky top-0 h-16 flex-shrink-0 bg-white border-b border-gray-200">
+          <div className="sticky top-0 h-16 flex-shrink-0 border-b-1 border-gray-200 bg-white dark:bg-black dark:border-gray-800">
             {/* Toolbar*/}
             <div className="flex flex-col justify-center">
               <div className="px-4 sm:px-6 lg:px-8">
@@ -91,7 +91,7 @@ function App() {
                       <span className="inline-flex sm:shadow-sm">
                         <button
                           type="button"
-                          className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                          className="relative inline-flex items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800 dark:border-gray-800"
                         >
                           <svg
                             className="h-5 w-5 text-gray-400"
@@ -110,7 +110,7 @@ function App() {
                         </button>
                         <button
                           type="button"
-                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                         >
                           <svg
                             className="h-5 w-5 text-gray-400"
@@ -132,7 +132,7 @@ function App() {
                         </button>
                         <button
                           type="button"
-                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-r-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                         >
                           <svg
                             className="h-5 w-5 text-gray-400"
@@ -153,7 +153,7 @@ function App() {
                       <span className="hidden lg:flex space-x-3">
                         <button
                           type="button"
-                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                         >
                           <svg
                             className="h-5 w-5 text-gray-400"
@@ -172,7 +172,7 @@ function App() {
                         </button>
                         <button
                           type="button"
-                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                         >
                           <svg
                             className="h-5 w-5 text-gray-400"
@@ -191,7 +191,7 @@ function App() {
                         </button>
                         <button
                           type="button"
-                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                         >
                           <svg
                             className="h-5 w-5 text-gray-400"
@@ -213,7 +213,7 @@ function App() {
                         <div>
                           <button
                             type="button"
-                            className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 sm:rounded-md sm:px-3"
+                            className="relative inline-flex items-center px-2 py-2 rounded-r-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 sm:rounded-md sm:px-3 bg-white dark:bg-black"
                             id="menu-3"
                             aria-haspopup="true"
                           >
@@ -236,7 +236,7 @@ function App() {
                           </button>
                         </div>
                         <div
-                          className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                          className="origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none bg-white dark:bg-black"
                           role="menu"
                           aria-orientation="vertical"
                           aria-labelledby="menu-3"
@@ -278,7 +278,7 @@ function App() {
                         <div>
                           <button
                             type="button"
-                            className="relative bg-gray-100 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                            className="relative bg-gray-100 inline-flex items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black dark:border-gray-800"
                           >
                             <svg
                               className="h-5 w-5 text-gray-400"
@@ -297,7 +297,7 @@ function App() {
                           </button>
                           <button
                             type="button"
-                            className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md "
+                            className="-ml-px relative inline-flex items-center px-4 py-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md bg-white dark:bg-black dark:border-gray-800"
                           >
                             <svg
                               className="h-5 w-5 text-gray-400"
@@ -328,7 +328,7 @@ function App() {
             {/* Message header */}
           </div>
 
-          <div className="py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style items-center justify-center flex">
+          <div className="py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style items-center justify-center flex bg-gray-50 dark:text-gray-300 dark:bg-gray-900">
             <div className="max-w-lg text-justify">
               <h1>Chapter 1</h1>
               <h2>Building, Running, and the REPL</h2>

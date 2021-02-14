@@ -8,7 +8,7 @@ const NoteToolbar: React.FC<INoteToolbarProps> = ({}) => {
       <div className="p-2">
         <button
           type="button"
-          className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+          className="relative inline-flex items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-black"
         >
           <svg
             className="text-gray-500 h-6 w-6"
@@ -27,7 +27,7 @@ const NoteToolbar: React.FC<INoteToolbarProps> = ({}) => {
         </button>
         <button
           type="button"
-          className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md "
+          className="-ml-px relative inline-flex items-center px-4 py-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md bg-white dark:bg-black"
         >
           <svg
             className="text-gray-500 h-6 w-6"
@@ -45,7 +45,7 @@ const NoteToolbar: React.FC<INoteToolbarProps> = ({}) => {
           </svg>
         </button>
       </div>
-      <div className="border-t border-b border-gray-200 bg-gray-50 px-6 py-2 text-sm font-medium text-gray-500">
+      <div className="border-t-1 border-b border-gray-200 bg-gray-50 px-6 py-2 text-sm font-medium text-gray-500 dark:border-gray-800">
         Sorted by date
       </div>
     </div>

@@ -4,7 +4,7 @@ export type INoteFilterProps = {};
 
 const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
   return (
-    <div className="flex-shrink-0 bg-white border-b border-gray-200 h-16">
+    <div className="flex-shrink-0 h-16 border-b-1 border-gray-200 bg-white dark:bg-black dark:border-gray-800">
       <div className="h-16 flex flex-col justify-center">
         <div className="max-w-2xl relative text-gray-400 focus-within:text-gray-500">
           <label htmlFor="search" className="sr-only">
@@ -14,7 +14,7 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
             id="search"
             type="search"
             placeholder="Search in notes"
-            className="block w-full border-transparent pl-12 placeholder-gray-500 focus:border-transparent sm:text-sm focus:ring-0"
+            className="block w-full border-transparent pl-12 placeholder-gray-500 focus:border-transparent sm:text-sm focus:ring-0 dark:bg-black"
           />
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">
             <svg

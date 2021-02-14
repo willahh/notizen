@@ -100,7 +100,7 @@ const Header: React.FC<IHeaderProps> = ({}) => {
             To: "transform opacity-0 scale-95"
         */}
                   <div
-                    className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+                    className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 bg-white dark:bg-black"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="user-menu"
@@ -277,7 +277,7 @@ Open: "block", closed: "hidden"
           </div>
         </div>
       </nav>
-      <header className="bg-white shadow">
+      <header className="shadow bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight text-gray-900">
             Dashboard
@@ -288,7 +288,7 @@ Open: "block", closed: "hidden"
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {/* Replace with your content */}
           <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
+            <div className="border-4 border-dashed rounded-lg h-96 border-gray-200 dark:bg-gray-900 dark:border-gray-800" />
           </div>
           {/* /End replace */}
         </div>

@@ -36,7 +36,7 @@ const MenuMobile: React.FC<IMenuMobileProps> = ({}) => {
     */}
         <div
           tabIndex={0}
-          className="relative flex-1 flex flex-col max-w-xs w-full bg-white focus:outline-none"
+          className="relative flex-1 flex flex-col max-w-xs w-full focus:outline-none bg-white dark:bg-black"
         >
           <SidebarClose></SidebarClose>
           <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">

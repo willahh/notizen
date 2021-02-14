@@ -12,9 +12,9 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
     { label: 'Actuality', selected: false },
   ];
   return (
-    <div className="hidden lg:flex lg:flex-shrink-0">
+    <div className="hidden lg:flex lg:flex-shrink-0 border-r-1 dark:border-gray-600">
       <div className="flex flex-col w-44">
-        <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-gray-100">
+        <div className="flex flex-col h-0 flex-1 bg-gray-100 border-gray-200 dark:bg-gray-900 dark:border-gray-800">
           <div className="flex-1 h-16 flex flex-col pb-4 overflow-y-auto">
             <div className="flex items-center h-16 justify-center">
               <img src={logo} className="h-10 w-auto" alt="logo" />
@@ -26,7 +26,7 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                     href="#"
                     className={
                       'text-gray-900 group flex items-center px-2 py-2 text-sm font-normal rounded-md' +
-                      (selected ? ' bg-gray-200' : '')
+                      (selected ? ' bg-gray-200 dark:bg-gray-900 dark:text-gray-200' : ' dark:text-gray-500')
                     }
                   >
                     <svg
