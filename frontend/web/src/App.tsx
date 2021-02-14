@@ -41,13 +41,45 @@ function App() {
           </SplitPane> */}
 
           <ItemList>
-            <NoteItem></NoteItem>
-            <NoteItem></NoteItem>
-            <NoteItem></NoteItem>
+            <NoteItem
+              title="Chapter 1"
+              tags={['Clojure for the Brave and True']}
+              text="Building, Running, and the REPL
+              In this chapter, you’ll invest a small amount of time up front to get familiar with a quick, foolproof way to build and run Clojure programs. It feels great to get a real program running. Reaching that milestone frees you up to experiment, share your work, and gloat to your colleagues who are still using last decade’s languages. This will help keep you motivated!
+              "
+              isSelected={true}
+            ></NoteItem>
+            <NoteItem
+              title="Chapter 2"
+              tags={['Clojure for the Brave and True']}
+              text="Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
+            <NoteItem
+              title="Doloremque dolorem maiores assumenda dolorem facilis"
+              tags={['Personal notes']}
+              text="Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
+            <NoteItem
+              title="Doloremque dolorem maiores assumenda dolorem facilis"
+              tags={['Personal notes']}
+              text="Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
           </ItemList>
         </AreaSecondary>
         <MainArea>
-          <div className="h-16 flex-shrink-0 bg-white border-b border-gray-200">
+          <div className="sticky top-0 h-16 flex-shrink-0 bg-white border-b border-gray-200">
             {/* Toolbar*/}
             <div className="flex flex-col justify-center">
               <div className="px-4 sm:px-6 lg:px-8">
@@ -55,49 +87,7 @@ function App() {
                   {/* Left buttons */}
                   <div>
                     <span className="relative z-0 inline-flex shadow-sm rounded-md sm:shadow-none sm:space-x-3">
-                      <span className="inline-flex sm:shadow-sm">
-                        <div>
-                          <button
-                            type="button"
-                            className="relative bg-gray-100 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                          >
-                            <svg
-                              className="h-5 w-5 text-gray-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 6h16M4 10h16M4 14h16M4 18h16"
-                              />
-                            </svg>
-                          </button>
-                          <button
-                            type="button"
-                            className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md "
-                          >
-                            <svg
-                              className="h-5 w-5 text-gray-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </span>
-
+                  
                       <span className="inline-flex sm:shadow-sm">
                         <button
                           type="button"
@@ -284,6 +274,51 @@ function App() {
                           </div>
                         </div>
                       </span>
+                      <span className="inline-flex sm:shadow-sm">
+                        <div>
+                          <button
+                            type="button"
+                            className="relative bg-gray-100 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                          >
+                            <svg
+                              className="h-5 w-5 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            type="button"
+                            className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md "
+                          >
+                            <svg
+                              className="h-5 w-5 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </span>
+
+
+
                     </span>
                   </div>
                   {/* Right buttons */}
@@ -293,29 +328,61 @@ function App() {
             {/* Message header */}
           </div>
 
-          <div className="py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style">
-            <div>
-              <h1>Heading title</h1>
-              <h2>Heading 2</h2>
-              <h3>Heading 3</h3>
+          <div className="py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style items-center justify-center flex">
+            <div className="max-w-lg text-justify">
+              <h1>Chapter 1</h1>
+              <h2>Building, Running, and the REPL</h2>
               <p>
-                Doloremque dolorem maiores assumenda dolorem facilis. Velit vel
-                in a rerum natus facere. Enim rerum eaque qui facilis. Numquam
-                laudantium sed id dolores omnis in. Eos reiciendis deserunt
-                maiores et accusamus quod dolor.
+                In this chapter, you’ll invest a small amount of time up front
+                to get familiar with a quick, foolproof way to build and run
+                Clojure programs. It feels great to get a real program running.
+                Reaching that milestone frees you up to experiment, share your
+                work, and gloat to your colleagues who are still using last
+                decade’s languages. This will help keep you motivated!
               </p>
-              <h3>Heading 3</h3>
               <p>
-                Doloremque dolorem maiores assumenda dolorem facilis. Velit vel
-                in a rerum natus facere. Enim rerum eaque qui facilis. Numquam
-                laudantium sed id dolores omnis in. Eos reiciendis deserunt
-                maiores et accusamus quod dolor.
+                You’ll also learn how to instantly run code within a running
+                Clojure process using a Read-Eval-Print Loop (REPL), which
+                allows you to quickly test your understanding of the language
+                and learn more efficiently.
               </p>
+              <p>
+                But first, I’ll briefly introduce Clojure. Next, I’ll cover
+                Leiningen, the de facto standard build tool for Clojure. By the
+                end of the chapter, you’ll know how to do the following:
+              </p>
+
               <ul>
-                <li>Item list 1</li>
-                <li>Item list 2</li>
-                <li>Item list 3</li>
+                <li>Create a new Clojure project with Leiningen</li>
+                <li>Build the project to create an executable JAR file</li>
+                <li>Execute the JAR file</li>
+                <li>Execute code in a Clojure REPL</li>
               </ul>
+              <h2>First Things First: What Is Clojure?</h2>
+              <p>
+                Clojure was forged in a mythic volcano by Rich Hickey. Using an
+                alloy of Lisp, functional programming, and a lock of his own
+                epic hair, he crafted a language that’s delightful yet powerful.
+                Its Lisp heritage gives you the power to write code more
+                expressively than is possible in most non-Lisp languages, and
+                its distinct take on functional programming will sharpen your
+                thinking as a programmer. Plus, Clojure gives you better tools
+                for tackling complex domains (like concurrent programming) that
+                are traditionally known to drive developers into years of
+                therapy.
+              </p>
+              <p>
+                When talking about Clojure, though, it’s important to keep in
+                mind the distinction between the Clojure language and the
+                Clojure compiler. The Clojure language is a Lisp dialect with a
+                functional emphasis whose syntax and semantics are independent
+                of any implementation. The compiler is an executable JAR file,
+                clojure.jar, which takes code written in the Clojure language
+                and compiles it to Java Virtual Machine ( JVM) bytecode. You’ll
+                see Clojure used to refer to both the language and the compiler,
+                which can be confusing if you’re not aware that they’re separate
+                things. But now that you’re aware, you’ll be fine.
+              </p>
 
               <h3>Table</h3>
               <table>

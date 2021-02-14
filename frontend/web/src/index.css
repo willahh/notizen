@@ -17,20 +17,30 @@ body {
 
 .base-style h2 {
   font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 12px;
 }
 
 .base-style h3 {
   font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 12px;
 }
 
-ul {
-  list-style: circle;
+.base-style p {
+  margin-bottom: 12px;
 }
 
-ul > li {
-  list-style: circle;
+.base-style ul {
+  margin-bottom: 12px;
 }
 
-td {
+.base-style ul > li {
+  list-style: disc;
+  list-style-position: inside;
+  margin-bottom: 4px;
+}
+
+.base-style td {
   border: 1px solid #000;
 }

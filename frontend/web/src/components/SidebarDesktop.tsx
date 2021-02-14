@@ -6,10 +6,10 @@ export type ISidebarDesktopProps = {};
 
 const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
   const links = [
-    { label: 'Personal notes', selected: true },
-    { label: 'General notes', selected: false },
-    { label: 'News', selected: false },
-    { label: 'My project', selected: false },
+    { label: 'Clojure for the Brave and True', selected: true },
+    { label: 'Personal notes', selected: false },
+    { label: 'Family', selected: false },
+    { label: 'Actuality', selected: false },
   ];
   return (
     <div className="hidden lg:flex lg:flex-shrink-0">
@@ -44,7 +44,7 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                         d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
                       />{' '}
                     </svg>
-                    {label}
+                    <span className="truncate w-full">{label}</span>
                   </a>
                 ))}
               </div>
