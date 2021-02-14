@@ -1,9 +1,16 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: [],
+  purge: {
+    // Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
+    // enabled: process.env.NODE_ENV === 'production',
+    enabled: true,
+    content: [
+      'src/**/*.tsx'
+    ]
+  },
   presets: [],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     screens: {
       sm: '640px',
@@ -117,8 +124,9 @@ module.exports = {
       full: '9999px',
     },
     borderWidth: {
-      DEFAULT: '1px',
+      DEFAULT: '0px',
       0: '0px',
+      1: '1px',
       2: '2px',
       4: '4px',
       8: '8px',
