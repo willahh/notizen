@@ -1,14 +1,7 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: {
-    // Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
-    // enabled: process.env.NODE_ENV === 'production',
-    enabled: true,
-    content: [
-      'src/**/*.tsx'
-    ]
-  },
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   presets: [],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
@@ -22,7 +15,6 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-
       black: colors.black,
       white: colors.white,
       gray: colors.coolGray,

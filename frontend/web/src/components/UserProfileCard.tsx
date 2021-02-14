@@ -15,10 +15,10 @@ const UserProfileCard: React.FC<IUserProfileCardProps> = ({}) => {
             />
           </div>
           <div className="ml-3">
-            <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
+            <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900 dark:text-gray-300 dark:group-hover:text-gray-100">
               William Ravel
             </p>
-            <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+            <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700 dark:text-gray-500 dark:group-hover:text-gray-300">
               Preferences
             </p>
           </div>
