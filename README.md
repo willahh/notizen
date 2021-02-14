@@ -64,8 +64,6 @@
 </details>
 
 
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
@@ -73,7 +71,7 @@
 
 Notizen is an app to create and store your notes across your devices.
 
-Notizen means notes in Luxembourgish. I think that's a cool two parts name.
+Notizen means notes in Luxembourgish. That's a cool two parts name !
 
 ### Built With
 
