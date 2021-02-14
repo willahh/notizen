@@ -10,7 +10,7 @@ const NoteItem: React.FC<INoteItemProps> = ({}) => {
           <a href="#" className="block focus:outline-none">
             <span className="absolute inset-0" aria-hidden="true" />
             <p className="text-sm font-medium text-gray-900 truncate">
-              Gloria Roberston
+              William Ravel
             </p>
             <p className="text-sm text-gray-500 truncate">
               Velit placeat sit ducimus non sed

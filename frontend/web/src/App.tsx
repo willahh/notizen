@@ -24,8 +24,7 @@ function App() {
       <Main>
         <AreaSecondary>
           <NoteFilter />
-          <NoteToolbar />
-
+          <div></div>
           {/* // TODO: SplitPane */}
           {/* <SplitPane
             split="vertical"
@@ -48,66 +47,117 @@ function App() {
           </ItemList>
         </AreaSecondary>
         <MainArea>
-          <div className="flex-shrink-0 bg-white border-b border-gray-200">
+          <div className="h-16 flex-shrink-0 bg-white border-b border-gray-200">
             {/* Toolbar*/}
-            <div className="h-16 flex flex-col justify-center">
+            <div className="flex flex-col justify-center">
               <div className="px-4 sm:px-6 lg:px-8">
                 <div className="py-3 flex justify-between">
                   {/* Left buttons */}
                   <div>
                     <span className="relative z-0 inline-flex shadow-sm rounded-md sm:shadow-none sm:space-x-3">
                       <span className="inline-flex sm:shadow-sm">
+                        <div>
+                          <button
+                            type="button"
+                            className="relative bg-gray-100 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                          >
+                            <svg
+                              className="h-5 w-5 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            type="button"
+                            className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md "
+                          >
+                            <svg
+                              className="h-5 w-5 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </span>
+
+                      <span className="inline-flex sm:shadow-sm">
                         <button
                           type="button"
                           className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                         >
                           <svg
-                            className="mr-2.5 h-5 w-5 text-gray-400"
-                            x-description="Heroicon name: solid/reply"
+                            className="h-5 w-5 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
                             <path
-                              fillRule="evenodd"
-                              d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                              clipRule="evenodd"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                             />
                           </svg>
-                          <span>+note</span>
                         </button>
                         <button
                           type="button"
                           className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                         >
                           <svg
-                            className="mr-2.5 h-5 w-5 text-gray-400"
-                            x-description="Heroicon name: solid/pencil"
+                            className="h-5 w-5 text-gray-400"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
                           >
-                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            <path d="M21 5V3H3V5H21Z" fill="currentColor" />
+                            <path d="M21 19V21H3V19H21Z" fill="currentColor" />
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M12.0001 7.37636C11.602 7.35207 11.2112 7.56874 11.0325 7.95204L7.65154 15.2025C7.41815 15.7031 7.6347 16.2981 8.13522 16.5315C8.63577 16.7649 9.23074 16.5484 9.46417 16.0477L9.95278 14.9999H14.0473L14.5359 16.0477C14.7693 16.5484 15.3643 16.7649 15.8648 16.5315C16.3654 16.2981 16.5819 15.7031 16.3485 15.2025L12.9676 7.95204C12.7888 7.56874 12.3981 7.35207 12.0001 7.37636ZM13.1147 12.9999H10.8854L12.0001 10.6095L13.1147 12.9999Z"
+                              fill="currentColor"
+                            />
                           </svg>
-                          <span>Aa</span>
                         </button>
                         <button
                           type="button"
                           className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                         >
                           <svg
-                            className="mr-2.5 h-5 w-5 text-gray-400"
-                            x-description="Heroicon name: solid/user-add"
+                            className="h-5 w-5 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
                           </svg>
-                          <span>[x]</span>
                         </button>
                       </span>
                       <span className="hidden lg:flex space-x-3">
@@ -116,44 +166,57 @@ function App() {
                           className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                         >
                           <svg
-                            className="mr-2.5 h-5 w-5 text-gray-400"
-                            x-description="Heroicon name: solid/archive"
+                            className="h-5 w-5 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                            <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
                             <path
-                              fillRule="evenodd"
-                              d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
-                              clipRule="evenodd"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                             />
                           </svg>
-                          <span>[-|-]</span>
                         </button>
                         <button
                           type="button"
                           className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
                         >
                           <svg
-                            className="mr-2.5 h-5 w-5 text-gray-400"
-                            x-description="Heroicon name: solid/folder-download"
+                            className="h-5 w-5 text-gray-400"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                           >
-                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                             <path
-                              stroke="#fff"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth={2}
-                              d="M10 9v4m0 0l-2-2m2 2l2-2"
+                              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                             />
                           </svg>
-                          <span>Move</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
+                        >
+                          <svg
+                            className="h-5 w-5 text-gray-400"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                            />
+                          </svg>
                         </button>
                       </span>
                       <span className="-ml-px relative block sm:shadow-sm lg:hidden">
@@ -231,19 +294,23 @@ function App() {
           </div>
 
           <div className="py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style">
-            <div contentEditable="true">
+            <div>
               <h1>Heading title</h1>
               <h2>Heading 2</h2>
               <h3>Heading 3</h3>
-              <p>Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in
-              a rerum natus facere. Enim rerum eaque qui facilis. Numquam
-              laudantium sed id dolores omnis in. Eos reiciendis deserunt
-              maiores et accusamus quod dolor.</p>
+              <p>
+                Doloremque dolorem maiores assumenda dolorem facilis. Velit vel
+                in a rerum natus facere. Enim rerum eaque qui facilis. Numquam
+                laudantium sed id dolores omnis in. Eos reiciendis deserunt
+                maiores et accusamus quod dolor.
+              </p>
               <h3>Heading 3</h3>
-              <p>Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in
-              a rerum natus facere. Enim rerum eaque qui facilis. Numquam
-              laudantium sed id dolores omnis in. Eos reiciendis deserunt
-              maiores et accusamus quod dolor.</p>
+              <p>
+                Doloremque dolorem maiores assumenda dolorem facilis. Velit vel
+                in a rerum natus facere. Enim rerum eaque qui facilis. Numquam
+                laudantium sed id dolores omnis in. Eos reiciendis deserunt
+                maiores et accusamus quod dolor.
+              </p>
               <ul>
                 <li>Item list 1</li>
                 <li>Item list 2</li>
@@ -252,16 +319,18 @@ function App() {
 
               <h3>Table</h3>
               <table>
-                <tr>
-                  <td>Item 1</td>
-                  <td>Item 2</td>
-                  <td>Item 3</td>
-                </tr>
-                <tr>
-                  <td>Item 1</td>
-                  <td>Item 2</td>
-                  <td>Item 3</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Item 1</td>
+                    <td>Item 2</td>
+                    <td>Item 3</td>
+                  </tr>
+                  <tr>
+                    <td>Item 1</td>
+                    <td>Item 2</td>
+                    <td>Item 3</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
