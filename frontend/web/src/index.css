@@ -9,6 +9,22 @@ body {
   font-style: normal;
 }
 
+.scrollbar-track {
+  background: transparent !important;
+}
+
+@media (prefers-color-scheme: light) {
+  .scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3) !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+}
+
 .base-style h1 {
   font-size: 26px;
   font-weight: 500;

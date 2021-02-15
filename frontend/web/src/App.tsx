@@ -6,9 +6,10 @@ import { MenuMobile } from './components/MenuMobile';
 import { Main } from './components/Main';
 import { ItemList } from './components/ItemList';
 import { NoteFilter } from './components/NoteFilter';
-import { NoteToolbar } from './components/NoteToolbar';
 import { NoteItem } from './components/NoteItem';
 import { SplitPane } from 'react-multi-split-pane';
+const scrollbar = require('smooth-scrollbar-react');
+const ScrollBar = scrollbar.default;
 
 const ResizePanelImport = require('react-resize-panel');
 const { default: ResizePanel } = ResizePanelImport;
@@ -75,6 +76,42 @@ function App() {
           quod dolor."
               isSelected={false}
             ></NoteItem>
+            <NoteItem
+              title="Doloremque dolorem maiores assumenda dolorem facilis"
+              tags={['Personal notes']}
+              text="Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
+            <NoteItem
+              title="Doloremque dolorem maiores assumenda dolorem facilis"
+              tags={['Personal notes']}
+              text="Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
+            <NoteItem
+              title="Doloremque dolorem maiores assumenda dolorem facilis"
+              tags={['Personal notes']}
+              text="Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
+            <NoteItem
+              title="Doloremque dolorem maiores assumenda dolorem facilis"
+              tags={['Personal notes']}
+              text="Velit vel in a
+          rerum natus facere. Enim rerum eaque qui facilis. Numquam laudantium
+          sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus
+          quod dolor."
+              isSelected={false}
+            ></NoteItem>
           </ItemList>
         </AreaSecondary>
         <MainArea>
@@ -86,7 +123,6 @@ function App() {
                   {/* Left buttons */}
                   <div>
                     <span className="relative z-0 inline-flex shadow-sm rounded-md sm:shadow-none sm:space-x-3">
-                  
                       <span className="inline-flex sm:shadow-sm">
                         <button
                           type="button"
@@ -315,9 +351,6 @@ function App() {
                           </button>
                         </div>
                       </span>
-
-
-
                     </span>
                   </div>
                   {/* Right buttons */}
@@ -326,80 +359,83 @@ function App() {
             </div>
             {/* Message header */}
           </div>
+          <ScrollBar damping={0.5} thumbMinSize={20}>
+            <div className="flex h-full       py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style          items-center justify-center                   bg-gray-50 dark:text-gray-300 dark:bg-gray-900">
+              <div className="max-w-lg text-justify">
+                <h1>Chapter 1</h1>
+                <h2>Building, Running, and the REPL</h2>
+                <p>
+                  In this chapter, you’ll invest a small amount of time up front
+                  to get familiar with a quick, foolproof way to build and run
+                  Clojure programs. It feels great to get a real program
+                  running. Reaching that milestone frees you up to experiment,
+                  share your work, and gloat to your colleagues who are still
+                  using last decade’s languages. This will help keep you
+                  motivated!
+                </p>
+                <p>
+                  You’ll also learn how to instantly run code within a running
+                  Clojure process using a Read-Eval-Print Loop (REPL), which
+                  allows you to quickly test your understanding of the language
+                  and learn more efficiently.
+                </p>
+                <p>
+                  But first, I’ll briefly introduce Clojure. Next, I’ll cover
+                  Leiningen, the de facto standard build tool for Clojure. By
+                  the end of the chapter, you’ll know how to do the following:
+                </p>
 
-          <div className="py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style items-center justify-center flex bg-gray-50 dark:text-gray-300 dark:bg-gray-900">
-            <div className="max-w-lg text-justify">
-              <h1>Chapter 1</h1>
-              <h2>Building, Running, and the REPL</h2>
-              <p>
-                In this chapter, you’ll invest a small amount of time up front
-                to get familiar with a quick, foolproof way to build and run
-                Clojure programs. It feels great to get a real program running.
-                Reaching that milestone frees you up to experiment, share your
-                work, and gloat to your colleagues who are still using last
-                decade’s languages. This will help keep you motivated!
-              </p>
-              <p>
-                You’ll also learn how to instantly run code within a running
-                Clojure process using a Read-Eval-Print Loop (REPL), which
-                allows you to quickly test your understanding of the language
-                and learn more efficiently.
-              </p>
-              <p>
-                But first, I’ll briefly introduce Clojure. Next, I’ll cover
-                Leiningen, the de facto standard build tool for Clojure. By the
-                end of the chapter, you’ll know how to do the following:
-              </p>
+                <ul>
+                  <li>Create a new Clojure project with Leiningen</li>
+                  <li>Build the project to create an executable JAR file</li>
+                  <li>Execute the JAR file</li>
+                  <li>Execute code in a Clojure REPL</li>
+                </ul>
+                <h2>First Things First: What Is Clojure?</h2>
+                <p>
+                  Clojure was forged in a mythic volcano by Rich Hickey. Using
+                  an alloy of Lisp, functional programming, and a lock of his
+                  own epic hair, he crafted a language that’s delightful yet
+                  powerful. Its Lisp heritage gives you the power to write code
+                  more expressively than is possible in most non-Lisp languages,
+                  and its distinct take on functional programming will sharpen
+                  your thinking as a programmer. Plus, Clojure gives you better
+                  tools for tackling complex domains (like concurrent
+                  programming) that are traditionally known to drive developers
+                  into years of therapy.
+                </p>
+                <p>
+                  When talking about Clojure, though, it’s important to keep in
+                  mind the distinction between the Clojure language and the
+                  Clojure compiler. The Clojure language is a Lisp dialect with
+                  a functional emphasis whose syntax and semantics are
+                  independent of any implementation. The compiler is an
+                  executable JAR file, clojure.jar, which takes code written in
+                  the Clojure language and compiles it to Java Virtual Machine (
+                  JVM) bytecode. You’ll see Clojure used to refer to both the
+                  language and the compiler, which can be confusing if you’re
+                  not aware that they’re separate things. But now that you’re
+                  aware, you’ll be fine.
+                </p>
 
-              <ul>
-                <li>Create a new Clojure project with Leiningen</li>
-                <li>Build the project to create an executable JAR file</li>
-                <li>Execute the JAR file</li>
-                <li>Execute code in a Clojure REPL</li>
-              </ul>
-              <h2>First Things First: What Is Clojure?</h2>
-              <p>
-                Clojure was forged in a mythic volcano by Rich Hickey. Using an
-                alloy of Lisp, functional programming, and a lock of his own
-                epic hair, he crafted a language that’s delightful yet powerful.
-                Its Lisp heritage gives you the power to write code more
-                expressively than is possible in most non-Lisp languages, and
-                its distinct take on functional programming will sharpen your
-                thinking as a programmer. Plus, Clojure gives you better tools
-                for tackling complex domains (like concurrent programming) that
-                are traditionally known to drive developers into years of
-                therapy.
-              </p>
-              <p>
-                When talking about Clojure, though, it’s important to keep in
-                mind the distinction between the Clojure language and the
-                Clojure compiler. The Clojure language is a Lisp dialect with a
-                functional emphasis whose syntax and semantics are independent
-                of any implementation. The compiler is an executable JAR file,
-                clojure.jar, which takes code written in the Clojure language
-                and compiles it to Java Virtual Machine ( JVM) bytecode. You’ll
-                see Clojure used to refer to both the language and the compiler,
-                which can be confusing if you’re not aware that they’re separate
-                things. But now that you’re aware, you’ll be fine.
-              </p>
-
-              <h3>Table</h3>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Item 1</td>
-                    <td>Item 2</td>
-                    <td>Item 3</td>
-                  </tr>
-                  <tr>
-                    <td>Item 1</td>
-                    <td>Item 2</td>
-                    <td>Item 3</td>
-                  </tr>
-                </tbody>
-              </table>
+                <h3>Table</h3>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Item 1</td>
+                      <td>Item 2</td>
+                      <td>Item 3</td>
+                    </tr>
+                    <tr>
+                      <td>Item 1</td>
+                      <td>Item 2</td>
+                      <td>Item 3</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          </ScrollBar>
         </MainArea>
       </Main>
     </div>

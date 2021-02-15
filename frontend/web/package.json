@@ -23,6 +23,7 @@
     "react-multi-split-pane": "^0.3.2",
     "react-redux": "^7.2.0",
     "react-scripts": "4.0.2",
+    "smooth-scrollbar-react": "^1.0.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3",
     "typescript": "~3.8.2"
   },
