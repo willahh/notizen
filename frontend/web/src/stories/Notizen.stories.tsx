@@ -1,8 +1,8 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import './../index.css';
-import { Card, ICardProps } from './../components/Card';
-import { Button, IButtonProps } from './../components/Button';
+import { Card, ICardProps } from '@notizen/frontend-common/components/Card';
+import { Button, IButtonProps } from '@notizen/frontend-common/components/Button';
 
 export default {
   title: 'Notizen/Card',

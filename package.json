@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "frontend/*",
+    "backend/*"
+  ],
+  "scripts": {
+    "start": "yarn workspace @notizen/frontend-web run start",
+    "build": "yarn workspace @notizen/frontend-web run build"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}

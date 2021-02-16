@@ -1,18 +1,18 @@
 import React from 'react';
-import { SidebarDesktop } from './components/SidebarDesktop';
-import { MainArea } from './components/MainArea';
-import { AreaSecondary } from './components/AreaSecondary';
-import { MenuMobile } from './components/MenuMobile';
-import { Main } from './components/Main';
-import { ItemList } from './components/ItemList';
-import { NoteFilter } from './components/NoteFilter';
-import { NoteItem } from './components/NoteItem';
-import { SplitPane } from 'react-multi-split-pane';
+import { SidebarDesktop } from '@notizen/frontend-common/components/SidebarDesktop';
+import { MainArea } from '@notizen/frontend-common/components/MainArea';
+import { AreaSecondary } from '@notizen/frontend-common/components/AreaSecondary';
+import { MenuMobile } from '@notizen/frontend-common/components/MenuMobile';
+import { Main } from '@notizen/frontend-common/components/Main';
+import { ItemList } from '@notizen/frontend-common/components/ItemList';
+import { NoteFilter } from '@notizen/frontend-common/components/NoteFilter';
+import { NoteItem } from '@notizen/frontend-common/components/NoteItem';
+import Text from '@notizen/frontend-common/components/Text';
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
 
-const ResizePanelImport = require('react-resize-panel');
-const { default: ResizePanel } = ResizePanelImport;
+// const ResizePanelImport = require('react-resize-panel');
+// const { default: ResizePanel } = ResizePanelImport;
 
 function App() {
   const splitPos = localStorage.getItem('splitPos');
@@ -21,6 +21,8 @@ function App() {
     <div className="h-screen flex overflow-hidden bg-white dark:bg-black">
       <MenuMobile></MenuMobile>
       <SidebarDesktop></SidebarDesktop>
+      <Text></Text>
+      {/* <Text2></Text2> */}
       <Main>
         <AreaSecondary>
           <NoteFilter />

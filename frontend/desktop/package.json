@@ -1,6 +1,6 @@
 {
-  "name": "notizen",
-  "version": "0.1.0",
+  "name": "@notizen/frontend-desktop",
+  "version": "0.1.1",
   "private": false,
   "description": "Notizen desktop app",
   "repository": "https://github.com/willahh/notizen/tree/master/frontend/desktop",

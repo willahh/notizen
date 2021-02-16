@@ -1,2 +1,0 @@
-# Notizen frontend mobile
-

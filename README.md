@@ -1,22 +1,16 @@
 <!-- PROJECT SHIELDS -->
 <!--
-*** I'm using markdown "reference style" links for readability.
 *** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
 *** See the bottom of this document for the declaration of the reference variables
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-<!-- [![Forks][forks-shield]][forks-url] -->
-<!-- [![Stargazers][stars-shield]][stars-url] -->
-<!-- [![Issues][issues-shield]][issues-url] -->
-<!-- [![MIT License][license-shield]][license-url] -->
-<!-- [![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 
 <br />
 <p align="center">
-  <a href="frontend/web/public/github-logo.png">
-    <img src="frontend/web/public/github-logo.png" alt="Logo" width="300" >
+  <a href="documents/images/github-logo.png">
+    <img src="documents/images/github-logo.png" alt="Logo" width="300" >
   </a>
 
   <h3 align="center">Notizen</h3>
@@ -73,6 +67,45 @@ Notizen is an app to create and store your notes across your devices.
 
 Notizen means notes in Luxembourgish. That's a cool two parts name !
 
+### Project structure
+This project is a monorepo based on the [cra-monorepo-demo](https://github.com/jibin2706/cra-monorepo-demo) project file setup.
+
+Monorepo allows the separation of several packages into one. Thanks to this technique several sub-packages can be independent and some can shares certain files, like common/components shared between the desktop app and the web app.
+
+This can be achived with the use of 
+ - `yarn workspace`
+ - package.json workspaces setting
+ - lerna
+
+The project structure is as follows : 
+```html
+.
+└── notizen/
+    ├── node_modules/
+    |── backend
+    │   └── ...
+    │   └── package.json
+    |── frontend
+    │   ├── common/ (shared component library)
+    │   │   └── components
+    │   │   └── package.json
+    │   ├── desktop (Electron + create-react-app)
+    │   │   └── ...
+    │   │   └── package.json
+    │   ├── mobile (create-react-native-app)
+    │   │   └── ...
+    │   │   └── package.json
+    │   ├── web (create-react-app)
+    │   │   └── ...
+    │   │   └── package.json
+    ├── package.json
+    |── infra
+    │   └── ...
+    |── documents
+    │   └── ...
+    └── yarn.lock
+```
+
 ### Built With
 
 * [Typescript](https://www.typescriptlang.org/)
@@ -87,11 +120,12 @@ Notizen means notes in Luxembourgish. That's a cool two parts name !
 ## Getting Started
 To get a local copy up and running follow these simple example steps.
 
+
 ### Prerequisites
 
-* npm
+* Yarn
   ```sh
-  npm install npm@latest -g
+  npm install --global yarn
   ```
 
 ### Installation
@@ -100,26 +134,26 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    git clone https://github.com/willahh/notizen.git
    ```
-2. Install NPM packages
+2. Install packages
    ```sh
-   npm install
+   yarn install
    ```
 3. Start the backend
     ```sh
     cd backend
-    npm start
+    yarn start
     ```
 3. Start the frontend
     ```sh
     cd frontend/web
-    npm start
+    yarn start
     ```
 
 Optional :
 1. Run storybook
     ```sh
     cd frontend/web
-    npm run storybook
+    yarn run storybook
     ```
 
 ## Usage
