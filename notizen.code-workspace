@@ -1,20 +1,7 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "frontend/web"
-		},
-		{
-			"path": "backend"
-		},
-		{
-			"path": "infra"
-		},
-		{
-			"path": "frontend/desktop"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    }
+  ]
 }
