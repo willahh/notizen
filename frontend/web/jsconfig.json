@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@notizen/frontend-common/*": ["../common/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
