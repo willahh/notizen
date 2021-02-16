@@ -32,13 +32,15 @@
   },
   "devDependencies": {
     "electron": "^11.2.3",
-    "electron-builder": "^22.9.1"
+    "electron-builder": "^22.9.1",
+    "react-app-rewired": "^2.1.6",
+    "react-app-rewire-postcss": "^3.0.2"
   },
   "scripts": {
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject",
+    "react-start": "react-app-rewired start",
+    "react-build": "react-app-rewired build",
+    "react-test": "react-app-rewired test --env=jsdom",
+    "react-eject": "react-app-rewired eject",
     "electron-build": "electron-builder",
     "release": "npm react-build && electron-builder --publish=always",
     "build": "npm react-build && npm electron-build",

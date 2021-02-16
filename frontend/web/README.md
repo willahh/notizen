@@ -4,6 +4,8 @@
 99% of the time, the command to use is `npm start`.  
 If you want to deploy the app into Github Page run `npm run deploy`.
 
+The vast majority of the code sit in frontend/common cause this is shared with frontend/desktop.
+
 ## Scripts
 * `start`: Start the project in local
 * `build`: Build the project in local

@@ -21,8 +21,6 @@ function App() {
     <div className="h-screen flex overflow-hidden bg-white dark:bg-black">
       <MenuMobile></MenuMobile>
       <SidebarDesktop></SidebarDesktop>
-      <Text></Text>
-      {/* <Text2></Text2> */}
       <Main>
         <AreaSecondary>
           <NoteFilter />
