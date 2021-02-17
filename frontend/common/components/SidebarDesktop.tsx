@@ -45,6 +45,7 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
               <div className="px-2 space-y-1">
                 {links.map(({ label, selected }) => (
                   <a
+                    key={label}
                     href="#"
                     className={
                       'text-gray-900 group flex items-center px-2 py-2 text-sm font-normal rounded-md' +
