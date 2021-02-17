@@ -244,7 +244,7 @@ function App() {
                           </svg>
                         </button>
                       </span>
-                      <span className="-ml-px relative block sm:shadow-sm lg:hidden">
+                      <span className="-ml-px relative block sm:shadow-sm sm:hidden">
                         <div>
                           <button
                             type="button"

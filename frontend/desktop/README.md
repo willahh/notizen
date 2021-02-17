@@ -16,3 +16,21 @@ The vast majority of the code sit in frontend/common cause this is shared with f
 * `electron-build`: (Electron) Launch an Electron build
 * `release`: (Electron) Release an Electron build into Github
 * `start`: (Electron) Start the project in local within Electron 
+
+## Generate the app icon :
+ `!!TODO!!`   
+ You should build manually at the moment :
+ * 1. run `yarn react-build`
+ * 2. Drop icons into build folder.  
+      With the exact names : icon.icon, icon.png and icon.icns.
+ * 3. run `yarn electron-build`
+
+
+---
+
+
+Follow these steps before the build :
+ * 1. Go to https://cloudconvert.com/svg-converter
+ * 2. Use `icon`, `png` and `icns` format
+ * 3. Need to be placed in the buildResources directory (defaults to build).   
+ Use the name icon.icon, icon.png and icon.icns.

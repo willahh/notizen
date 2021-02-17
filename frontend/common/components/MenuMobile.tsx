@@ -8,7 +8,7 @@ export type IMenuMobileProps = {};
 
 const MenuMobile: React.FC<IMenuMobileProps> = ({}) => {
   return (
-    <div className="lg:hidden">
+    <div className="sm:hidden">
       {/* Off-canvas menu for mobile, show/hide based on off-canvas menu state. */}
       <div className="fixed inset-0 flex z-40">
         {/*
