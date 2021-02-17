@@ -2,7 +2,7 @@
   "name": "@notizen/frontend-web",
   "version": "0.1.1",
   "private": false,
-  "homepage": "https://willahh.github.io/notizen/frontend/web",
+  "homepage": "./",
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.5",
     "@tailwindcss/postcss7-compat": "^2.0.3",
@@ -39,6 +39,7 @@
     "react-app-rewire-postcss": "^3.0.2"
   },
   "scripts": {
+    "build:style":"tailwind build ../common/index.css -o build/tailwind.css",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",

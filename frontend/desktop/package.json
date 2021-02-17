@@ -1,9 +1,9 @@
 {
-  "name": "@notizen/frontend-desktop",
+  "name": "frontend-desktop",
   "version": "0.1.1",
   "private": false,
   "description": "Notizen desktop app",
-  "repository": "https://github.com/willahh/notizen/tree/master/frontend/desktop",
+  "repository": "https://github.com/willahh/notizen",
   "author": {
     "name": "William Ravel",
     "email": "wravel@gmail.com"
@@ -31,7 +31,7 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "electron": "^11.2.3",
+    "electron": "11.2.3",
     "electron-builder": "^22.9.1",
     "react-app-rewired": "^2.1.6",
     "react-app-rewire-postcss": "^3.0.2"
@@ -42,13 +42,27 @@
     "react-test": "react-app-rewired test --env=jsdom",
     "react-eject": "react-app-rewired eject",
     "electron-build": "electron-builder",
-    "release": "npm react-build && electron-builder --publish=always",
-    "build": "npm react-build && npm electron-build",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build",
+    "start": "concurrently \"cross-env BROWSER=none yarn run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "temp": "electron-builder"
   },
   "main": "public/electron.js",
   "build": {
-    "appId": "<io.github.willahh.notizen>"
+    "appId": "com.notizenapp",
+    "copyright": "Copyright williamravel.dev",
+    "publish": {
+      "provider": "github"
+    },
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": "zip"
+    },
+    "linux": {
+      "category": "Utility"
+    }
   },
   "eslintConfig": {
     "extends": [
