@@ -31,6 +31,7 @@ The vast majority of the code sit in frontend/common cause this is shared with f
 
 Follow these steps before the build :
  * 1. Go to https://cloudconvert.com/svg-converter
+     png => icns https://anyconv.com/fr/convertisseur-de-png-en-icns/
  * 2. Use `icon`, `png` and `icns` format
  * 3. Need to be placed in the buildResources directory (defaults to build).   
  Use the name icon.icon, icon.png and icon.icns.

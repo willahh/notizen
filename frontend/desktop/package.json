@@ -55,7 +55,8 @@
       "provider": "github"
     },
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.icns"
     },
     "win": {
       "target": "zip"
