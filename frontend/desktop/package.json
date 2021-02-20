@@ -1,5 +1,5 @@
 {
-  "name": "frontend-desktop",
+  "name": "notizen",
   "version": "0.1.1",
   "private": false,
   "description": "Notizen desktop app",
@@ -42,7 +42,8 @@
     "react-test": "react-app-rewired test --env=jsdom",
     "react-eject": "react-app-rewired eject",
     "electron-build": "electron-builder",
-    "release": "yarn react-build && electron-builder --publish=always",
+    "set-gh-token-env": "export $(cat private/GH_TOKEN.txt | xargs)",
+    "release": "yarn set-gh-token-env && yarn react-build && electron-builder --publish=always",
     "build": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn run react-start\" \"wait-on http://localhost:3000 && electron .\"",
     "temp": "electron-builder"

@@ -15,6 +15,7 @@ The vast majority of the code sit in frontend/common cause this is shared with f
 * `build`: (CRA + Electron) Launch a build of the entire application (CRA BUILD + Electron build)
 * `electron-build`: (Electron) Launch an Electron build
 * `release`: (Electron) Release an Electron build into Github
+  You first need to write `private/GH_TOKEN.txt` file with `GH_TOKEN={GH_TOKEN}`
 * `start`: (Electron) Start the project in local within Electron 
 
 ## Generate the app icon :
