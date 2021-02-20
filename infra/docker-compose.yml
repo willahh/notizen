@@ -1,14 +1,12 @@
 version: '3'
 services:
   notizendb:
-    image: "postgres"
+    image: "postgres:13"
     restart: always
+    ports:
+      - "5432:5432"
     env_file:
       - database.env
-#     volumes:
-#       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-# volumes:
-#   database-data: # named volumes can be managed easier using docker-compose
   adminer:
       image: adminer
       restart: always
