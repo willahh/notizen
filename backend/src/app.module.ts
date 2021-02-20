@@ -1,11 +1,26 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { NotesController } from './notes/notes.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+// import { NotesController } from './notes/notes.controller';
+// import { NotesService } from './notes/notes.service';
+import { NotesModule } from './notes/notes.module';
+require('dotenv').config()
 
 @Module({
-  imports: [],
-  controllers: [AppController, NotesController],
-  providers: [AppService],
+  imports: [
+    ConfigModule,
+    NotesModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DATABASE_HOST,
+      port: Number(process.env.DATABASE_PORT),
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
+      entities: ['dist/**/*.entity{.ts,.js}'], // Fix needed to works @see https://docs.nestjs.com/techniques/database
+      // synchronize: true, // TODO: Dev only !
+      logging: true,
+    }),
+  ]
 })
 export class AppModule {}
