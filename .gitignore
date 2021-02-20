@@ -4,6 +4,7 @@
 .env.local
 .env.production.local
 .env.test.local
+*.env
 .pnp.js
 **/build/
 /.pnp
