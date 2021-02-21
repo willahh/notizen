@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { Repository } from 'typeorm';
 import { CreateNoteDto } from './create-note.dto';
 import { Note } from './note.entity';
 import { UpdateNoteDto } from './update-note.dto';
@@ -9,6 +9,7 @@ import { UpdateNoteDto } from './update-note.dto';
 @Injectable()
 export class NotesService {
   constructor(
+    private readonly connection: Connection,
     @InjectRepository(Note) private readonly noteRepository: Repository<Note>,
   ) {}
 
@@ -31,6 +32,9 @@ export class NotesService {
 
   async create(createNoteDTO: CreateNoteDto) {
     const note = this.noteRepository.create(createNoteDTO);
+    note.createDate = new Date();
+    note.updateDate = note.createDate;
+    
     this.noteRepository.save(note);
   }
 
@@ -42,6 +46,7 @@ export class NotesService {
     if (!note) {
       throw new NotFoundException(`Note #${id} not found`);
     }
+    note.updateDate = new Date();
     return this.noteRepository.save(note);
   }
 

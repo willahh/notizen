@@ -11,4 +11,10 @@ export class Note {
   @Column()
   content: string;
 
+  @Column({type: 'timestamp'})
+  createDate: Date;
+
+  @Column({type: 'timestamp'})
+  updateDate: Date;
+
 }

@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-// import { NotesController } from './notes/notes.controller';
-// import { NotesService } from './notes/notes.service';
 import { NotesModule } from './notes/notes.module';
 require('dotenv').config()
-
+ 
 @Module({
   imports: [
     ConfigModule,

@@ -1,4 +1,5 @@
-import { IsString } from "class-validator";
+import { IsString, IsDateString, IsDate } from "class-validator";
+import { CreateDateColumn } from "typeorm";
 
 export class CreateNoteDto {
   @IsString()
@@ -6,4 +7,7 @@ export class CreateNoteDto {
 
   @IsString()
   readonly content: string;
+
+  @CreateDateColumn()
+  readonly createDate: Date;
 }

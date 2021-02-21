@@ -11,6 +11,7 @@
 ## Description
 Backend REST API.
 
+### Setup
 Built with [Nest](https://github.com/nestjs/nest) and [TypeORM](https://typeorm.io) with the following steps : 
 ```sh
 # Install the Nestjs cli globally
@@ -70,6 +71,40 @@ nest g class notes/update-note.dto --no-spec
 # 7. Generate pagination-query DTO
 nest generate class common/dto/pagination-query.dto --no-spec 
 
+```
+### Migrations
+Sql migrations is managed with typeorm.  
+A `ormconfig.js` file is required :
+```js
+module.exports = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'username',
+  password: 'password',
+  database: 'database',
+  entities: ['dist/**/*.entity{.ts,.js}'],
+  migrations: ['dist/migrations/*.js'],
+  cli: {
+    migrationsDir: 'src/migrations',
+  },
+};
+```
+
+```sh
+npx typeorm migration:create -n MyMigration # Creates a new migration file
+npx typeorm migration:generate -n SchemaSync # Generates a new migration file with sql needs to be executed to update schema.
+npx typeorm migration:run # Runs all pending migrations
+npx typeorm migration:revert # Reverts last executed migration
+#npx typeorm migration:sync # Sync migration
+npx typeorm migration:show # Show all migrations and whether they have been run or not
+```
+
+Example :  
+The server needs to be started before the scripts can update the migration table :
+```sh
+npm run start:dev # Start the backend
+npx typeorm migration:generate -n InitialData # Initialize a first migration
 ```
 ## Installation
 
