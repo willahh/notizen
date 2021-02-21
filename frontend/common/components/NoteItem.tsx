@@ -1,8 +1,9 @@
 import React from 'react';
 
 interface INoteItemProps {
-  title: string;
-  text: string;
+  id: number;
+  title: string | undefined;
+  text: string | undefined;
   tags: string[];
   isSelected: boolean;
 }
@@ -14,6 +15,7 @@ function truncateString(str: string, num: number) {
 }
 
 const NoteItem: React.FC<INoteItemProps> = ({
+  id,
   text,
   title,
   tags,
@@ -29,7 +31,7 @@ const NoteItem: React.FC<INoteItemProps> = ({
     className += ' border-white dark:border-black';
   }
   return (
-    <li className={className}>
+    <li key={id} className={className}>
       <div className={transitionItem}>
         <div className="flex justify-between space-x-3">
           <div className="min-w-0 flex-1">
@@ -52,7 +54,7 @@ const NoteItem: React.FC<INoteItemProps> = ({
         </div>
         <div className="mt-1 max-h-10 overflow-hidden">
           <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-500">
-            {truncateString(text, 64)}
+            {text ? truncateString(text, 64) : 'Ma nouvelle note'}
           </p>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import '@notizen/frontend-common/index.css'
 import App from '@notizen/frontend-common/App'
-
+ 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
