@@ -1,22 +1,22 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+// import { createNote } from '../features/NoteList/noteSlice';
 
 export type IToolbarProps = {};
 
 const Toolbar: React.FC<IToolbarProps> = ({}) => {
+  const dispatch = useDispatch();
   const handleNewNote = () => {
     console.log('handleNewNote');
     // useEffect(() => {
     (async () => {
       console.log('async fn2');
-      
-      const { data } = await axios.post(
-        'http://localhost:3000/notes',
-        {
-          name: 'test name',
-          content: 'test content',
-        }
-      );
+
+      const { data } = await axios.post('http://localhost:3000/notes', {
+        name: 'test name',
+        content: 'test content',
+      });
       console.log('data', data);
     })();
     // }, []);
@@ -34,7 +34,7 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                 <span className="inline-flex sm:shadow-sm">
                   <button
                     type="button"
-                    onClick={handleNewNote}
+                    // onClick={() => dispatch(createNote())}
                     className="relative inline-flex items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800 dark:border-gray-800"
                   >
                     <svg

@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { store } from '@notizen/frontend-common/app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import '@notizen/frontend-common/index.css'
-import App from '@notizen/frontend-common/App'
- 
+import '@notizen/frontend-common/index.css';
+import App from '@notizen/frontend-common/app/App';
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
