@@ -7,7 +7,4 @@ export class CreateNoteDto {
 
   @IsString()
   readonly content: string;
-
-  @CreateDateColumn()
-  readonly createDate: Date;
 }

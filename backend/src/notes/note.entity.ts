@@ -5,10 +5,10 @@ export class Note {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({nullable: true})
   name: string;
 
-  @Column()
+  @Column({nullable: true})
   content: string;
 
   @Column({type: 'timestamp'})

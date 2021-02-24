@@ -34,6 +34,7 @@ export class NotesService {
     const note = this.noteRepository.create(createNoteDTO);
     note.createDate = new Date();
     note.updateDate = note.createDate;
+    console.log('note', note);
     
     this.noteRepository.save(note);
   }
