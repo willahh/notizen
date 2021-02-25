@@ -12,9 +12,6 @@ const Main: React.FC<IMainProps> = ({ children }) => {
         <SidebarOpen></SidebarOpen>
         <div className="flex-1 relative z-0 flex overflow-hidden">
           {children}
-          {/* {children.map((child: React.ReactElement) => {
-            return child;
-          })} */}
         </div>
       </div>
     </>

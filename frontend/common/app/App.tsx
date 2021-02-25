@@ -1,8 +1,8 @@
 import React from 'react';
-import { NoteList } from '@notizen/frontend-common/features/NoteList/NoteList';
+import { Note } from '@notizen/frontend-common/features/note/Note';
 
 function App() {
-  return <NoteList />;
+  return <Note />;
 }
 
 export default App;

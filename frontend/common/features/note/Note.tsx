@@ -2,24 +2,31 @@ import React, { useEffect } from 'react';
 import { NoteItem } from '../../components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { fetchNotes } from './noteSlice';
+import { fetchNotes } from './noteListSlice';
 import { AreaSecondary } from '../../components/AreaSecondary';
 import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
 import { Toolbar } from '../../components/Toolbar';
 import { NoteDetail } from '../../components/NoteDetail';
 import MainTemplate from '../../components/MainTemplate';
+import { setSelectedNoteId } from './noteDetailSlice';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
 
-interface INoteListProps {}
+interface INoteProps {}
 
-const NoteList: React.FC<INoteListProps> = () => {
+const Note: React.FC<INoteProps> = () => {
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
   );
+
+  const selectedNoteId = useSelector(
+    (state: RootState) => state.noteDetail.selectedNoteId
+  );
+
+  console.log('selectedNoteId', selectedNoteId);
 
   useEffect(() => {
     dispatch(fetchNotes());
@@ -69,4 +76,4 @@ const NoteList: React.FC<INoteListProps> = () => {
   }
 };
 
-export { NoteList };
+export { Note };

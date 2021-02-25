@@ -12,3 +12,7 @@ export interface INote {
 export interface NotesResult {
   notes: INote[];
 }
+
+export interface NoteDetailResult {
+  note: INote;
+}

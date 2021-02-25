@@ -1,4 +1,7 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../app/rootReducer';
+import { setSelectedNoteId } from '../features/note/noteDetailSlice';
 
 interface INoteItemProps {
   id: number;
@@ -19,19 +22,31 @@ const NoteItem: React.FC<INoteItemProps> = ({
   text,
   title,
   tags,
-  isSelected,
 }) => {
+  const dispatch = useDispatch();
+  const selectedNoteId = useSelector(
+    (state: RootState) => state.noteDetail.selectedNoteId
+  );
+  const isSelected = id === selectedNoteId;
+
   let transitionItem =
     'transition ease-out duration-200 transform hover:-translate-x-1 hover:-translate-x-100 motion-reduce:transition-none motion-reduce:transform-none';
   let className =
-    ' relative py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 bg-white hover:bg-gray-50 dark:bg-black dark:hover:bg-gray-800';
+    ' relative py-5 px-4 focus-within:ring-1 focus-within:ring-inset focus-within:ring-indigo-600 bg-white hover:bg-gray-50 dark:bg-black dark:hover:bg-gray-800';
   if (isSelected) {
     className += ' border-l-4 border-indigo-700';
   } else {
     className += ' border-white dark:border-black';
   }
+
   return (
-    <li key={id} className={className}>
+    <li
+      key={id}
+      className={className}
+      onClick={() => {
+        dispatch(setSelectedNoteId(id));
+      }}
+    >
       <div className={transitionItem}>
         <div className="flex justify-between space-x-3">
           <div className="min-w-0 flex-1">
