@@ -6,18 +6,24 @@ import axios from 'axios';
 import {
   INote,
   NoteDetailResult,
-  // NotesResult,
 } from '../interfaces/INote.interface';
 
 import { NotesResult } from '../features/note/noteListSlice';
+import { Notes, UpdateNoteDTO } from '../interfaces/INote.interface';
 
 export async function getNotes(): Promise<NotesResult> {
-  const url = `http://localhost:3000/notes?limit=10`;
+  const url = `http://localhost:3000/notes?limit=100`;
 
   try {
     const notesReponse = await axios.get<INote[]>(url);
+    const noteAcc: Notes = {};
+    const notes = notesReponse.data.reduce((m, note) => {
+      m[note.id] = note;
+      return m;
+    }, noteAcc);
+
     return {
-      notes: notesReponse.data,
+      notes: notes,
     };
   } catch (err) {
     throw err;
@@ -61,7 +67,21 @@ export async function deleteNote(noteId: number): Promise<NoteDetailResult> {
       note: response.data,
     };
   } catch (err) {
-    console.log('Une erreur est survenue', err);
+    console.error('Une erreur est survenue', err);
+    throw err;
+  }
+}
+
+
+export async function updateNote(noteId: number, updateNoteDTO: UpdateNoteDTO): Promise<NoteDetailResult> {
+  const url = `http://localhost:3000/notes/${noteId}`;
+  try {
+    const response = await axios.patch<INote>(url, updateNoteDTO);
+    return {
+      note: response.data,
+    };
+  } catch (err) {
+    console.error('Une erreur est survenue', err);
     throw err;
   }
 }

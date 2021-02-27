@@ -8,6 +8,7 @@ import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
 import { Toolbar } from '../../components/Toolbar';
 import { NoteDetail } from '../../components/NoteDetail';
+import { NoteDetailEdit } from '../../components/NoteDetailEdit';
 import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 
@@ -81,7 +82,7 @@ const Note: React.FC<INoteProps> = () => {
       </AreaSecondary>
       <MainArea>
         <Toolbar />
-        <NoteDetail />
+        <NoteDetailEdit />
       </MainArea>
     </MainTemplate>
   );

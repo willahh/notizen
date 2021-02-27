@@ -4,17 +4,23 @@ import {
   createAsyncThunk,
   createAction,
 } from '@reduxjs/toolkit';
-import { createNote, deleteNote, getNoteByNoteId, getNotes } from '../../api/notizenAPI';
-import { INote, NoteDetailResult } from '../../interfaces/INote.interface';
+import {
+  createNote,
+  deleteNote,
+  getNoteByNoteId,
+  getNotes,
+  updateNote,
+} from '../../api/notizenAPI';
+import {
+  INote,
+  NoteDetailResult,
+  UpdateNoteDTO,
+} from '../../interfaces/INote.interface';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
+import { Notes } from '../../interfaces/INote.interface';
 
 // TODO: See https://codesandbox.io/s/ihttc?file=/src/app/store.ts
 // and https://github.com/jerrynavi/diaries-app/tree/master/src/features
-
-// Types
-interface Notes {
-  [key: string]: INote;
-}
 
 interface NoteListState {
   isLoading: boolean;
@@ -87,11 +93,22 @@ export const createNoteThunk = createAsyncThunk(
   }
 );
 
+export const updateNoteThunk = createAsyncThunk(
+  'notes/update',
+  // async (noteId:number, updateNoteDTO: UpdateNoteDTO) => {
+  async ({ noteId, updateNoteDTO: UpdateNoteDTO }: any) => {
+    console.log('updateNoteThunk', noteId, UpdateNoteDTO);
+
+    return await updateNote(noteId, UpdateNoteDTO);
+  }
+);
+
 const notes = createSlice({
   name: 'notes',
   initialState: initialNotesState,
   extraReducers: (builder) => {
     builder
+      // setSelectedNoteId ------------------
       .addCase(setSelectedNoteId, (state, action) => {
         console.log('setSelectedNoteId', action);
         console.log(
@@ -126,7 +143,7 @@ const notes = createSlice({
         // state.isLoading = false;
         // state.error = action.error.message;
       })
- 
+
       // fetchNotes ----------------------
       .addCase(fetchNotes.pending, (state, action) => {
         console.log('# fetchNotes.pending', state, action);
@@ -141,12 +158,15 @@ const notes = createSlice({
 
         state.isLoading = false;
         state.error = null;
-        var notes = action.payload.notes.reduce(function (map, obj) {
-          map[obj.id] = obj;
-          return map;
-        }, {});
-        state.notes = notes;
-        state.notesCache = notes;
+        console.log('action.payload.notes', action.payload.notes);
+
+        // TODO
+        // var notes = action.payload.notes.reduce(function (map, obj) {
+        //   map[obj.id] = obj;
+        //   return map;
+        // }, {});
+        // state.notes = notes;
+        // state.notesCache = notes;
       })
       .addCase(fetchNotes.rejected, (state, action) => {
         console.log('# fetchNotes.rejected', state, action);
@@ -163,29 +183,56 @@ const notes = createSlice({
         console.log('createNoteThunk.fulfilled', state, action);
       })
 
+      // updateNote ----------------------
+      .addCase(updateNoteThunk.pending, (state, action) => {
+        console.log('updateNoteThunk.pending', state, action);
+
+        // Optimistic rendering
+        const noteId = action.meta.arg.noteId;
+        const newNote = {noteId: noteId, ...action.meta.arg.updateNoteDTO}
+        state.notes[noteId] = newNote;
+      })
+      .addCase(updateNoteThunk.fulfilled, (state, action) => {
+        console.log('updateNoteThunk.fulfilled', state, action);
+
+        const noteId = action.payload.note.id;
+        state.notes[noteId] = action.payload.note;
+        state.notesCache = state.notes;
+      })
+      .addCase(updateNoteThunk.rejected, (state, action) => {
+        console.log('updateNoteThunk.rejected', state, action);
+
+        // Rollback delete action with note from cache
+        // TODO: Display error to user (notification)
+        const noteId = action.meta.arg.noteId;
+        const noteCached = state.notesCache[noteId];
+        state.notes = { ...state.notes, [noteId]: noteCached };
+      })
+
       // deleteNote ----------------------
       .addCase(deleteNoteThunk.pending, (state, action) => {
-        console.log('# deleteNoteThunk.pending', state, action);
+        console.log('deleteNoteThunk.pending', state, action);
 
-        var noteId = action.meta.arg;
+        const noteId = action.meta.arg;
         const newNotes = { ...state.notes };
         delete newNotes[noteId];
         state.notes = newNotes;
       })
+      .addCase(deleteNoteThunk.fulfilled, (state, action) => {
+        console.log('deleteNoteThunk.fulfilled', state, action);
+
+        return state;
+      })
       .addCase(deleteNoteThunk.rejected, (state, action) => {
-        console.log('# deletNoteThunk.rejected', state, action);
+        console.log('deletNoteThunk.rejected', state, action);
 
         // Rollback delete action with note from cache
         // TODO: Display error to user (notification)
-        var noteId = action.meta.arg;
-        var noteCached = state.notesCache[noteId];
+        const noteId = action.meta.arg;
+        const noteCached = state.notesCache[noteId];
         state.notes = { ...state.notes, [noteId]: noteCached };
       })
-      .addCase(deleteNoteThunk.fulfilled, (state, action) => {
-        console.log('# extraReducers deleteNoteThunk.fulfilled', state, action);
-
-        return state;
-      });
+      ;
   },
   reducers: {
     addNote(
