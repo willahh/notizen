@@ -1,10 +1,7 @@
 {
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
-  "monorepo": true,
-  "root": "backend",
   "compilerOptions": {
-    "webpack": true,
-    "tsConfigPath": "tsconfig.json"
+    "webpack": false
   }
 }
