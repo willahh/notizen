@@ -9,10 +9,6 @@ export interface INote {
   updateDate: Date;
 }
 
-export interface NotesResult {
-  notes: INote[];
-}
-
 export interface NoteDetailResult {
   note: INote;
 }
