@@ -1,11 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
-import {
-  // dispatchDeleteNote,
-  setSelectedNoteId,
-} from '../features/note/noteDetailSlice';
-import { deleteNoteThunk } from '../features/note/noteListSlice';
+import { deleteNoteThunk, setSelectedNoteId } from '../features/note/noteListSlice';
 
 interface INoteItemProps {
   id: number;
@@ -26,7 +22,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
 
   const dispatch = useDispatch();
   const selectedNoteId = useSelector(
-    (state: RootState) => state.noteDetail.selectedNoteId
+    (state: RootState) => state.notes.selectedNoteId
   );
   const isSelected = id === selectedNoteId;
 

@@ -1,53 +1,82 @@
 import {
   createSlice,
-  createAction,
   PayloadAction,
   createAsyncThunk,
-  CaseReducer
+  createAction,
 } from '@reduxjs/toolkit';
 import { ReducerAction } from 'react';
-import { deleteNote, getNotes } from '../../api/notizenAPI';
+import { deleteNote, getNoteByNoteId, getNotes } from '../../api/notizenAPI';
 import { AppThunk } from '../../app/store';
-import {
-  INote,
-  NoteDetailResult,
-  NotesResult,
-} from '../../interfaces/INote.interface';
+import { INote, NoteDetailResult } from '../../interfaces/INote.interface';
 
 // TODO: See https://codesandbox.io/s/ihttc?file=/src/app/store.ts
 // and https://github.com/jerrynavi/diaries-app/tree/master/src/features
 
+interface Notes {
+  [key: string]: INote;
+}
+
 interface NoteListState {
   isLoading: boolean;
   error: string | null;
-  notes: INote[];
+  notes: Notes;
+  notesCache: Notes;
   selectedNoteId: number | null;
-  previousState: NoteListState
+}
+
+interface NotesResult {
+  notes: Notes;
 }
 
 const initialNotesState: NoteListState = {
   isLoading: false,
   error: null,
-  notes: [],
+  notes: {},
+  notesCache: {},
   selectedNoteId: null,
-  previousState: null
 };
-
-function startLoading(state: NoteListState) {
-  state.isLoading = true;
-}
 
 function loadingFailed(state: NoteListState, action: PayloadAction<string>) {
   state.isLoading = false;
   state.error = action.payload;
 }
 
+export const setSelectedNoteId = createAction(
+  'notes/setSelectedNoteId',
+  (noteId: number) => {
+    return {
+      payload: {
+        selectedNoteId: noteId,
+      },
+    };
+  }
+);
+
+export const fetchNoteThunk = createAsyncThunk(
+  'notes/note',
+  async (noteId: number, thunkAPI) => {
+    console.log('fetchNote', noteId);
+    return await getNoteByNoteId(noteId);
+  }
+);
+
+export const fetchNotes = createAsyncThunk('notes/fetch', async (thunkAPI) => {
+  return await getNotes();
+});
+
 export const deleteNoteThunk = createAsyncThunk(
   'notes/delete',
   async (noteId: number, thunkAPI) => {
     console.log('deleteNote new', thunkAPI);
-    
+
     return await deleteNote(noteId);
+  }
+);
+
+export const createNoteThunk = createAsyncThunk(
+  'notes/create',
+  async (thunkAPI) => {
+    console.log('createNoteThunk');
   }
 );
 
@@ -56,23 +85,84 @@ const notes = createSlice({
   initialState: initialNotesState,
   extraReducers: (builder) => {
     builder
+      .addCase(setSelectedNoteId, (state, action) => {
+        console.log('setSelectedNoteId', action);
+        console.log(
+          'action.payload.selectedNoteId',
+          action.payload.selectedNoteId
+        );
+
+        state.selectedNoteId = action.payload.selectedNoteId;
+      })
+
+      // fetchNote ------------------
+      .addCase(fetchNoteThunk.pending, (state, action) => {
+        console.log('fetchNote.pending');
+        // state.isLoading = true;
+        state.error = null;
+        
+        const noteId = action.meta.arg;
+        const note = state.notesCache[noteId];
+        // state.isLoading = false;
+        state.notes = { ...state.notes, [noteId]: note };
+      })
+      .addCase(fetchNoteThunk.fulfilled, (state, action) => {
+        console.log('fetchNote.fulfilled', state, action);
+        const noteId = action.meta.arg;
+        const note = action.payload.note;
+        state.notes = { ...state.notes, [noteId]: note };
+      })
+      .addCase(fetchNoteThunk.rejected, (state, action) => {
+        console.log('# fetchNote.rejected', state, action);
+        
+        // TODO: Need fallback to this optimistic rendering
+        // state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      // fetchNotes ----------------------
+      .addCase(fetchNotes.pending, (state, action) => {
+        console.log('# fetchNotes.pending', state, action);
+
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchNotes.fulfilled, (state, action) => {
+        console.log('# fetchNotes.fulfilled', state, action);
+
+        state.isLoading = false;
+        state.error = null;
+        var notes = action.payload.notes.reduce(function (map, obj) {
+          map[obj.id] = obj;
+          return map;
+        }, {});
+        state.notes = notes;
+        state.notesCache = notes;
+      })
+      .addCase(fetchNotes.rejected, (state, action) => {
+        console.log('# fetchNotes.rejected', state, action);
+
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      // deleteNote ----------------------
       .addCase(deleteNoteThunk.pending, (state, action) => {
         console.log('# deleteNoteThunk.pending', state, action);
+
         var noteId = action.meta.arg;
-        return {
-          ...state,
-          previousState: {...state},
-          notes: [...state.notes.filter((item) => item.id !== noteId)],
-        };
+        const newNotes = { ...state.notes };
+        delete newNotes[noteId];
+        state.notes = newNotes;
       })
       .addCase(deleteNoteThunk.rejected, (state, action) => {
         console.log('# deletNoteThunk.rejected', state, action);
-        
-        // Rollback
-        return {
-          ...state,
-          notes: state.previousState.notes
-        }
+
+        // Rollback delete action with note from cache
+        // TODO: Display error to user (notification)
+        var noteId = action.meta.arg;
+        var noteCached = state.notesCache[noteId];
+        state.notes = { ...state.notes, [noteId]: noteCached };
       })
       .addCase(deleteNoteThunk.fulfilled, (state, action) => {
         console.log('# extraReducers deleteNoteThunk.fulfilled', state, action);
@@ -81,17 +171,6 @@ const notes = createSlice({
       });
   },
   reducers: {
-    getNotesStart: startLoading,
-    getNotesFailure: loadingFailed,
-    getNotesSuccess(
-      state: NoteListState,
-      { payload }: PayloadAction<NotesResult>
-    ) {
-      const { notes } = payload;
-      state.isLoading = false;
-      state.error = null;
-      state.notes = notes;
-    },
     addNote(
       state: NoteListState,
       { payload }: PayloadAction<NoteDetailResult>
@@ -99,30 +178,11 @@ const notes = createSlice({
       console.log('addNote', payload);
 
       const { note } = payload;
-      state.notes.push(note);
-    },
-    getState(state: NoteListState) {
-      return { ...state };
+
+      state.notes[note.id] = note;
     },
   },
 });
 
-export const {
-  getNotesFailure,
-  getNotesStart,
-  getNotesSuccess,
-  addNote,
-  getState,
-} = notes.actions;
-
+export const { addNote } = notes.actions;
 export default notes.reducer;
-
-export const fetchNotes = (): AppThunk => async (dispatch) => {
-  try {
-    dispatch(getNotesStart());
-    const notes = await getNotes();
-    dispatch(getNotesSuccess(notes));
-  } catch (err) {
-    dispatch(getNotesFailure(err.toString()));
-  }
-};
