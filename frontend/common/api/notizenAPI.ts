@@ -35,3 +35,31 @@ export async function getNoteByNoteId(
     throw err;
   }
 }
+
+export async function createNote(): Promise<NoteDetailResult> {
+  const url = `http://localhost:3000/notes`;
+  try {
+    const noteReponse = await axios.post<INote>(url, {
+      name: '',
+      content: '',
+    });
+    return {
+      note: noteReponse.data,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function deleteNote(noteId: number): Promise<NoteDetailResult> {
+  const url = `http://localhost:3000/notes/${noteId}`;
+  try {
+    const response = await axios.delete<INote>(url);
+    return {
+      note: response.data,
+    };
+  } catch (err) {
+    console.log('Une erreur est survenue', err)
+    throw err;
+  }
+}

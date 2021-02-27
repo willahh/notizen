@@ -1,7 +1,7 @@
 import React, { useEffect, Suspense, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
-import { fetchNote } from '../features/note/noteDetailSlice';
+import { dispatchFetchNote } from '../features/note/noteDetailSlice';
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
 
@@ -12,7 +12,7 @@ const NoteDetail: React.FC<INoteDetailProps> = ({}) => {
 
   const delay = 5;
   const dispatch = useDispatch();
-  const { error, isLoading, note, showLoading} = useSelector(
+  const { error, isLoading, note, showLoading } = useSelector(
     (state: RootState) => state.noteDetail
   );
   // const [show, setShow] = useState(false);
@@ -25,7 +25,7 @@ const NoteDetail: React.FC<INoteDetailProps> = ({}) => {
 
   useEffect(() => {
     if (selectedNoteId) {
-      dispatch(fetchNote(selectedNoteId));
+      dispatch(dispatchFetchNote(selectedNoteId));
     }
     // let timer1 = setTimeout(() => setShow(true), 1000);
     // return () => {

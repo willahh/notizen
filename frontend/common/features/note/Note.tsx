@@ -26,6 +26,7 @@ const Note: React.FC<INoteProps> = () => {
     (state: RootState) => state.noteDetail.selectedNoteId
   );
 
+  console.log('====> notes', notes);
   console.log('selectedNoteId', selectedNoteId);
 
   useEffect(() => {
@@ -51,11 +52,12 @@ const Note: React.FC<INoteProps> = () => {
       <MainTemplate>
         <AreaSecondary>
           <NoteFilter />
-          <ScrollBar damping={0.5} thumbMinSize={20}>
+          {/* <ScrollBar damping={0.5} thumbMinSize={20}> */}
             <ul className="overflow-auto divide-gray-200 divide-y-1 dark:divide-gray-800">
               {notes.map(({ id, name, content }) => {
                 return (
                   <NoteItem
+                    key={id}
                     id={id}
                     title={name}
                     tags={['Tag 1']}
@@ -65,7 +67,7 @@ const Note: React.FC<INoteProps> = () => {
                 );
               })}
             </ul>
-          </ScrollBar>
+          {/* </ScrollBar> */}
         </AreaSecondary>
         <MainArea>
           <Toolbar />

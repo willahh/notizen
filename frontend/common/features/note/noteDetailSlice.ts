@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getNoteByNoteId, getNotes } from '../../api/notizenAPI';
+import { getNoteByNoteId, createNote, deleteNote } from '../../api/notizenAPI';
 import { AppThunk } from '../../app/store';
 import { INote, NoteDetailResult } from '../../interfaces/INote.interface';
+import { addNote } from './noteListSlice';
 
 interface NoteDetailState {
   isLoading: boolean;
-  showLoading: boolean,
+  showLoading: boolean;
   error: string | null;
   note: INote | null;
   selectedNoteId: number | null;
@@ -55,7 +56,7 @@ const notes = createSlice({
       state.selectedNoteId = action.payload;
 
       return state;
-    }
+    },
   },
 });
 
@@ -68,7 +69,9 @@ export const {
 
 export default notes.reducer;
 
-export const fetchNote = (noteId: number): AppThunk => async (dispatch) => {
+export const dispatchFetchNote = (noteId: number): AppThunk => async (
+  dispatch
+) => {
   try {
     dispatch(getNoteDetailStart());
     const note = await getNoteByNoteId(noteId);
@@ -77,3 +80,33 @@ export const fetchNote = (noteId: number): AppThunk => async (dispatch) => {
     dispatch(getNoteDetailFailure(err.toString()));
   }
 };
+
+export const dispatchCreateNote = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch(getNoteDetailStart());
+    const note = await createNote();
+    dispatch(getNoteDetailSuccess(note));
+    dispatch(addNote(note));
+  } catch (err) {
+    dispatch(getNoteDetailFailure(err.toString()));
+  }
+};
+
+// export const dispatchDeleteNote = (noteId: number): AppThunk => async (
+//   dispatch
+// ) => {
+//   console.log('dispatchDeleteNote', noteId);
+//   console.log('notes', notes);
+//   console.log('getState()', getState());
+  
+  
+//   try {
+//     dispatch(getNoteDetailStart());
+//     dispatch(deleteNoteLocal(noteId)); // Optimistic action
+//     const note = await deleteNote(noteId);
+//     dispatch(getNoteDetailSuccess(note));
+//   } catch (err) {
+//     dispatch(deleteNoteLocalRollback(noteId)); // Rollback optimistic action
+//     dispatch(getNoteDetailFailure(err.toString()));
+//   }
+// };

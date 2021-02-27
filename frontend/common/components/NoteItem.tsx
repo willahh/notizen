@@ -1,7 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
-import { setSelectedNoteId } from '../features/note/noteDetailSlice';
+import {
+  // dispatchDeleteNote,
+  setSelectedNoteId,
+} from '../features/note/noteDetailSlice';
+import { deleteNoteThunk } from '../features/note/noteListSlice';
 
 interface INoteItemProps {
   id: number;
@@ -17,12 +21,9 @@ function truncateString(str: string, num: number) {
   return str.slice(0, num) + '...';
 }
 
-const NoteItem: React.FC<INoteItemProps> = ({
-  id,
-  text,
-  title,
-  tags,
-}) => {
+const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
+  console.log('NoteItem', id);
+
   const dispatch = useDispatch();
   const selectedNoteId = useSelector(
     (state: RootState) => state.noteDetail.selectedNoteId
@@ -47,6 +48,16 @@ const NoteItem: React.FC<INoteItemProps> = ({
         dispatch(setSelectedNoteId(id));
       }}
     >
+      <button
+        className="dark:text-white dark:bg-gray-700 p-2 rounded-sm"
+        onClick={(e) => {
+          console.log('onClick', id);
+          e.stopPropagation();
+          dispatch(deleteNoteThunk(id));
+        }}
+      >
+        [x]
+      </button>
       <div className={transitionItem}>
         <div className="flex justify-between space-x-3">
           <div className="min-w-0 flex-1">
