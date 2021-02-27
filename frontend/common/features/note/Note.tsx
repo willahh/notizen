@@ -9,6 +9,9 @@ import { MainArea } from '../../components/MainArea';
 import { Toolbar } from '../../components/Toolbar';
 import { NoteDetail } from '../../components/NoteDetail';
 import MainTemplate from '../../components/MainTemplate';
+import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
+
+// Local storage
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -21,9 +24,11 @@ const Note: React.FC<INoteProps> = () => {
     (state: RootState) => state.notes
   );
 
-  const notesList = Object.keys(notes).map((k) => notes[k]);
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
+  }, [notes]);
 
-  console.log('====> notes', notes);
+  const notesList = Object.keys(notes).map((k) => notes[k]);
 
   useEffect(() => {
     dispatch(fetchNotes());

@@ -19,15 +19,14 @@ const NoteDetail: React.FC<INoteDetailProps> = ({}) => {
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
-  
+
   // TODO showLoading
   const showLoading = true;
-  const note = notes[selectedNoteId];
-
+  const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   useEffect(() => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
-    
+
     if (selectedNoteId) {
       dispatch(fetchNoteThunk(selectedNoteId));
     }

@@ -6,8 +6,10 @@ import axios from 'axios';
 import {
   INote,
   NoteDetailResult,
-  NotesResult,
+  // NotesResult,
 } from '../interfaces/INote.interface';
+
+import { NotesResult } from '../features/note/noteListSlice';
 
 export async function getNotes(): Promise<NotesResult> {
   const url = `http://localhost:3000/notes?limit=10`;
@@ -59,7 +61,7 @@ export async function deleteNote(noteId: number): Promise<NoteDetailResult> {
       note: response.data,
     };
   } catch (err) {
-    console.log('Une erreur est survenue', err)
+    console.log('Une erreur est survenue', err);
     throw err;
   }
 }

@@ -4,14 +4,14 @@ import {
   createAsyncThunk,
   createAction,
 } from '@reduxjs/toolkit';
-import { ReducerAction } from 'react';
-import { deleteNote, getNoteByNoteId, getNotes } from '../../api/notizenAPI';
-import { AppThunk } from '../../app/store';
+import { createNote, deleteNote, getNoteByNoteId, getNotes } from '../../api/notizenAPI';
 import { INote, NoteDetailResult } from '../../interfaces/INote.interface';
+import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 
 // TODO: See https://codesandbox.io/s/ihttc?file=/src/app/store.ts
 // and https://github.com/jerrynavi/diaries-app/tree/master/src/features
 
+// Types
 interface Notes {
   [key: string]: INote;
 }
@@ -24,15 +24,21 @@ interface NoteListState {
   selectedNoteId: number | null;
 }
 
-interface NotesResult {
+export interface NotesResult {
   notes: Notes;
 }
+
+const getNotesFromLocalStorage = () => {
+  const localStorageData = window.localStorage.getItem(LOCAL_STORAGE_NOTES_KEY);
+  return localStorageData ? JSON.parse(localStorageData) : {};
+};
+const notesInitialData = getNotesFromLocalStorage();
 
 const initialNotesState: NoteListState = {
   isLoading: false,
   error: null,
-  notes: {},
-  notesCache: {},
+  notes: notesInitialData,
+  notesCache: notesInitialData,
   selectedNoteId: null,
 };
 
@@ -77,6 +83,7 @@ export const createNoteThunk = createAsyncThunk(
   'notes/create',
   async (thunkAPI) => {
     console.log('createNoteThunk');
+    return await createNote();
   }
 );
 
@@ -100,7 +107,7 @@ const notes = createSlice({
         console.log('fetchNote.pending');
         // state.isLoading = true;
         state.error = null;
-        
+
         const noteId = action.meta.arg;
         const note = state.notesCache[noteId];
         // state.isLoading = false;
@@ -114,17 +121,19 @@ const notes = createSlice({
       })
       .addCase(fetchNoteThunk.rejected, (state, action) => {
         console.log('# fetchNote.rejected', state, action);
-        
+
         // TODO: Need fallback to this optimistic rendering
         // state.isLoading = false;
-        state.error = action.error.message;
+        // state.error = action.error.message;
       })
-
+ 
       // fetchNotes ----------------------
       .addCase(fetchNotes.pending, (state, action) => {
         console.log('# fetchNotes.pending', state, action);
 
-        state.isLoading = true;
+        if (Object.keys(state.notes).length === 0) {
+          state.isLoading = true;
+        }
         state.error = null;
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
@@ -143,7 +152,15 @@ const notes = createSlice({
         console.log('# fetchNotes.rejected', state, action);
 
         state.isLoading = false;
-        state.error = action.error.message;
+        // state.error = action.error.message;
+      })
+
+      // createNote ----------------------
+      .addCase(createNoteThunk.pending, (state, action) => {
+        console.log('createNoteThunk.pending', state, action);
+      })
+      .addCase(createNoteThunk.fulfilled, (state, action) => {
+        console.log('createNoteThunk.fulfilled', state, action);
       })
 
       // deleteNote ----------------------
