@@ -13,7 +13,7 @@
     "react-redux": "^7.2.0",
     "react-scripts": "4.0.2",
     "react-spring": "^8.0.27",
-    "react-transition-group": "1.x",
+    "react-transition-group": "^4.4.1",
     "smooth-scrollbar-react": "^1.0.1",
     "typescript": "~3.8.2"
   }

@@ -6,6 +6,8 @@ import {
   deleteNoteThunk,
   setSelectedNoteId,
 } from '../features/note/noteListSlice';
+// import TransitionGroup from 'react-transition-group/TransitionGroup';
+// import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
 interface INoteItemProps {
   id: number;
@@ -30,10 +32,8 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
   );
   const isSelected = id === selectedNoteId;
 
-  let transitionItem =
-    'transition ease-out duration-200 transform hover:-translate-x-1 hover:-translate-x-100 motion-reduce:transition-none motion-reduce:transform-none';
-  let className =
-    ' relative py-5 px-4 focus-within:ring-1 focus-within:ring-inset focus-within:ring-indigo-600 bg-white hover:bg-gray-50 dark:bg-black dark:hover:bg-gray-800';
+ let className =
+    'relative py-5 px-4 bg-white dark:bg-black';
   if (isSelected) {
     className += ' border-l-4 border-indigo-700';
   } else {
@@ -43,20 +43,12 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
   return (
     <li
       className="relative overflow-hidden"
+      note-id={id}
+      // className={className}
       onClick={() => {
         dispatch(setSelectedNoteId(id));
       }}
     >
-      <button
-        className="dark:text-white dark:bg-gray-700 p-2 rounded-sm"
-        onClick={(e) => {
-          console.log('onClick', id);
-          e.stopPropagation();
-          dispatch(deleteNoteThunk(id));
-        }}
-      >
-        [x]
-      </button>
       <div className={className}>
         <div className="flex justify-between space-x-3">
           <div className="min-w-0 flex-1">
@@ -76,6 +68,16 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
           >
             1d ago
           </time>
+          <button
+            className="dark:text-white dark:bg-gray-700 p-2 rounded-sm z-0"
+            onClick={(e) => {
+              console.log('onClick', id);
+              e.stopPropagation();
+              dispatch(deleteNoteThunk(id));
+            }}
+          >
+            [x]
+          </button>
         </div>
         <div className="mt-1 max-h-10 overflow-hidden">
           <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-500">

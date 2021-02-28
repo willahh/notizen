@@ -28,7 +28,6 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     console.log('handleBlur', e);
-    console.log('contentRef', contentRef);
     console.log('contentRef.current.innerText', contentRef.current?.innerText);
 
     const noteId = selectedNoteId;

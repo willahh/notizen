@@ -7,7 +7,7 @@ export interface Notes {
 }
 
 export interface INote {
-  id: number;
+  id: string;
   name?: string;
   content?: string;
   createDate: Date;

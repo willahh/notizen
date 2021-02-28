@@ -11,7 +11,7 @@ import { Toolbar } from '../../components/Toolbar';
 import { NoteDetailEdit } from '../../components/NoteDetailEdit';
 import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
-import { CSSTransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -28,22 +28,23 @@ const Note: React.FC<INoteProps> = () => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
 
-  // const notesList = Object.keys(notes).map((k) => notes[k]);
-  const notesList = Object.keys(notes).reduce((acc, v) => {
-    if (notes[v]) {
-      acc.push(notes[v]);
-    }
-    return acc;
-  }, []);
+  const notesList = Object.keys(notes)
+    .reduce((acc, v) => {
+      if (notes[v]) {
+        acc.push(notes[v]);
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => b.id - a.id); // TODO: refactor sorting
 
   useEffect(() => {
     dispatch(fetchNotes());
   }, [dispatch]);
 
-  let html = null;
+  let noteListHtml = null;
 
   if (error) {
-    html = (
+    noteListHtml = (
       <p className="error text" style={{ color: '#fff' }}>
         {error}
       </p>
@@ -51,28 +52,35 @@ const Note: React.FC<INoteProps> = () => {
   }
 
   if (isLoading) {
-    html = (
+    noteListHtml = (
       <p className="error text" style={{ color: '#fff' }}>
         Loading
       </p>
     );
   } else {
-    console.log('##########notes', notes);
-    console.log('##########notesList', notesList);
-
-    html = (
+    noteListHtml = (
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
+      <TransitionGroup component="ul" className="overflow-auto divide-gray-200 divide-y-1 dark:divide-gray-800" type="ul">
+        {notesList.map(({ id, name, content }) => {
+          return (
+            <CSSTransition
+              key={id}
+              timeout={400}
+              classNames="item"
+              onEnter={(node, isAppearing) => {
+                console.log('onEnter', node, isAppearing);
 
-      <ul className="overflow-auto divide-gray-200 divide-y-1 dark:divide-gray-800">
-        <CSSTransitionGroup
-          transitionName="anim-item"
-          // transitionAppear={true}
-          // transitionAppearTimeout={500}
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {notesList.map(({ id, name, content }) => {
-            return (
+                // if (!node.getAttribute('note-id').startsWith('temp')) {
+                //   node.classList.add('no-animation');
+                //   setTimeout(() => {
+                //     node.classList.remove('no-animation');
+                //   }, 1000);
+                // }
+              }}
+              onExited={() => {
+                console.log('onExit');
+              }}
+            >
               <NoteItem
                 key={id}
                 id={id}
@@ -81,21 +89,18 @@ const Note: React.FC<INoteProps> = () => {
                 text={content}
                 isSelected={true}
               ></NoteItem>
-            );
-          })}
-        </CSSTransitionGroup>
-      </ul>
+            </CSSTransition>
+          );
+        })}
+      </TransitionGroup>
     );
-    {
-      /* </ScrollBar> */
-    }
   }
 
   return (
     <MainTemplate>
       <AreaSecondary>
         <NoteFilter />
-        {html}
+        {noteListHtml}
       </AreaSecondary>
       <MainArea>
         <Toolbar />

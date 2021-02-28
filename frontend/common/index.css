@@ -8,6 +8,10 @@ body {
   font-weight: 200;
   font-style: normal;
 }
+a,
+button {
+  cursor: default;
+}
 
 .scrollbar-track {
   background: transparent !important;
@@ -61,38 +65,26 @@ body {
   border: 1px solid #000;
 }
 
-
-
 /* Animations */
-.anim-item-enter {
-  /* opacity: 0.01; */
+.item-enter {
   height: 0;
+  left: -200px;
 }
-
-.anim-item-enter.anim-item-enter-active {
-  /* opacity: 1; */
-  height: 144px;
-  transition: all 200ms ease-in;
+.item-enter-active {
+  left: 0;
+  height: 104px;
+  transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
-.anim-item-leave {
-  /* opacity: 1; */
-  height: 144px;
+.item-exit {
+  z-index: -1;
+  height: 104px;
+  transform: translateY(0);
 }
-
-.anim-item-leave.anim-item-leave-active {
-  /* opacity: 0.01; */
+.item-exit-active {
   height: 0;
-  transition: all 200ms ease-in;
+  transform: translateY(-104px);
+  transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
-/* .anim-item-appear {
-  opacity: 0.01;
-  height: 0;
+.no-animation {
+  transition: none !important;
 }
-
-.example-appear.example-appear-active {
-  opacity: 1;
-  height: 144px;
-  transition: all 500ms ease-in;
-} */

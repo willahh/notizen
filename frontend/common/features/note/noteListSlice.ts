@@ -173,35 +173,42 @@ const notes = createSlice({
       .addCase(createNoteThunk.pending, (state, action) => {
         console.log('createNoteThunk.pending', state, action);
 
-        // TODO: This doesn't work well
-        // TODO: add types
-        // const noteId = Number(
-        //   String('999999' + Math.round(Math.random() * 100000))
-        // );
+        // 02
+        // const noteIdTemp = 'temp-' + action.meta.requestId;
         // const newNote = {
         //   ...action.meta.arg,
-        //   id: noteId,
+        //   id: noteIdTemp,
         //   createDate: new Date(),
         //   updateDate: new Date(),
         // };
-        // const newNotes = {...state.notes, [noteId]: newNote}
+        // const newNotes = { ...state.notes, [noteIdTemp]: newNote };
         // state.notes = newNotes;
         // state.notesCache = newNotes;
       })
       .addCase(createNoteThunk.fulfilled, (state, action) => {
         console.log('createNoteThunk.fulfilled', state, action);
 
-        // TODO: This doesn't work well
-        // const newNotesA = Object.keys({ ...state.notes }).reduce((notes, k) => {
-        //   if (!k.startsWith('999999')) {
-        //     notes[k] = state.notes[k];
-        //   }
-        //   return notes;
-        // }, {});
+        // 01
+        // const noteIdTemp = 'temp-' + action.meta.requestId;
+        // const newNote = action.payload.note;
+        // const newNotes = { ...state.notes, [noteIdTemp]: newNote };
 
-        const newNotesA = state.notes;
+        // state.notes = newNotes;
+        // state.notesCache = newNotes;
+
+        // 02
+        // const noteIdTemp = 'temp-' + action.meta.requestId;
+        // const newNotesA = { ...state.notes };
+        // delete newNotesA[noteIdTemp];
+
+        // const newNote = action.payload.note;
+        // const newNotes = { ...newNotesA, [newNote.id]: newNote };
+
+        // state.notes = newNotes;
+        // state.notesCache = newNotes;
+
         const newNote = action.payload.note;
-        const newNotes = { ...newNotesA, [newNote.id]: newNote };
+        const newNotes = { ...state.notes, [newNote.id]: newNote };
 
         state.notes = newNotes;
         state.notesCache = newNotes;
@@ -264,7 +271,10 @@ const notes = createSlice({
 
         const noteId = action.meta.arg;
         const newNotes = { ...state.notes };
+        console.log('#a newNotes', newNotes);
+
         delete newNotes[noteId];
+        console.log('#b newNotes', newNotes);
 
         state.notes = newNotes;
         state.notesCache = newNotes;
@@ -272,7 +282,7 @@ const notes = createSlice({
       .addCase(deleteNoteThunk.fulfilled, (state, action) => {
         console.log('deleteNoteThunk.fulfilled', state, action);
 
-        return state;
+        // return state;
       })
       .addCase(deleteNoteThunk.rejected, (state, action) => {
         console.log('deletNoteThunk.rejected', state, action);
