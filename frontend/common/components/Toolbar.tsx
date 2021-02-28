@@ -67,7 +67,7 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                       />
                     </svg>
                   </button>
-                  <button
+                  {/* <button
                     type="button"
                     className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-r-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                   >
@@ -85,7 +85,7 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                         d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
                       />
                     </svg>
-                  </button>
+                  </button> */}
                 </span>
                 <span className="hidden lg:flex space-x-3">
                   <button

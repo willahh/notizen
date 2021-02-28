@@ -6,6 +6,8 @@ import {
   deleteNoteThunk,
   setSelectedNoteId,
 } from '../features/note/noteListSlice';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { JsxElement } from 'typescript';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
@@ -32,17 +34,34 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
   );
   const isSelected = id === selectedNoteId;
 
- let className =
-    'relative py-5 px-4 bg-white dark:bg-black';
+  let className = 'relative py-5 px-4 bg-white dark:bg-black';
   if (isSelected) {
     className += ' border-l-4 border-indigo-700';
   } else {
     className += ' border-white dark:border-black';
   }
+  const btnClassName =
+    'relative inline-flex items-center p-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md bg-white dark:bg-black dark:border-gray-800';
 
+  // const Button = withRouter(
+  //   (props): any => {
+  //     console.log('history', props.history);
+
+  //     <button
+  //       className="dark:text-white"
+  //       type="button"
+  //       onClick={() => {
+  //         props.history.push('/new-location');
+  //       }}
+  //     >
+  //       Click Me!
+  //     </button>;
+  //   }
+  // );
+  
   return (
     <li
-      className="relative overflow-hidden"
+      className="relative overflow-hidden select-none"
       note-id={id}
       // className={className}
       onClick={() => {
@@ -60,6 +79,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
               <p className="text-sm truncate text-gray-500 dark:text-gray-300">
                 {tags}
               </p>
+              {/* <Button></Button> */}
             </a>
           </div>
           <time
@@ -69,14 +89,27 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
             1d ago
           </time>
           <button
-            className="dark:text-white dark:bg-gray-700 p-2 rounded-sm z-0"
+            className={btnClassName}
             onClick={(e) => {
               console.log('onClick', id);
               e.stopPropagation();
               dispatch(deleteNoteThunk(id));
             }}
           >
-            [x]
+            <svg
+              className="w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
           </button>
         </div>
         <div className="mt-1 max-h-10 overflow-hidden">

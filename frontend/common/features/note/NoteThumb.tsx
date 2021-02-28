@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
-import { NoteItem } from '../../components/NoteItem';
+import { NoteItemThumb } from '../../components/NoteItemThumb';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
 import { fetchNotes } from './noteListSlice';
-import { AreaSecondary } from '../../components/AreaSecondary';
 import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
 import { Toolbar } from '../../components/Toolbar';
-// import { NoteDetail } from '../../components/NoteDetail';
-import { NoteDetailEdit } from '../../components/NoteDetailEdit';
 import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -26,7 +23,7 @@ const ScrollBar = scrollbar.default;
 
 interface INoteProps {}
 
-const Note: React.FC<INoteProps> = () => {
+const NoteThumb: React.FC<INoteProps> = () => {
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
@@ -71,37 +68,20 @@ const Note: React.FC<INoteProps> = () => {
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
       <TransitionGroup
         component="ul"
-        className="overflow-auto divide-gray-200 divide-y-1 dark:divide-gray-800"
+        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         type="ul"
       >
         {notesList.map(({ id, name, content }) => {
           return (
-            <CSSTransition
-              key={id}
-              timeout={400}
-              classNames="item"
-              // onEnter={(node, isAppearing) => {
-              //   console.log('onEnter', node, isAppearing);
-
-              //   // if (!node.getAttribute('note-id').startsWith('temp')) {
-              //   //   node.classList.add('no-animation');
-              //   //   setTimeout(() => {
-              //   //     node.classList.remove('no-animation');
-              //   //   }, 1000);
-              //   // }
-              // }}
-              // onExited={() => {
-              //   console.log('onExit');
-              // }}
-            >
-              <NoteItem
+            <CSSTransition key={id} timeout={400} classNames="item">
+              <NoteItemThumb
                 key={id}
                 id={id}
                 title={name}
                 tags={['Tag 1']}
                 text={content}
                 isSelected={true}
-              ></NoteItem>
+              />
             </CSSTransition>
           );
         })}
@@ -111,32 +91,13 @@ const Note: React.FC<INoteProps> = () => {
 
   return (
     <MainTemplate>
-      <AreaSecondary>
-        <NoteFilter />
-        {/* <ul>
-          <li>
-            <Link to={`${match.url}/components`}>Components</Link>
-          </li>
-          <li>
-            <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
-          </li>
-        </ul> */}
-        {noteListHtml}
-      </AreaSecondary>
       <MainArea>
         <Toolbar />
-        <Switch>
-          <Route path={`${match.path}/:noteId`}>
-            <NoteDetailEdit />
-          </Route>
-          <Route path={match.path}>
-            {/* <h3 className="text-white">Please select a note.</h3> */}
-            <NoteDetailEdit />
-          </Route>
-        </Switch>
+        <NoteFilter />
+        {noteListHtml}
       </MainArea>
     </MainTemplate>
   );
 };
 
-export { Note };
+export { NoteThumb };

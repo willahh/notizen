@@ -95,9 +95,18 @@ export const createNoteThunk = createAsyncThunk(
 
 export const updateNoteThunk = createAsyncThunk(
   'notes/update',
-  async ({ noteId, updateNoteDTO: UpdateNoteDTO }: any) => {
-    console.log('updateNoteThunk', noteId, UpdateNoteDTO);
-    return await updateNote(noteId, UpdateNoteDTO);
+  async ({ noteId, updateNoteDTO: UpdateNoteDTO, serverSync }: any) => {
+    console.log('updateNoteThunk', noteId, UpdateNoteDTO, serverSync);
+    if (serverSync) {
+      return await updateNote(noteId, UpdateNoteDTO);
+    } else {
+      var noteDetailResultPromise: Promise<NoteDetailResult> = new Promise(
+        (resolve, reject) => {
+          note: UpdateNoteDTO;
+        }
+      );
+      return noteDetailResultPromise;
+    }
   }
 );
 
