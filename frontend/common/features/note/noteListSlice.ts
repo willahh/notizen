@@ -15,6 +15,7 @@ import {
   INote,
   NoteDetailResult,
   UpdateNoteDTO,
+  CreateNoteDTO,
 } from '../../interfaces/INote.interface';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { Notes } from '../../interfaces/INote.interface';
@@ -66,7 +67,7 @@ export const setSelectedNoteId = createAction(
 
 export const fetchNoteThunk = createAsyncThunk(
   'notes/note',
-  async (noteId: number, thunkAPI) => {
+  async (noteId: number) => {
     console.log('fetchNote', noteId);
     return await getNoteByNoteId(noteId);
   }
@@ -78,27 +79,24 @@ export const fetchNotes = createAsyncThunk('notes/fetch', async (thunkAPI) => {
 
 export const deleteNoteThunk = createAsyncThunk(
   'notes/delete',
-  async (noteId: number, thunkAPI) => {
-    console.log('deleteNote new', thunkAPI);
-
+  async (noteId: number) => {
+    console.log('deleteNote new');
     return await deleteNote(noteId);
   }
 );
 
 export const createNoteThunk = createAsyncThunk(
   'notes/create',
-  async (thunkAPI) => {
-    console.log('createNoteThunk');
-    return await createNote();
+  async (createNoteDTO: CreateNoteDTO) => {
+    console.log('createNoteThunk', createNoteDTO);
+    return await createNote(createNoteDTO);
   }
 );
 
 export const updateNoteThunk = createAsyncThunk(
   'notes/update',
-  // async (noteId:number, updateNoteDTO: UpdateNoteDTO) => {
   async ({ noteId, updateNoteDTO: UpdateNoteDTO }: any) => {
     console.log('updateNoteThunk', noteId, UpdateNoteDTO);
-
     return await updateNote(noteId, UpdateNoteDTO);
   }
 );
@@ -122,19 +120,21 @@ const notes = createSlice({
       // fetchNote ------------------
       .addCase(fetchNoteThunk.pending, (state, action) => {
         console.log('fetchNote.pending');
-        // state.isLoading = true;
         state.error = null;
 
         const noteId = action.meta.arg;
         const note = state.notesCache[noteId];
-        // state.isLoading = false;
-        state.notes = { ...state.notes, [noteId]: note };
+        const newNotes = { ...state.notes, [noteId]: note };
+        state.notes = newNotes;
+        state.notesCache = newNotes;
       })
       .addCase(fetchNoteThunk.fulfilled, (state, action) => {
         console.log('fetchNote.fulfilled', state, action);
         const noteId = action.meta.arg;
         const note = action.payload.note;
-        state.notes = { ...state.notes, [noteId]: note };
+        const newNotes = { ...state.notes, [noteId]: note };
+        state.notes = newNotes;
+        state.notesCache = newNotes;
       })
       .addCase(fetchNoteThunk.rejected, (state, action) => {
         console.log('# fetchNote.rejected', state, action);
@@ -158,15 +158,9 @@ const notes = createSlice({
 
         state.isLoading = false;
         state.error = null;
-        console.log('action.payload.notes', action.payload.notes);
-
-        // TODO
-        // var notes = action.payload.notes.reduce(function (map, obj) {
-        //   map[obj.id] = obj;
-        //   return map;
-        // }, {});
-        // state.notes = notes;
-        // state.notesCache = notes;
+        var notes = action.payload.notes;
+        state.notes = notes;
+        state.notesCache = notes;
       })
       .addCase(fetchNotes.rejected, (state, action) => {
         console.log('# fetchNotes.rejected', state, action);
@@ -178,9 +172,51 @@ const notes = createSlice({
       // createNote ----------------------
       .addCase(createNoteThunk.pending, (state, action) => {
         console.log('createNoteThunk.pending', state, action);
+
+        // TODO: This doesn't work well
+        // TODO: add types
+        // const noteId = Number(
+        //   String('999999' + Math.round(Math.random() * 100000))
+        // );
+        // const newNote = {
+        //   ...action.meta.arg,
+        //   id: noteId,
+        //   createDate: new Date(),
+        //   updateDate: new Date(),
+        // };
+        // const newNotes = {...state.notes, [noteId]: newNote}
+        // state.notes = newNotes;
+        // state.notesCache = newNotes;
       })
       .addCase(createNoteThunk.fulfilled, (state, action) => {
         console.log('createNoteThunk.fulfilled', state, action);
+
+        // TODO: This doesn't work well
+        // const newNotesA = Object.keys({ ...state.notes }).reduce((notes, k) => {
+        //   if (!k.startsWith('999999')) {
+        //     notes[k] = state.notes[k];
+        //   }
+        //   return notes;
+        // }, {});
+
+        const newNotesA = state.notes;
+        const newNote = action.payload.note;
+        const newNotes = { ...newNotesA, [newNote.id]: newNote };
+
+        state.notes = newNotes;
+        state.notesCache = newNotes;
+      })
+      .addCase(createNoteThunk.rejected, (state, action) => {
+        console.log('createNoteThunk.rejected', state, action);
+
+        // Rollback delete action with note from cache
+        // TODO: Display error to user (notification)
+        const noteId = 99999999999;
+        const newNotes = { ...state.notes };
+        delete newNotes[noteId];
+
+        state.notes = newNotes;
+        state.notesCache = newNotes;
       })
 
       // updateNote ----------------------
@@ -189,15 +225,25 @@ const notes = createSlice({
 
         // Optimistic rendering
         const noteId = action.meta.arg.noteId;
-        const newNote = {noteId: noteId, ...action.meta.arg.updateNoteDTO}
-        state.notes[noteId] = newNote;
+        const note = state.notes[noteId];
+        const newNote = {
+          ...note,
+          ...action.meta.arg.updateNoteDTO,
+          noteId: noteId,
+        }; // TODO: add types
+        const newNotes = { ...state.notes, [noteId]: newNote };
+
+        state.notes = newNotes;
+        state.notesCache = newNotes;
       })
       .addCase(updateNoteThunk.fulfilled, (state, action) => {
         console.log('updateNoteThunk.fulfilled', state, action);
 
         const noteId = action.payload.note.id;
-        state.notes[noteId] = action.payload.note;
-        state.notesCache = state.notes;
+        const newNotes = { ...state.notes, [noteId]: action.payload.note };
+
+        state.notes = newNotes;
+        state.notesCache = newNotes;
       })
       .addCase(updateNoteThunk.rejected, (state, action) => {
         console.log('updateNoteThunk.rejected', state, action);
@@ -206,7 +252,10 @@ const notes = createSlice({
         // TODO: Display error to user (notification)
         const noteId = action.meta.arg.noteId;
         const noteCached = state.notesCache[noteId];
-        state.notes = { ...state.notes, [noteId]: noteCached };
+        const newNotes = { ...state.notes, [noteId]: noteCached };
+
+        state.notes = newNotes;
+        state.notesCache = newNotes;
       })
 
       // deleteNote ----------------------
@@ -216,7 +265,9 @@ const notes = createSlice({
         const noteId = action.meta.arg;
         const newNotes = { ...state.notes };
         delete newNotes[noteId];
+
         state.notes = newNotes;
+        state.notesCache = newNotes;
       })
       .addCase(deleteNoteThunk.fulfilled, (state, action) => {
         console.log('deleteNoteThunk.fulfilled', state, action);
@@ -230,23 +281,13 @@ const notes = createSlice({
         // TODO: Display error to user (notification)
         const noteId = action.meta.arg;
         const noteCached = state.notesCache[noteId];
-        state.notes = { ...state.notes, [noteId]: noteCached };
-      })
-      ;
-  },
-  reducers: {
-    addNote(
-      state: NoteListState,
-      { payload }: PayloadAction<NoteDetailResult>
-    ) {
-      console.log('addNote', payload);
+        const newNotes = { ...state.notes, [noteId]: noteCached };
 
-      const { note } = payload;
-
-      state.notes[note.id] = note;
-    },
+        state.notes = newNotes;
+        state.notesCache = newNotes;
+      });
   },
+  reducers: {},
 });
 
-export const { addNote } = notes.actions;
 export default notes.reducer;

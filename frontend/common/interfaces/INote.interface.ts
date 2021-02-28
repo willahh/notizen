@@ -23,3 +23,7 @@ export interface UpdateNoteDTO {
   name?: string;
   content?: string;
 }
+export interface CreateNoteDTO {
+  name?: string;
+  content?: string;
+}

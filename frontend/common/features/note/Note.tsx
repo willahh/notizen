@@ -7,12 +7,11 @@ import { AreaSecondary } from '../../components/AreaSecondary';
 import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
 import { Toolbar } from '../../components/Toolbar';
-import { NoteDetail } from '../../components/NoteDetail';
+// import { NoteDetail } from '../../components/NoteDetail';
 import { NoteDetailEdit } from '../../components/NoteDetailEdit';
 import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
-
-// Local storage
+import { CSSTransitionGroup } from 'react-transition-group';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -29,7 +28,13 @@ const Note: React.FC<INoteProps> = () => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
 
-  const notesList = Object.keys(notes).map((k) => notes[k]);
+  // const notesList = Object.keys(notes).map((k) => notes[k]);
+  const notesList = Object.keys(notes).reduce((acc, v) => {
+    if (notes[v]) {
+      acc.push(notes[v]);
+    }
+    return acc;
+  }, []);
 
   useEffect(() => {
     dispatch(fetchNotes());
@@ -52,21 +57,33 @@ const Note: React.FC<INoteProps> = () => {
       </p>
     );
   } else {
+    console.log('##########notes', notes);
+    console.log('##########notesList', notesList);
+
     html = (
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
+
       <ul className="overflow-auto divide-gray-200 divide-y-1 dark:divide-gray-800">
-        {notesList.map(({ id, name, content }) => {
-          return (
-            <NoteItem
-              key={id}
-              id={id}
-              title={name}
-              tags={['Tag 1']}
-              text={content}
-              isSelected={true}
-            ></NoteItem>
-          );
-        })}
+        <CSSTransitionGroup
+          transitionName="anim-item"
+          // transitionAppear={true}
+          // transitionAppearTimeout={500}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={300}
+        >
+          {notesList.map(({ id, name, content }) => {
+            return (
+              <NoteItem
+                key={id}
+                id={id}
+                title={name}
+                tags={['Tag 1']}
+                text={content}
+                isSelected={true}
+              ></NoteItem>
+            );
+          })}
+        </CSSTransitionGroup>
       </ul>
     );
     {

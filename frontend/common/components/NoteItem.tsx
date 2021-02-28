@@ -1,7 +1,11 @@
 import React from 'react';
+// import { useSpring, animated } from 'react-spring';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
-import { deleteNoteThunk, setSelectedNoteId } from '../features/note/noteListSlice';
+import {
+  deleteNoteThunk,
+  setSelectedNoteId,
+} from '../features/note/noteListSlice';
 
 interface INoteItemProps {
   id: number;
@@ -38,8 +42,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
 
   return (
     <li
-      key={id}
-      className={className}
+      className="relative overflow-hidden"
       onClick={() => {
         dispatch(setSelectedNoteId(id));
       }}
@@ -54,7 +57,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
       >
         [x]
       </button>
-      <div className={transitionItem}>
+      <div className={className}>
         <div className="flex justify-between space-x-3">
           <div className="min-w-0 flex-1">
             <a href="#" className="block focus:outline-none">

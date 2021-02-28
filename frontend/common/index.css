@@ -60,3 +60,39 @@ body {
 .base-style td {
   border: 1px solid #000;
 }
+
+
+
+/* Animations */
+.anim-item-enter {
+  /* opacity: 0.01; */
+  height: 0;
+}
+
+.anim-item-enter.anim-item-enter-active {
+  /* opacity: 1; */
+  height: 144px;
+  transition: all 200ms ease-in;
+}
+
+.anim-item-leave {
+  /* opacity: 1; */
+  height: 144px;
+}
+
+.anim-item-leave.anim-item-leave-active {
+  /* opacity: 0.01; */
+  height: 0;
+  transition: all 200ms ease-in;
+}
+
+/* .anim-item-appear {
+  opacity: 0.01;
+  height: 0;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
+  height: 144px;
+  transition: all 500ms ease-in;
+} */
