@@ -51,6 +51,9 @@ export class NotesService {
     return this.noteRepository.find({
       skip: offset,
       take: limit,
+      order: {
+        id: "DESC"
+      }
     });
   }
 
