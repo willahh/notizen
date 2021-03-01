@@ -43,21 +43,43 @@ const NoteItemThumb: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
   const btnClassName =
     'relative inline-flex items-center p-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md bg-white dark:bg-black dark:border-gray-800';
 
+  const tagType = Math.round(Math.random() * 5);
+  let tagColorClassName = ' text-green-800 bg-green-100';
+  switch (tagType) {
+    case 0:
+      tagColorClassName = ' text-red-800 bg-red-100';
+      break;
+    case 1:
+      tagColorClassName = ' text-yellow-800 bg-yellow-100';
+      break;
+    case 2:
+      tagColorClassName = ' text-blue-800 bg-blue-100';
+      break;
+    case 3:
+      tagColorClassName = ' text-indigo-800 bg-indigo-100';
+      break;
+    case 4:
+      tagColorClassName = ' text-purple-800 bg-purple-100';
+      break;
+  }
   return (
-    <li className="col-span-1 bg-white dark:bg-black rounded-lg shadow divide-y divide-gray-200">
+    <li className="col-span-1 bg-white dark:bg-black  rounded-lg shadow divide-y divide-gray-200">
       <div className="w-full flex items-center justify-between p-6 space-x-6">
         <div className="flex-1 truncate">
           <div className="flex items-center space-x-3">
             <h3 className="text-gray-900 dark:text-gray-50 text-sm font-medium truncate">
-              Ma super note
+              {title}
             </h3>
-            <span className="flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-green-100 rounded-full">
-              Tag #1
+            <span
+              className={
+                'flex-shrink-0 inline-block px-2 py-0.5 text-xs font-medium rounded-full' +
+                tagColorClassName
+              }
+            >
+              {tags}
             </span>
           </div>
-          <p className="mt-1 text-gray-500 text-sm truncate">
-            Regional Paradigm Technician
-          </p>
+          <p className="mt-1 text-gray-500 text-sm truncate">{text}</p>
         </div>
       </div>
       <div>

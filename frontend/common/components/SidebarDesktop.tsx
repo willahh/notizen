@@ -34,15 +34,15 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
     : require('./../assets/notizen.svg').default;
 
   return (
-    <div className="hidden lg:flex lg:flex-shrink-0 border-r-1 dark:border-gray-600">
+    <div className="hidden lg:flex lg:flex-shrink-0 border-r-1 dark:border-gray-800">
       <div className="flex flex-col w-44">
-        <div className="flex flex-col h-0 flex-1 bg-white border-gray-200 dark:bg-black dark:border-gray-800">
+        <div className="flex flex-col h-0 flex-1 bg-white dark:bg-black ">
           <div className="flex-1 h-16 flex flex-col pb-4 overflow-y-auto">
             <div className="flex items-center h-16 justify-center">
               <img src={logoSrc} alt="logo" style={{ width: 120 }} />
             </div>
             <nav className="mt-2 flex-1" aria-label="Sidebar">
-              <div className="px-2 space-y-1 divide-y divide-y-2 divide-rose-400">
+              <div className="px-2 space-y-1 divide-y divide-y-2 divide-gray:200 dark:divide-gray-800">
                 <div>
                   {links.map(({ label, selected }) => (
                     <a
@@ -124,7 +124,12 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                       />
                     </svg>
-                    <span className="truncate w-full">Trash</span>
+                    <span className="w-full">
+                      <span className="relative">
+                        Trash
+                        <span className="absolute -top-1 -right-2 block h-2 w-2 rounded-full ring-2 ring-white bg-red-400"></span>
+                      </span>
+                    </span>
                   </a>
                   <a
                     href="#"

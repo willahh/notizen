@@ -71,7 +71,7 @@ const Note: React.FC<INoteProps> = () => {
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
       <TransitionGroup
         component="ul"
-        className="overflow-auto divide-gray-200 divide-y-1 dark:divide-gray-800"
+        className="overflow-auto divide-y-1 divide-gray-200 dark:divide-gray-800"
         type="ul"
       >
         {notesList.map(({ id, name, content }) => {

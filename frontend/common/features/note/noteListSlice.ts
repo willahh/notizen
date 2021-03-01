@@ -280,10 +280,7 @@ const notes = createSlice({
 
         const noteId = action.meta.arg;
         const newNotes = { ...state.notes };
-        console.log('#a newNotes', newNotes);
-
         delete newNotes[noteId];
-        console.log('#b newNotes', newNotes);
 
         state.notes = newNotes;
         state.notesCache = newNotes;
