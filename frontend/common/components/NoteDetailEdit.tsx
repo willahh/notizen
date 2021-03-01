@@ -7,6 +7,7 @@ import {
 } from '../features/note/noteListSlice';
 import { UpdateNoteDTO } from '../interfaces/INote.interface';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { NewTag } from './NewTag';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -123,16 +124,17 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
                 </svg>
                 Tag 2
               </span>
+              <NewTag/>
             </div>
-            <h1
-              className="max-w-lg text-justify"
+            <h1 
+              className="max-w-lg text-justify outline-none"
               onBlur={handleTitleBlur}
               ref={titleRef}
               contentEditable={true}
               dangerouslySetInnerHTML={{ __html: note?.name || '' }}
             ></h1>
             <div
-              className="max-w-lg text-justify"
+              className="max-w-lg text-justify outline-none"
               onBlur={handleContentBlur}
               // onKeyUp={handleContentKeyUp}
               ref={contentRef}
