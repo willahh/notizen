@@ -185,11 +185,17 @@ const Auth: React.FC<IAuthProps> = ({}) => {
         </div>
       </div>
       <div className="hidden lg:block relative w-0 flex-1 dark:bg-indigo-900">
-        <img
+        <iframe
+          src="https://player.vimeo.com/video/430522320"
+          width="640"
+          height="360"
+          style={{ width: '158%', height: '100%' }}
+        ></iframe>
+        {/* <img
           className="absolute inset-0 h-full w-full object-cover"
           style={{ height: '200%' }}
           src={loginBackgroundImage}
-        />
+        /> */}
       </div>
     </div>
   );

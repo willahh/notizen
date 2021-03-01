@@ -43,7 +43,7 @@ export async function getNotes(): Promise<NotesResult> {
 }
 
 export async function getNoteByNoteId(
-  noteId: number
+  noteId: string
 ): Promise<NoteDetailResult> {
   const url = withUrl(`http://localhost:3000/notes/${noteId}`);
   try {

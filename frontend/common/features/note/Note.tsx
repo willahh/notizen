@@ -11,6 +11,9 @@ import { Toolbar } from '../../components/Toolbar';
 import { NoteDetailEdit } from '../../components/NoteDetailEdit';
 import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
+
+import { NoteThumb } from '@notizen/frontend-common/features/note/NoteThumb';
+import { NoteLit } from '@notizen/frontend-common/features/note/NoteLit';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   BrowserRouter as Router,
@@ -76,11 +79,7 @@ const Note: React.FC<INoteProps> = () => {
       >
         {notesList.map(({ id, name, content }) => {
           return (
-            <CSSTransition
-              key={id}
-              timeout={400}
-              classNames="item"
-            >
+            <CSSTransition key={id} timeout={400} classNames="item">
               <NoteItem
                 key={id}
                 id={id}
@@ -96,8 +95,16 @@ const Note: React.FC<INoteProps> = () => {
     );
   }
 
+  const routes = [
+    { path: '/note', name: 'Note', Component: Note },
+    { path: '/note-thumb', name: 'Note-thumb', Component: NoteThumb },
+    { path: '/note-lit', name: 'Note-lit', Component: NoteLit },
+  ];
+
   return (
     <MainTemplate>
+      
+
       <AreaSecondary>
         <NoteFilter />
         {/* <ul>
@@ -109,17 +116,19 @@ const Note: React.FC<INoteProps> = () => {
           </li>
         </ul> */}
         {noteListHtml}
+
+        
       </AreaSecondary>
       <MainArea>
         <Toolbar />
         <Switch>
-          <Route path={`${match.path}/:noteId`}>
-            <NoteDetailEdit />
-          </Route>
-          <Route path={match.path}>
-            {/* <h3 className="text-white">Please select a note.</h3> */}
-            <NoteDetailEdit />
-          </Route>
+          {/* <Route path={`${match.path}/:noteId`}> */}
+          <NoteDetailEdit />
+          {/* </Route> */}
+          {/* <Route path={match.path}> */}
+          {/* <h3 className="text-white">Please select a note.</h3> */}
+          {/* <NoteDetailEdit /> */}
+          {/* </Route> */}
         </Switch>
       </MainArea>
     </MainTemplate>
