@@ -28,7 +28,7 @@ interface NoteListState {
   error: string | null;
   notes: Notes;
   notesCache: Notes;
-  selectedNoteId: number | null;
+  selectedNoteId: string | null;
 }
 
 export interface NotesResult {
@@ -67,7 +67,7 @@ export const setSelectedNoteId = createAction(
 
 export const fetchNoteThunk = createAsyncThunk(
   'notes/note',
-  async (noteId: number) => {
+  async (noteId: string) => {
     console.log('fetchNote', noteId);
     return await getNoteByNoteId(noteId);
   }
@@ -79,7 +79,7 @@ export const fetchNotes = createAsyncThunk('notes/fetch', async (thunkAPI) => {
 
 export const deleteNoteThunk = createAsyncThunk(
   'notes/delete',
-  async (noteId: number) => {
+  async (noteId: string) => {
     console.log('deleteNote new');
     return await deleteNote(noteId);
   }
@@ -221,6 +221,7 @@ const notes = createSlice({
 
         state.notes = newNotes;
         state.notesCache = newNotes;
+        state.selectedNoteId = newNote.id;
       })
       .addCase(createNoteThunk.rejected, (state, action) => {
         console.log('createNoteThunk.rejected', state, action);
