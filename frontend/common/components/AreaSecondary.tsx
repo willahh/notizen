@@ -1,14 +1,23 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { CSSTransition, Transition } from 'react-transition-group';
 
 interface IAreaSecondaryProps {
   children: ReactElement[];
 }
 
 const AreaSecondary: React.FC<IAreaSecondaryProps> = ({ children }) => {
+  const [inProp, setInProp] = useState(false);
+
+  useEffect(() => {
+    setInProp(true);
+  }, [inProp]);
+
   return (
-    <aside className="relative flex flex-col flex-shrink-0 w-72 border-r-1 border-gray-200 dark:border-gray-800">
+    <CSSTransition in={inProp} timeout={500} classNames="areaSecondary">
+      <aside className="relative flex flex-col flex-shrink-0 w-72 border-r-1 border-gray-200 dark:border-gray-800">
         {children.map((child) => child)}
-    </aside>
+      </aside>
+    </CSSTransition>
   );
 };
 

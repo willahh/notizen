@@ -80,19 +80,6 @@ const Note: React.FC<INoteProps> = () => {
               key={id}
               timeout={400}
               classNames="item"
-              // onEnter={(node, isAppearing) => {
-              //   console.log('onEnter', node, isAppearing);
-
-              //   // if (!node.getAttribute('note-id').startsWith('temp')) {
-              //   //   node.classList.add('no-animation');
-              //   //   setTimeout(() => {
-              //   //     node.classList.remove('no-animation');
-              //   //   }, 1000);
-              //   // }
-              // }}
-              // onExited={() => {
-              //   console.log('onExit');
-              // }}
             >
               <NoteItem
                 key={id}

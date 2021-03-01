@@ -66,6 +66,21 @@ button {
 }
 
 /* Animations */
+.areaSecondary-enter {
+  width: 0px;
+  transform: translate3d(0, -2000px, 0);
+  transition: all 1000ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.areaSecondary-enter-active {
+  width: 340px;
+  transform: translate3d(0, 0, 0);
+  transition: all 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.areaSecondary-enter-done {
+  width: 340px;
+  transform: none;
+}
+
 .item-enter {
   height: 0;
   left: -200px;

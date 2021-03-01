@@ -63,7 +63,7 @@ const NoteItemThumb: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
       break;
   }
   return (
-    <li className="col-span-1 bg-white dark:bg-black  rounded-lg shadow divide-y divide-gray-200">
+    <li className="col-span-1 bg-white dark:bg-black rounded-lg shadow divide-y divide-gray-200 dark:divide-gray-700">
       <div className="w-full flex items-center justify-between p-6 space-x-6">
         <div className="flex-1 truncate">
           <div className="flex items-center space-x-3">
@@ -83,7 +83,7 @@ const NoteItemThumb: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
         </div>
       </div>
       <div>
-        <div className="-mt-px flex divide-x divide-gray-200">
+        <div className="-mt-px flex divide-x divide-gray-200 dark:divide-gray-700">
           <div className="w-0 flex-1 flex">
             <a
               href="#"
