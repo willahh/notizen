@@ -5,8 +5,6 @@ import { RootState } from '../../app/rootReducer';
 import { fetchNotes } from './noteListSlice';
 import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
-import { Toolbar } from '../../components/Toolbar';
-import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
@@ -17,6 +15,9 @@ import {
   useRouteMatch,
   useParams,
 } from 'react-router-dom';
+import MainTemplate from '../../components/MainTemplate';
+import { Toolbar } from '../../components/Toolbar';
+import { INote } from '../../interfaces/INote.interface';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -33,14 +34,17 @@ const NoteThumb: React.FC<INoteProps> = () => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
 
+  const acc: INote[] = [];
   const notesList = Object.keys(notes)
     .reduce((acc, v) => {
       if (notes[v]) {
         acc.push(notes[v]);
       }
       return acc;
-    }, [])
-    .sort((a, b) => b.id - a.id); // TODO: refactor sorting
+    }, acc)
+    .sort(({ id: a }, { id: b }) => {
+      return Number(a) - Number(b);
+    });
 
   useEffect(() => {
     dispatch(fetchNotes());
@@ -91,11 +95,13 @@ const NoteThumb: React.FC<INoteProps> = () => {
 
   return (
     <MainTemplate>
-      <MainArea>
-        <Toolbar />
-        <NoteFilter />
-        {noteListHtml}
-      </MainArea>
+      <div className="flex w-full flex-col">
+        <div>
+          <Toolbar />
+          <NoteFilter />
+        </div>
+        <div className="flex h-full">{noteListHtml}</div>
+      </div>
     </MainTemplate>
   );
 };

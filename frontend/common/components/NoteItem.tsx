@@ -1,18 +1,16 @@
 import React from 'react';
-// import { useSpring, animated } from 'react-spring';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
 import {
   deleteNoteThunk,
   setSelectedNoteId,
 } from '../features/note/noteListSlice';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { JsxElement } from 'typescript';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
+// TODO: Share with INote (and with backend Note)
 interface INoteItemProps {
-  id: number;
+  id: string;
   title: string | undefined;
   text: string | undefined;
   tags: string[];
@@ -46,28 +44,11 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
   const btnClassName =
     'relative inline-flex items-center p-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md bg-white dark:bg-black dark:border-gray-800';
 
-  // const Button = withRouter(
-  //   (props): any => {
-  //     console.log('history', props.history);
-
-  //     <button
-  //       className="dark:text-white"
-  //       type="button"
-  //       onClick={() => {
-  //         props.history.push('/new-location');
-  //       }}
-  //     >
-  //       Click Me!
-  //     </button>;
-  //   }
-  // );
-
   return (
     <li
       className="relative overflow-hidden"
-      style={{ zIndex: id }}
+      style={{ zIndex: Number(id) }}
       note-id={id}
-      // className={className}
       onClick={() => {
         dispatch(setSelectedNoteId(id));
       }}
@@ -84,7 +65,6 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
                 <p className="text-sm truncate text-gray-500 dark:text-gray-300">
                   {tags}
                 </p>
-                {/* <Button></Button> */}
               </a>
             </div>
             <time

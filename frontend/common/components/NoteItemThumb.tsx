@@ -11,8 +11,9 @@ import { JsxElement } from 'typescript';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
+// TODO: Share with INote (and with back Note)
 interface INoteItemProps {
-  id: number;
+  id: string;
   title: string | undefined;
   text: string | undefined;
   tags: string[];

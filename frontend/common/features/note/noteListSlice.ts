@@ -56,7 +56,7 @@ function loadingFailed(state: NoteListState, action: PayloadAction<string>) {
 
 export const setSelectedNoteId = createAction(
   'notes/setSelectedNoteId',
-  (noteId: number) => {
+  (noteId: string) => {
     return {
       payload: {
         selectedNoteId: noteId,

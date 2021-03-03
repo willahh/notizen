@@ -70,7 +70,7 @@ export async function createNote(
   }
 }
 
-export async function deleteNote(noteId: number): Promise<NoteDetailResult> {
+export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
   const url = withUrl(`http://localhost:3000/notes/${noteId}`);
   try {
     const response = await axios.delete<INote>(url);
