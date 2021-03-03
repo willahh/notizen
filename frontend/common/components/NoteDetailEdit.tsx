@@ -17,7 +17,7 @@ interface INoteDetailProps {}
 const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   console.log('NoteDetailEdit');
 
-  const delay = 5;
+  // const delay = 5;
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
@@ -28,7 +28,7 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   );
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const contentRef2 = React.createRef();
+  // const contentRef2 = React.createRef();
   const titleRef = useRef<HTMLDivElement>(null);
 
   const handleContentBlur = (e: React.FocusEvent<HTMLDivElement>) => {
@@ -42,17 +42,17 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: true }));
   };
 
-  const handleContentKeyUp = (e: React.KeyboardEvent) => {
-    console.log('key up', e);
+  // const handleContentKeyUp = (e: React.KeyboardEvent) => {
+  //   console.log('key up', e);
 
-    const noteId = selectedNoteId;
-    const input = e.target as HTMLElement;
-    const updateNoteDTO: UpdateNoteDTO = {
-      content: input.innerText,
-    };
-    dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: false }));
-    contentRef.current?.focus();
-  };
+  //   const noteId = selectedNoteId;
+  //   const input = e.target as HTMLElement;
+  //   const updateNoteDTO: UpdateNoteDTO = {
+  //     content: input.innerText,
+  //   };
+  //   dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: false }));
+  //   contentRef.current?.focus();
+  // };
 
   const handleTitleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const noteId = selectedNoteId;
@@ -78,7 +78,7 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     // };
   }, [dispatch, selectedNoteId]);
 
-  const [inProp, setInProp] = useState(false);
+  // const [inProp, setInProp] = useState(false);
 
   if (error) {
     return (
@@ -96,52 +96,55 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   } else {
     return (
       <>
-        {/* <button onClick={() => setInProp(true)}>Click to Enter</button> */}
         {/* <CSSTransition in={selectedNoteId} timeout={400} classNames="noteDetail"> */}
         {/* <div className="relative"> */}
         {/* <Suspense fallback={<div>Chargement</div>}> */}
         {/* <ScrollBar damping={0.5} thumbMinSize={20}> */}
         <div className="flex h-full py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style bg-gray-50 dark:text-gray-300 dark:bg-gray-900">
-          <div className="max-w-screen-lg">
-            <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 mb-2 select-none">
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
-                <svg
-                  className="mr-1.5 h-2 w-2 text-indigo-400"
-                  fill="currentColor"
-                  viewBox="0 0 8 8"
-                >
-                  <circle cx="4" cy="4" r="3" />
-                </svg>
-                Tag 1
-              </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
-                <svg
-                  className="mr-1.5 h-2 w-2 text-indigo-400"
-                  fill="currentColor"
-                  viewBox="0 0 8 8"
-                >
-                  <circle cx="4" cy="4" r="3" />
-                </svg>
-                Tag 2
-              </span>
-              <NewTag/>
+          {note ? (
+            <div className="max-w-screen-lg">
+              <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 mb-2 select-none">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
+                  <svg
+                    className="mr-1.5 h-2 w-2 text-indigo-400"
+                    fill="currentColor"
+                    viewBox="0 0 8 8"
+                  >
+                    <circle cx="4" cy="4" r="3" />
+                  </svg>
+                  Tag 1
+                </span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
+                  <svg
+                    className="mr-1.5 h-2 w-2 text-indigo-400"
+                    fill="currentColor"
+                    viewBox="0 0 8 8"
+                  >
+                    <circle cx="4" cy="4" r="3" />
+                  </svg>
+                  Tag 2
+                </span>
+                <NewTag />
+              </div>
+              <h1
+                className="max-w-lg text-justify outline-none"
+                onBlur={handleTitleBlur}
+                ref={titleRef}
+                contentEditable={true}
+                dangerouslySetInnerHTML={{ __html: note?.name || '' }}
+              ></h1>
+              <div
+                className="max-w-lg text-justify outline-none"
+                onBlur={handleContentBlur}
+                // onKeyUp={handleContentKeyUp}
+                ref={contentRef}
+                contentEditable={true}
+                dangerouslySetInnerHTML={{ __html: note?.content || '' }}
+              ></div>
             </div>
-            <h1 
-              className="max-w-lg text-justify outline-none"
-              onBlur={handleTitleBlur}
-              ref={titleRef}
-              contentEditable={true}
-              dangerouslySetInnerHTML={{ __html: note?.name || '' }}
-            ></h1>
-            <div
-              className="max-w-lg text-justify outline-none"
-              onBlur={handleContentBlur}
-              // onKeyUp={handleContentKeyUp}
-              ref={contentRef}
-              contentEditable={true}
-              dangerouslySetInnerHTML={{ __html: note?.content || '' }}
-            ></div>
-          </div>
+          ) : (
+            <div></div>
+          )}
         </div>
         {/* </ScrollBar> */}
         {/* </Suspense> */}

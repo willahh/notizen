@@ -9,10 +9,10 @@ interface IMainTemplateProps {
 
 const MainTemplate: React.FC<IMainTemplateProps> = ({ children }) => {
   return (
-    <div className="h-screen flex overflow-hidden bg-white dark:bg-black">
+     <div className="h-screen flex overflow-hidden bg-white dark:bg-black">
       <MenuMobile></MenuMobile>
       <SidebarDesktop></SidebarDesktop>
-      <Main>{children}</Main>
+      {children}
     </div>
   );
 };
