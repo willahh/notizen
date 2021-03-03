@@ -1,52 +1,39 @@
 import React from 'react';
 import { Note } from '@notizen/frontend-common/features/note/Note';
 import { Auth } from '@notizen/frontend-common/features/auth/Auth';
-import { Route, Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 const routes = [
   { path: '/', name: 'Home', Component: Auth },
   { path: '/auth', name: 'Auth', Component: Auth },
   { path: '/note', name: 'Note', Component: Note },
-  // { path: '/note-thumb', name: 'Note-thumb', Component: NoteThumb },
-  // { path: '/note-lit', name: 'Note-lit', Component: NoteLit },
 ];
 
 function App() {
   return (
     <>
-      {/* <ul>
-        <nav className="mx-auto">
-          {routes.map((route) => (
-            <Link
-              key={route.path}
-              // as={NavLink}
-              to={route.path}
-              // activeClassName="active"
-              // exact
-            >
-              {route.name}
-            </Link>
-          ))}
-        </nav>
-      </ul> */}
       <div className="relative">
-        {routes.map(({ path, Component }) => (
-          <Route key={path} exact path={path}>
-            {({ match }) => (
-              <CSSTransition
-                in={match != null}
-                timeout={400}
-                classNames="page"
-                unmountOnExit
-              >
-                <div className="page">
-                  <Component />
-                </div>
-              </CSSTransition>
-            )}
-          </Route>
-        ))}
+        <Router>
+          {routes.map(({ path, Component }) => (
+            // <Route key={path} exact path={path}>
+
+            <Route key={path} path={path}>
+              {({ match }) => (
+                <CSSTransition
+                  in={match != null}
+                  timeout={400}
+                  classNames="page"
+                  unmountOnExit
+                >
+                  <div className="page">
+                    <Component />
+                  </div>
+                </CSSTransition>
+              )}
+            </Route>
+          ))}
+        </Router>
       </div>
     </>
 
