@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { NotesModule } from './notes/notes.module';
+import { UsersModule } from './users/users.module';
 require('dotenv').config()
  
 @Module({
   imports: [
     ConfigModule,
     NotesModule,
+    UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
