@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { NotesModule } from './notes/notes.module';
 import { UsersModule } from './users/users.module';
+import { TagsModule } from './tags/tags.module';
 require('dotenv').config()
  
 @Module({
@@ -10,6 +11,7 @@ require('dotenv').config()
     ConfigModule,
     NotesModule,
     UsersModule,
+    TagsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,

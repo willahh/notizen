@@ -50,9 +50,10 @@ npm i @nestjs/config
 
 # nestjs common stuff
 npm i @nestjs/common
-
+````
 ## Exemple of the notes module initialization via the cli :
 
+````sh
 # 1. Generate the notes module
 nest generate module notes
 
@@ -91,7 +92,7 @@ npm run start:dev
 # 5. Create a new migration script
 # This will :
 # - Update the db schema 
-# - Add a new entry in migrations table
+# - Add a new entry in the migrations table
 # - Add a new migration file
 npx typeorm migration:generate -n CreateUserTable
 
@@ -100,8 +101,16 @@ npx typeorm migration:generate -n CreateUserTable
 npx typeorm migration:run # Runs all pending migrations
 
 ````
+
+## Generation of the tags module
+This module was generated with the old bad copy pasta method.
+1. Copy users to tags
+2. Rename user and User to tag and Tags
+3. Create a new migration script `npx typeorm migration:generate -n CreateUserTable`
+4. Run the migration script `npx typeorm migration:run`
+
 ### Migrations
-Sql migrations is managed with typeorm.
+Sql migrations is managed with typeorm.  
 A `ormconfig.js` file is required :
 ```js
 module.exports = {
@@ -166,14 +175,6 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-```
-
-## Migration
-
-Migration is managed by Nest.
-
-```sh
-# TODO
 ```
 
 ## License
