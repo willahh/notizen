@@ -94,9 +94,14 @@ export class TagsService {
       }
     }
     const tag = this.tagRepository.create(createTagDTO);
+    console.log('tag', tag);
+    
     tag.createDate = new Date();
     tag.updateDate = tag.createDate;
-    return this.tagRepository.save(tag);
+
+    const newTag = this.tagRepository.save(tag);
+    
+    return newTag;
   }
 
   async update(
@@ -113,12 +118,6 @@ export class TagsService {
       }
     }
     console.log('updateTagDto', id, updateTagDto);
-
-    // const tag = await this.tagRepository.preload({
-    //   id: id,
-    //   ...updateTagDto,
-    // });
-    // TODO: Finalize this part, need to update where name =
 
     let tag = await this.tagRepository.findOne({ where: { id: id } });
     if (!tag) {
