@@ -5,6 +5,12 @@
     },
     {
       "path": "backend"
+    },
+    {
+      "path": "frontend/web"
+    },
+    {
+      "path": "frontend/common"
     }
   ]
 }
