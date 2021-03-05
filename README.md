@@ -175,21 +175,6 @@ Contributions are what make the open source community such an amazing place to b
 5. Open a Pull Request
 
 
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-## Contact
-
-William Ravel - [@twitter](https://twitter.com/willahhravel)
-
-Project Link: [https://github.com/willahh/notizen](https://github.com/willahh/notizen)
-
-
-
 ## Acknowledgements
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Pages](https://pages.github.com)
@@ -202,8 +187,6 @@ Project Link: [https://github.com/willahh/notizen](https://github.com/willahh/no
 * [JVectorMap](http://jvectormap.com)
 * [Font Awesome](https://fontawesome.com)
 
-
-
 [contributors-url]: https://github.com/willahh/notizen/graphs/contributors
 [forks-url]: https://github.com/willahh/notizen/network/members
 [stars-url]: https://github.com/willahh/notizen/stargazers
@@ -212,3 +195,12 @@ Project Link: [https://github.com/willahh/notizen](https://github.com/willahh/no
 [license-url]: https://github.com/willahh/notizen/blob/master/LICENSE.txt
 [product-screenshot]: documents/images/notizen-screen-light-01.png
 [product-screenshot-dark]: documents/images/notizen-screen-dark-01.png
+
+## Contact
+- [@twitter](https://twitter.com/willahhravel)
+- [Notizen repository](https://github.com/willahh/notizen)
+
+## License
+All Rights Reserved
+
+Copyright (c) 2021 William Ravel

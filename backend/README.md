@@ -108,6 +108,7 @@ This module was generated with the old bad copy pasta method.
 2. Rename user and User to tag and Tags
 3. Create a new migration script `npx typeorm migration:generate -n CreateUserTable`
 4. Run the migration script `npx typeorm migration:run`
+   Server need to be up before running the migration.
 
 ### Migrations
 Sql migrations is managed with typeorm.  
@@ -177,12 +178,29 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## License
+## Testing the API
+For API testing purpose, an Insomnia workspace settings is available in `resources/Insomnia-workspace.json`.
 
-Distributed under the MIT License. See `LICENSE` for more information.
+## Notizen backend Documentation
+The backend documentation is generated with [Compodoc](https://compodoc.app/).
+````sh
+npm i -D @compodoc/compodoc
+npx @compodoc/compodoc -p tsconfig.json -s --port 8081
+# Or with the project script
+npm run generate-doc-local
+````
+
+## Notizen API documentation
+TODO
+
+
 
 ## Contact
+- [@twitter](https://twitter.com/willahhravel)
+- [Notizen repository](https://github.com/willahh/notizen)
 
-William Ravel - [@twitter](https://twitter.com/willahhravel)
 
-Project Link: [https://github.com/willahh/notizen](https://github.com/willahh/notizen)
+## License
+All Rights Reserved
+
+Copyright (c) 2021 William Ravel

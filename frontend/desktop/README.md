@@ -46,3 +46,14 @@ Follow these steps before the build :
  * 2. Use `icon`, `png` and `icns` format
  * 3. Need to be placed in the buildResources directory (defaults to build).   
  Use the name icon.icon, icon.png and icon.icns.
+
+ 
+## Contact
+- [@twitter](https://twitter.com/willahhravel)
+- [Notizen repository](https://github.com/willahh/notizen)
+
+
+## License
+All Rights Reserved
+
+Copyright (c) 2021 William Ravel
