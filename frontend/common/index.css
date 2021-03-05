@@ -66,7 +66,12 @@ button {
 }
 
 /* Animations */
-.areaSecondary-enter {
+.no-animation {
+  transition: none !important;
+}
+
+/* areaSecondary */
+/* .areaSecondary-enter {
   width: 0px;
   transform: translate3d(0, -2000px, 0);
   transition: all 1000ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -79,8 +84,9 @@ button {
 .areaSecondary-enter-done {
   width: 340px;
   transform: none;
-}
+} */
 
+/* noteItem */
 .item-enter {
   height: 0;
   left: -200px;
@@ -100,11 +106,30 @@ button {
   transform: translateY(-104px);
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.no-animation {
-  transition: none !important;
+
+/* tag-item */
+.tag-item-enter {
+  height: 0;
+  /* left: -200px; */
+}
+.tag-item-enter-active {
+  /* left: 0; */
+  height: 40px;
+  transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.tag-item-exit {
+  z-index: -1;
+  height: 40px;
+  transform: translateY(0);
+}
+.tag-item-exit-active {
+  height: 0;
+  transform: translateY(-40px);
+  transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 
+/* noteDetail */
 .noteDetail-enter {
   left: -200px;
 }

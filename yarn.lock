@@ -14639,6 +14639,14 @@ table@^6.0.4:
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
+tailwindcss-first-child@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-first-child/-/tailwindcss-first-child-1.0.0.tgz#25bc66fd2f6da67c7a797def07db650e9e8c5bc5"
+
+tailwindcss-last-child@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-last-child/-/tailwindcss-last-child-1.0.0.tgz#aca6a8bbc9c9d623f2416052dd30d2e4c3baeb1b"
+
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"

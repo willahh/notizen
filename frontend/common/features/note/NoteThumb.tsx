@@ -72,7 +72,7 @@ const NoteThumb: React.FC<INoteProps> = () => {
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
       <TransitionGroup
         component="ul"
-        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5 p-4"
+        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 p-4"
         type="ul"
       >
         {notesList.map(({ id, name, content }) => {

@@ -8,7 +8,6 @@ import {
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { updateTag } from './../../api/notizenAPI';
 import { hashCode } from '../../app/utils';
-import { useDispatch } from 'react-redux';
 
 interface TagsState {
   isLoading: boolean;
@@ -16,7 +15,9 @@ interface TagsState {
   tags: Tags;
   tagsCache: Tags;
   selectedTagId: number;
-  deleteModeActive: boolean;
+  mode: Mode;
+  deleteModeActive: boolean; // TODO: Remove use mode
+  editModeActive: boolean; // TODO: Remove use mode
 }
 
 const initialTagsState: TagsState = {
@@ -26,6 +27,8 @@ const initialTagsState: TagsState = {
   tags: null,
   tagsCache: null,
   deleteModeActive: false,
+  editModeActive: false,
+  mode: Mode.Default,
 };
 
 export const fetchTags = createAsyncThunk('tags/fetch', async () => {
@@ -33,12 +36,23 @@ export const fetchTags = createAsyncThunk('tags/fetch', async () => {
   return await getTags();
 });
 
-export const setMode = createAction('tags/setMode', (tag: Tag, mode: Mode) => {
-  console.log('setMode actionCreator');
-  const updatedTag: Tag = { ...tag, mode: mode };
+export const setTagModeAction = createAction(
+  'tags/setTagModeAction',
+  (tag: Tag, mode: Mode) => {
+    console.log('setTagMode action');
+    const updatedTag: Tag = { ...tag, mode: mode };
+    return {
+      payload: {
+        tag: updatedTag,
+      },
+    };
+  }
+);
+
+export const setMode = createAction('tags/setMode', (mode: Mode) => {
   return {
     payload: {
-      tag: updatedTag,
+      mode: mode,
     },
   };
 });
@@ -83,6 +97,28 @@ export const deleteTagAction = createAsyncThunk(
     return await deleteTag(tagId);
   }
 );
+
+export const createTagAndEditAction = (dispatch) => {
+  console.log('createTagAndEditAction');
+  const createTagDto: createTagDto = {
+    name: 'Mon tag',
+  };
+  // TODO: Use of any type because we need to set a special dispatch Type to this action, this is not trivial.
+  // @see https://github.com/reduxjs/redux-toolkit/issues/849
+  // https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
+  const actionThunk: any = dispatch(createTagAction(createTagDto));
+  actionThunk.then((action) => {
+    console.log('THEN', action);
+    if (!action.error) {
+      const tag = action.payload.tag;
+      dispatch(setTagModeAction(tag, Mode.Edit));
+    } else {
+      console.warn('err', action.error);
+      // TODO: Throw user message
+    }
+  });
+};
+
 
 const tags = createSlice({
   name: 'notes',
@@ -226,6 +262,10 @@ const tags = createSlice({
       })
       .addCase(setMode, (state, action) => {
         console.log('setMode', action);
+        state.mode = action.payload.mode;
+      })
+      .addCase(setTagModeAction, (state, action) => {
+        console.log('setMode', action);
         const tag = action.payload.tag;
         state.tags[tag.id] = action.payload.tag;
       });
@@ -233,3 +273,6 @@ const tags = createSlice({
 });
 
 export default tags.reducer;
+function dispatch(arg0: { payload: { tag: Tag }; type: 'tags/setMode' }) {
+  throw new Error('Function not implemented.');
+}

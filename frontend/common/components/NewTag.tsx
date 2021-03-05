@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { createTagAction, setMode } from '../features/tags/TagsSlice';
+import { createTagAction, createTagAndEditAction, setTagModeAction } from '../features/tags/TagsSlice';
 import { createTagDto, Mode } from '../interfaces/INote.interface';
 
 export type INewTagProps = {};
@@ -9,23 +9,12 @@ const NewTag: React.FC<INewTagProps> = ({}) => {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <div className="inline-flex">
       <button
         title="New tag"
         className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-indigo-100 text-indigo-800 dark:bg-gray-800 dark:text-indigo-100"
         onClick={() => {
-          const createTagDto: createTagDto = {
-            name: 'New tag',
-          };
-          // TODO: Use of any type because we need to set a special dispatch Type to this action, this is not trivial.
-          // @see https://github.com/reduxjs/redux-toolkit/issues/849
-          // https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
-          const actionThunk: any = dispatch(createTagAction(createTagDto));
-          actionThunk.then((action) => {
-            console.log('THEN', action);
-            const tag = action.payload.tag;
-            dispatch(setMode(tag, Mode.Edit));
-          });
+          createTagAndEditAction(dispatch);
         }}
       >
         <svg

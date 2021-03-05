@@ -100,29 +100,57 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
         {/* <div className="relative"> */}
         {/* <Suspense fallback={<div>Chargement</div>}> */}
         {/* <ScrollBar damping={0.5} thumbMinSize={20}> */}
-        <div className="flex h-full py-4 space-y-2 sm:px-6 sm:space-y-4 lg:px-8 base-style bg-gray-50 dark:text-gray-300 dark:bg-gray-900">
+        <div className="flex h-full p-16 base-style bg-gray-50 dark:text-gray-300 dark:bg-gray-900">
           {note ? (
-            <div className="max-w-screen-lg">
+            <div
+              className=""
+              style={{
+                width: '482px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
               <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 mb-2 select-none">
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
+                <span
+                  title="fav"
+                  className="inline-flex items-center px-2 py-0.5 first-child:border-r-0 rounded border border-indigo-100 dark:border-indigo-800 text-xs font-medium dark:text-indigo-100"
+                  style={{ caretColor: '#06afbf' }}
+                >
                   <svg
-                    className="mr-1.5 h-2 w-2 text-indigo-400"
-                    fill="currentColor"
-                    viewBox="0 0 8 8"
+                    className="h-3 w-3 text-indigo-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <circle cx="4" cy="4" r="3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    />
                   </svg>
-                  Tag 1
                 </span>
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100">
-                  <svg
-                    className="mr-1.5 h-2 w-2 text-indigo-400"
-                    fill="currentColor"
-                    viewBox="0 0 8 8"
-                  >
-                    <circle cx="4" cy="4" r="3" />
-                  </svg>
-                  Tag 2
+                <span className="inline-flex">
+                  <span className="inline-flex items-center px-2 py-0.5 first-child:border-r-0 rounded rounded-r-none border-r-0 border border-indigo-100 dark:border-indigo-800 text-xs font-medium dark:text-indigo-100">
+                    <svg
+                      className="mr-1.5 h-2 w-2 text-indigo-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Tag 1
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded rounded-l-none border border-indigo-100 dark:border-indigo-800 text-xs font-medium dark:text-indigo-100">
+                    <svg
+                      className="mr-1.5 h-2 w-2 text-indigo-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Tag 2
+                  </span>
                 </span>
                 <NewTag />
               </div>
