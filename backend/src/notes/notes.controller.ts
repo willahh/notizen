@@ -9,10 +9,17 @@ import {
   Query,
 } from '@nestjs/common';
 import { IsOptional } from 'class-validator';
+import { TagsService } from 'src/tags/tags.service';
 import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
 import { CreateNoteDto } from './create-note.dto';
+import { NoteActionDto, NoteAction } from './note-action.dto';
 import { NotesService } from './notes.service';
 import { UpdateNoteDto } from './update-note.dto';
+
+////////////////////
+// TODO: Generate a new module noteWithTags
+// Add services and controller
+////////////////////
 
 interface findAll extends PaginationQueryDto {
   debug: false;
@@ -29,7 +36,10 @@ class FindAllClass extends PaginationQueryDto {
 
 @Controller('notes')
 export class NotesController {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(
+    private readonly notesService: NotesService,
+    private readonly tagsService: TagsService,
+  ) {}
 
   @Get()
   findAll(@Query() { debug, debugThrowError, limit, offset }: FindAllClass) {
@@ -47,6 +57,19 @@ export class NotesController {
     @Query('debugThrowError') debugThrowError,
   ) {
     return this.notesService.findOne(
+      id,
+      debug === 'true',
+      debugThrowError === 'true',
+    );
+  }
+
+  @Get(':id/detailed')
+  findOneWithTags(
+    @Param('id') id: number,
+    @Query('debug') debug,
+    @Query('debugThrowError') debugThrowError,
+  ) {
+    return this.notesService.findOneDetailed(
       id,
       debug === 'true',
       debugThrowError === 'true',
@@ -92,5 +115,43 @@ export class NotesController {
       debug === 'true',
       debugThrowError === 'true',
     );
+  }
+
+  @Post('/:id/actions')
+  addTag(
+    @Param('id') noteId: number,
+    @Query('debug') debug,
+    @Query('debugThrowError') debugThrowError,
+    @Body() noteActionDto: NoteActionDto,
+  ) {
+    const { tagName } = noteActionDto;
+    switch (noteActionDto.actionType) {
+      case NoteAction.AddTag:
+        return this.notesService.addTag(
+          noteId,
+          tagName,
+          debug === 'true',
+          debugThrowError === 'true',
+        );
+        break;
+      case NoteAction.RemoveTag:
+        return this.notesService.removeTag(
+          noteId,
+          tagName,
+          debug === 'true',
+          debugThrowError === 'true',
+        );
+        break;
+      case NoteAction.CreateTagAndAddToNote:
+        return this.notesService.createTagAndAddToNote(
+          { ...noteActionDto, noteId: noteId },
+          debug === 'true',
+          debugThrowError === 'true',
+        );
+        break;
+      default:
+        return null;
+        break;
+    }
   }
 }

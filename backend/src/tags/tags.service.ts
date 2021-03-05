@@ -10,6 +10,7 @@ import { CreateTagDto } from './create-tag.dto';
 import { UpdateTagDto } from './update-tag.dto';
 import { Tag } from './tag.entity';
 import { getConnection } from 'typeorm';
+import { NoteActionDto } from 'src/notes/note-action.dto';
 
 const debugTimeoutDelay = () => {
   return Math.round(Math.random() * 2000);

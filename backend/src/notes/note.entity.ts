@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Tag } from "src/tags/tag.entity";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Note {
@@ -17,4 +18,9 @@ export class Note {
   @Column({type: 'timestamp'})
   updateDate: Date;
 
+  // Many to many relation with note
+  // @see https://typeorm.io/#/many-to-many-relations
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 }
