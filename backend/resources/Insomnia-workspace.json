@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2021-03-04T00:40:57.913Z",
+  "__export_date": "2021-03-05T21:21:45.163Z",
   "__export_source": "insomnia.desktop.app:v2020.5.2",
   "resources": [
     {
@@ -282,6 +282,89 @@
       ],
       "authentication": {},
       "metaSortKey": -1613706559309.5625,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_69d36396e4fd4461991d000231f8dafb",
+      "parentId": "fld_9c0fe5ac11d9426aa4ce97b53fbdf07c",
+      "modified": 1614979261118,
+      "created": 1614947580318,
+      "url": "http://localhost:3000/notes/1763/detailed",
+      "name": "Note detailed by id",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "debug",
+          "value": "true",
+          "description": "",
+          "id": "pair_6b4a8c3b0bc647cd8ec219d81b963a51",
+          "disabled": true
+        },
+        {
+          "name": "debugThrowError",
+          "value": "true",
+          "description": "",
+          "id": "pair_6aa61051871b477f84e4f578ca2d9130",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1613754894727.375,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_64a312e3fd74476282774808733669ea",
+      "parentId": "fld_9c0fe5ac11d9426aa4ce97b53fbdf07c",
+      "modified": 1614977875845,
+      "created": 1614969217284,
+      "url": "http://localhost:3000/notes/1763/actions",
+      "name": "Note action",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"actionType\": \"CREATE_TAG_AND_TO_NOTE\",\n\t\"tagName\": \"Mon nouveau tag 7\"\n}"
+      },
+      "parameters": [
+        {
+          "name": "debug",
+          "value": "false",
+          "description": "",
+          "id": "pair_984578b22db54784a3f10ea36ace6796"
+        },
+        {
+          "name": "debugThrowError",
+          "value": "true",
+          "description": "",
+          "id": "pair_175157a9b0f54994892557c7b2d6d256"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_752646c499cf4582bb10d61914487bee"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1613725893476.6875,
       "isPrivate": false,
       "settingStoreCookies": true,
       "settingSendCookies": true,
@@ -637,7 +720,7 @@
     {
       "_id": "req_78e9e1b2af384f7eb71acdd7fbb616df",
       "parentId": "fld_1eb8601dcd334171aa730757f7a0b4eb",
-      "modified": 1614817566495,
+      "modified": 1614948855546,
       "created": 1614812702851,
       "url": "http://localhost:3000/tags",
       "name": "Create tag",
@@ -645,7 +728,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"name\": \"Tag 1 b\"\n}"
+        "text": "{\n\t\"name\": \"test6\"\n}"
       },
       "parameters": [
         {
