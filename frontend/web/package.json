@@ -1,8 +1,8 @@
 {
   "name": "@notizen/frontend-web",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "private": false,
-  "homepage": "./",
+  "homepage": "https://willahh.github.io/notizen/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.5",
     "@tailwindcss/forms": "^0.2.1",
@@ -52,7 +52,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "yarn build && gh-pages -d build",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "serve": "serve -s build",
