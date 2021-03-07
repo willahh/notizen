@@ -27,6 +27,7 @@ const NoteList: React.FC<INoteProps> = () => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
 
+  // TODO: Mutualize generic vector->map-of-kv
   const acc: INote[] = [];
   const notesList = Object.keys(notes)
     .reduce((acc, v) => {
