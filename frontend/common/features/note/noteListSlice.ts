@@ -12,9 +12,7 @@ import {
   updateNote,
 } from '../../api/notizenAPI';
 import {
-  INote,
   NoteDetailResult,
-  UpdateNoteDTO,
   CreateNoteDTO,
 } from '../../interfaces/INote.interface';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
@@ -31,10 +29,6 @@ interface NoteListState {
   selectedNoteId: string | null;
 }
 
-export interface NotesResult {
-  notes: Notes;
-}
-
 const getNotesFromLocalStorage = () => {
   const localStorageData = window.localStorage.getItem(LOCAL_STORAGE_NOTES_KEY);
   return localStorageData ? JSON.parse(localStorageData) : {};
@@ -48,11 +42,6 @@ const initialNotesState: NoteListState = {
   notesCache: notesInitialData,
   selectedNoteId: null,
 };
-
-function loadingFailed(state: NoteListState, action: PayloadAction<string>) {
-  state.isLoading = false;
-  state.error = action.payload;
-}
 
 export const setSelectedNoteId = createAction(
   'notes/setSelectedNoteId',
