@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useRouteMatch } from 'react-router-dom';
+import { HOST_URL } from '../app/utils';
 import { createNoteThunk } from '../features/note/noteListSlice';
 
 export type IToolbarProps = {};
@@ -218,7 +219,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                   <nav>
                     <NavLink
                       className="-ml-px relative inline-flex items-center px-4 py-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-l-md bg-white dark:bg-black dark:border-gray-800"
-                      to="/note/note-list"
+                      to={`${HOST_URL}/note/note-list`}
+                      // to="/note/note-list"
                       activeClassName="bg-indigo-200 dark:bg-indigo-700"
                     >
                       <svg
@@ -238,7 +240,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                     </NavLink>
                     <NavLink
                       className="-ml-px relative inline-flex items-center px-4 py-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md bg-white dark:bg-black dark:border-gray-800"
-                      to="/note/note-thumb"
+                      to={`${HOST_URL}/note/note-thumb`}
+                      // to="/note/note-thumb"
                       activeClassName="bg-indigo-200 dark:bg-indigo-700"
                     >
                       <svg

@@ -9,21 +9,23 @@ import { NoteThumb } from '@notizen/frontend-common/features/note/NoteThumb';
 import { NoteList } from '@notizen/frontend-common/features/note/NoteList';
 // import { NoteLit } from '@notizen/frontend-common/features/note/NoteLit';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Toolbar } from '../../components/Toolbar';
-import { NoteFilter } from '../../components/NoteFilter';
+import { HOST_URL } from '../../app/utils';
 
 interface INoteProps {}
 
 const Note: React.FC<INoteProps> = () => {
   return (
     <Switch>
-      <Route exact path="/note">
+      <Route exact path={`${HOST_URL}/note`}>
+      {/* <Route exact path="/note"> */}
         <NoteList />
       </Route>
-      <Route exact path="/note/note-list">
+      <Route exact path={`${HOST_URL}/note/note-list`}>
+      {/* <Route exact path="/note/note-list"> */}
         <NoteList />
       </Route>
-      <Route exact path="/note/note-thumb">
+      <Route exact path={`${HOST_URL}/note/note-thumb`}>
+      {/* <Route exact path="/note/note-thumb"> */}
         <NoteThumb />
       </Route>
     </Switch>

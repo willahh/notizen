@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { HOST_URL } from '../../app/utils';
 import loginBackgroundImage from './../../assets/notizen-icon.svg';
 
 export type IAuthProps = {};
@@ -170,7 +171,8 @@ const Auth: React.FC<IAuthProps> = ({}) => {
                   </div>
                 </div>
                 <div>
-                  <Link to="/note">
+                  <Link to={`${HOST_URL}/note`}>
+                  {/* <Link to="/note"> */}
                     <button
                       type="submit"
                       className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white dark:text-black bg-indigo-600 dark:bg-indigo-400 hover:bg-indigo-700 dark:hover:bg-indigo-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
