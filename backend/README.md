@@ -9,12 +9,12 @@
 </p>
 
 ## Description
-
 Backend REST API.
+
+Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io) and hosted on [Google Cloud](https://cloud.google.com/appengine)
 
 ### Setup
 
-Built with [Nest](https://github.com/nestjs/nest) and [TypeORM](https://typeorm.io) with the following steps :
 
 ````sh
 # Install the Nestjs cli globally
@@ -110,8 +110,8 @@ This module was generated with the old bad copy pasta method.
 4. Run the migration script `npx typeorm migration:run`
    Server need to be up before running the migration.
 
-### Migrations
-Sql migrations is managed with typeorm.  
+## Migrations
+SQL migrations is managed with typeorm.  
 A `ormconfig.js` file is required :
 ```js
 module.exports = {
@@ -147,14 +147,22 @@ npx typeorm migration:generate -n InitialData # Initialize a first migration
 ```
 
 ## Installation
-
-```bash
+```sh
 $ npm install
-```
 
-## Running the app
+# Create a .env file
+DATABASE_HOST=localhost
+DATABASE_NAME=notizendb
+DATABASE_PORT=5432
+DATABASE_USER=user
+DATABASE_PASSWORD=password
+````
 
-```bash
+## Running the app in local environment
+````sh
+# First mount the docker from /infra
+docker-compose up -d
+
 # development
 $ npm run start
 
@@ -163,7 +171,7 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
+````
 
 ## Test
 
@@ -178,7 +186,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Testing the API
+## Testing the API with Insomnia
 For API testing purpose, an Insomnia workspace settings is available in `resources/Insomnia-workspace.json`.
 
 ## Notizen backend Documentation
@@ -193,7 +201,28 @@ npm run generate-doc-local
 ## Notizen API documentation
 TODO
 
+## Deployment to production
+The backend is deployed on `Google Cloud` using `App Engine`.
+Postgres SQL is managed with `Google Cloud SQL`.
 
+To deploy :
+````sh
+# A .env file is required with the following informations :
+
+# SQL env
+DATABASE_HOST={database_host_ip}
+DATABASE_NAME=postgres
+DATABASE_PORT=5432
+DATABASE_USER={database_user}
+DATABASE_PASSWORD={database_password}
+
+# Service account
+DB_INSTANCE_NAME={myapplication-xxx:europe-west1:xxx}
+
+# Deploy to production
+yarn deploy
+
+````
 
 ## Contact
 - [@twitter](https://twitter.com/willahhravel)

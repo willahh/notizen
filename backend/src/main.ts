@@ -12,6 +12,9 @@ async function bootstrap() {
 
       // Local serve build
       'http://localhost:5000',
+
+      // Github page
+      'https://willahh.github.io',
     ],
   });
   app.useGlobalPipes(
@@ -25,19 +28,22 @@ async function bootstrap() {
     }),
   );
 
-  // Swagger
-  const config = new DocumentBuilder()
-    .setTitle('Notizen')
-    .setDescription('The Notizen API description')
-    .setVersion('1.0')
-    .addTag('notizen')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  console.log('document', document);
-  
-  SwaggerModule.setup('api', app, document);
+  // // Swagger
+  // const config = new DocumentBuilder()
+  //   .setTitle('Notizen')
+  //   .setDescription('The Notizen API description')
+  //   .setVersion('1.0')
+  //   .addTag('notizen')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // console.log('document', document);
 
-  // Listen 
-  await app.listen(3000);
+  // SwaggerModule.setup('api', app, document);
+
+  // Listen
+  const PORT = Number(process.env.PORT) || 3000;
+  await app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}...`);
+  });
 }
 bootstrap();
