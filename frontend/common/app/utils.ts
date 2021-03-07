@@ -10,3 +10,6 @@ export const hashCode = (str) => {
   }
   return hash;
 };
+
+// TODO: Cleanup this part
+export const HOST_URL = location.host === 'willahh.github.io' ? '/notizen' : '';
