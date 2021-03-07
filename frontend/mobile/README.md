@@ -11,3 +11,12 @@
 ## Description
 
 This version is based on [Expo](https://docs.expo.io/).
+
+## Contact
+- [@twitter](https://twitter.com/willahhravel)
+- [Notizen repository](https://github.com/willahh/notizen)
+
+## License
+All Rights Reserved
+
+Copyright (c) 2021 William Ravel
