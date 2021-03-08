@@ -1,5 +1,10 @@
 /**
  * API related functions here.
+ *
+ * TODO: There is a symmetry between the functions in this namespace and the backend API controller methods.
+ * When a new backend service is added, a new controller method is added to to expose the service,
+ * then the frontend need to expose this service too.
+ * Maybe there is something to do to avoid this "duplication".
  */
 
 import axios from 'axios';
@@ -16,10 +21,16 @@ import {
   updateTagDto,
   TagResult,
   createTagDto,
+  NoteActionDto,
+  CreateTagAndAddToNoteResult,
 } from '../interfaces/INote.interface';
 
 /* ----------------- debug ------------------------- */
 const DEBUG = false;
+
+// TODO: use a .env to manage environments
+const API_URL = 'http://localhost:3000';
+// const API_URL = 'https://notizenapp-306803.ew.r.appspot.com';
 const withDebug = (url: string, debug: boolean, debugThrowError: boolean) => {
   if (debug) {
     const a = url.includes('?') ? '&' : '?';
@@ -35,7 +46,7 @@ const withUrl = (url: string, debugThrowError: boolean = false) => {
 
 /* ----------------- note ------------------------- */
 export async function getNotes(): Promise<NotesResult> {
-  const url = withUrl(`http://localhost:3000/notes?limit=100`);
+  const url = withUrl(`${API_URL}/notes?limit=100`);
   try {
     const notesReponse = await axios.get<INote[]>(url);
     const noteAcc: Notes = {};
@@ -55,7 +66,7 @@ export async function getNotes(): Promise<NotesResult> {
 export async function getNoteByNoteId(
   noteId: string
 ): Promise<NoteDetailResult> {
-  const url = withUrl(`http://localhost:3000/notes/${noteId}`);
+  const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
     const notesReponse = await axios.get<INote>(url);
     return {
@@ -66,10 +77,24 @@ export async function getNoteByNoteId(
   }
 }
 
+export async function getNoteDetailedByNoteId(
+  noteId: string
+): Promise<NoteDetailResult> {
+  const url = withUrl(`${API_URL}/notes/${noteId}/detailed`);
+  try {
+    const response = await axios.get<INote>(url);
+    return {
+      note: response.data,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
 export async function createNote(
   createNoteDTO: CreateNoteDTO
 ): Promise<NoteDetailResult> {
-  const url = withUrl(`http://localhost:3000/notes`);
+  const url = withUrl(`${API_URL}/notes`);
   try {
     const response = await axios.post<INote>(url, createNoteDTO);
     return {
@@ -81,7 +106,7 @@ export async function createNote(
 }
 
 export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
-  const url = withUrl(`http://localhost:3000/notes/${noteId}`);
+  const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
     const response = await axios.delete<INote>(url);
     return {
@@ -97,21 +122,38 @@ export async function updateNote(
   noteId: number,
   updateNoteDTO: UpdateNoteDTO
 ): Promise<NoteDetailResult> {
-  const url = withUrl(`http://localhost:3000/notes/${noteId}`);
+  const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
     const response = await axios.patch<INote>(url, updateNoteDTO);
     return {
       note: response.data,
     };
   } catch (err) {
-    console.error('Une erreur est survenue', err);
+    throw err;
+  }
+}
+
+export async function createTagAndAddToNote(
+  noteActionDTO: NoteActionDto
+): Promise<CreateTagAndAddToNoteResult> {
+  console.log('createTagAndAddToNote', noteActionDTO);
+
+  const { noteId } = noteActionDTO;
+  const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
+  try {
+    const response = await axios.post<CreateTagAndAddToNoteResult>(url, noteActionDTO);
+    return {
+      note: response.data.note,
+      tag: response.data.tag
+    }
+  } catch (err) {
     throw err;
   }
 }
 
 /* ----------------- tags ------------------------- */
 export async function getTags(): Promise<TagsResult> {
-  const url = withUrl(`http://localhost:3000/tags?limit=100`);
+  const url = withUrl(`${API_URL}/tags?limit=100`);
 
   try {
     const tagsResponse = await axios.get<Tag[]>(url);
@@ -132,7 +174,7 @@ export async function getTags(): Promise<TagsResult> {
 export async function createTag(
   createTagDto: createTagDto
 ): Promise<TagResult> {
-  const url = withUrl(`http://localhost:3000/tags/`, true);
+  const url = withUrl(`${API_URL}/tags/`, true);
   try {
     const response = await axios.post<Tag>(url, createTagDto);
     return {
@@ -147,7 +189,7 @@ export async function updateTag(
   tagId: number,
   updateTagDto: updateTagDto
 ): Promise<TagResult> {
-  const url = withUrl(`http://localhost:3000/tags/${tagId}`);
+  const url = withUrl(`${API_URL}/tags/${tagId}`);
   try {
     const response = await axios.patch<Tag>(url, updateTagDto);
     return {
@@ -159,7 +201,7 @@ export async function updateTag(
 }
 
 export async function deleteTag(tagId: number): Promise<TagResult> {
-  const url = withUrl(`http://localhost:3000/tags/${tagId}`, true);
+  const url = withUrl(`${API_URL}/tags/${tagId}`, true);
   try {
     const response = await axios.delete(url);
     return {

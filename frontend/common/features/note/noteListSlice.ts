@@ -8,12 +8,17 @@ import {
   createNote,
   deleteNote,
   getNoteByNoteId,
+  getNoteDetailedByNoteId,
   getNotes,
+  createTagAndAddToNote,
   updateNote,
 } from '../../api/notizenAPI';
 import {
   NoteDetailResult,
   CreateNoteDTO,
+  UpdateNoteDTO,
+  NoteActionDto,
+  INote,
 } from '../../interfaces/INote.interface';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { Notes } from '../../interfaces/INote.interface';
@@ -58,7 +63,8 @@ export const fetchNoteThunk = createAsyncThunk(
   'notes/note',
   async (noteId: string) => {
     console.log('fetchNote', noteId);
-    return await getNoteByNoteId(noteId);
+    // return await getNoteByNoteId(noteId);
+    return await getNoteDetailedByNoteId(noteId);
   }
 );
 
@@ -82,6 +88,14 @@ export const createNoteThunk = createAsyncThunk(
   }
 );
 
+export const addNoteLocalAction = createAction('tags/addNoteLocalAction', (note: INote) => {
+  return {
+    payload: {
+      note: note
+    },
+  };
+});
+
 export const updateNoteThunk = createAsyncThunk(
   'notes/update',
   async ({ noteId, updateNoteDTO: UpdateNoteDTO, serverSync }: any) => {
@@ -96,6 +110,13 @@ export const updateNoteThunk = createAsyncThunk(
       );
       return noteDetailResultPromise;
     }
+  }
+);
+
+export const createTagAndAddToNoteAction = createAsyncThunk(
+  'notes/createTagAndAddToNote',
+  async (noteActionDTO: NoteActionDto) => {
+    return await createTagAndAddToNote(noteActionDTO);
   }
 );
 
@@ -224,6 +245,14 @@ const notes = createSlice({
         state.notes = newNotes;
         state.notesCache = newNotes;
       })
+      .addCase(addNoteLocalAction, (state, action) => {
+        console.log('addNoteLocalAction', state, action);
+
+        const note = action.payload.note;
+        const noteId = note.id;
+        state.notes[noteId] = note;
+      })
+      
 
       // updateNote ----------------------
       .addCase(updateNoteThunk.pending, (state, action) => {
@@ -276,12 +305,12 @@ const notes = createSlice({
         state.notesCache = newNotes;
       })
       .addCase(deleteNoteThunk.fulfilled, (state, action) => {
-        console.log('deleteNoteThunk.fulfilled', state, action);
+        console.log('deleteNoteThunk.fulfilled', action);
 
         // return state;
       })
       .addCase(deleteNoteThunk.rejected, (state, action) => {
-        console.log('deletNoteThunk.rejected', state, action);
+        console.log('deletNoteThunk.rejected', action);
 
         // Rollback delete action with note from cache
         // TODO: Display error to user (notification)
@@ -291,6 +320,26 @@ const notes = createSlice({
 
         state.notes = newNotes;
         state.notesCache = newNotes;
+      })
+      .addCase(createTagAndAddToNoteAction.pending, (state, action) => {
+        console.log('createTagAndAddToNoteAction.pending', action);
+      })
+      .addCase(createTagAndAddToNoteAction.fulfilled, (state, action) => {
+        console.log('createTagAndAddToNoteAction.fulfilled', action);
+
+        // action.payload.note
+        // action.payload.tag
+
+        // Add tag to tags state
+        const tag = action.payload.tag;
+        const tagId = tag.id;
+        // TODO
+        // state.tags[tagId] = tag;
+        // state.tagsCache[tagId] = tag;
+        
+      })
+      .addCase(createTagAndAddToNoteAction.rejected, (state, action) => {
+        console.log('createTagAndAddToNoteAction.rejected', action);
       });
   },
   reducers: {},

@@ -5,17 +5,14 @@ import {
   deleteNoteThunk,
   setSelectedNoteId,
 } from '../features/note/noteListSlice';
+import { INote } from '../interfaces/INote.interface';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
-// TODO: Share with INote (and with backend Note)
-interface INoteItemProps {
-  id: string;
-  title: string | undefined;
-  text: string | undefined;
-  tags: string[];
+interface INoteProps extends INote {
   isSelected: boolean;
 }
+
 function truncateString(str: string, num: number) {
   if (str.length <= num) {
     return str;
@@ -23,12 +20,13 @@ function truncateString(str: string, num: number) {
   return str.slice(0, num) + '...';
 }
 
-const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
+const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags }) => {
   const dispatch = useDispatch();
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
   const isSelected = id === selectedNoteId;
+  console.log('tags', tags);
 
   let itemCls =
     'relative overflow-hidden select-none border-l-4 duration-300 ease-in-out';
@@ -60,10 +58,12 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
               <a href="#" className="block focus:outline-none">
                 <span className="absolute inset-0" aria-hidden="true" />
                 <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-200">
-                  {title}
+                  {name}
                 </p>
                 <p className="text-sm truncate text-gray-500 dark:text-gray-300">
-                  {tags}
+                  Tag 1, Tag 2
+                  {/* TODO: Need to retrieve tags within Notes (new backend service notesDetailed required*/}
+                  {/* {tags && tags.map(({mode}) => <span>{name}</span>)} */}
                 </p>
               </a>
             </div>
@@ -99,7 +99,7 @@ const NoteItem: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
           </div>
           <div className="mt-1 max-h-10 overflow-hidden">
             <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-500">
-              {text ? truncateString(text, 64) : 'Ma nouvelle note'}
+              {content ? truncateString(content, 64) : 'Ma nouvelle note'}
             </p>
           </div>
         </div>

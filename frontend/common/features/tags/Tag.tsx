@@ -18,7 +18,7 @@ interface TagProps {
 }
 
 const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
-  console.log('TagComponent cmp', deleteModeActive);
+  // console.log('TagComponent cmp', deleteModeActive);
 
   var { name } = tag;
   const tagMode = tag.mode;

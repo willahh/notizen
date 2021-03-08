@@ -1,9 +1,16 @@
-import { createTag, deleteTag, getTags } from '../../api/notizenAPI';
+import {
+  createTag,
+  deleteTag,
+  getTags,
+  createTagAndAddToNote,
+} from '../../api/notizenAPI';
 import {
   Tags,
   Mode,
   Tag,
   createTagDto,
+  NoteActionDto,
+  UpdateNoteDTO,
 } from '../../interfaces/INote.interface';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { updateTag } from './../../api/notizenAPI';
@@ -11,21 +18,21 @@ import { hashCode } from '../../app/utils';
 
 interface TagsState {
   isLoading: boolean;
-  error: string | null;
+  error?: string;
   tags: Tags;
   tagsCache: Tags;
-  selectedTagId: number;
+  selectedTagId?: number;
   mode: Mode;
   deleteModeActive: boolean; // TODO: Remove use mode
   editModeActive: boolean; // TODO: Remove use mode
 }
 
 const initialTagsState: TagsState = {
-  error: null,
+  error: undefined,
   isLoading: false,
-  selectedTagId: null,
-  tags: null,
-  tagsCache: null,
+  selectedTagId: undefined,
+  tags: {},
+  tagsCache: {},
   deleteModeActive: false,
   editModeActive: false,
   mode: Mode.Default,
@@ -65,6 +72,20 @@ export const updateTagLocal = createAction('tags/updateLocal', (tag: Tag) => {
   };
 });
 
+export const updateTagVisibilityInFilterDropdownLocal = createAction(
+  'tag/updateTagVisibilityInFilterDropdownLocal',
+  (tag: Tag, visible: boolean) => {
+    console.log('updateTagVisibilityInFilterDropdownLocal', tag, visible);
+
+    return {
+      payload: {
+        tag: tag,
+        visible: visible,
+      },
+    };
+  }
+);
+
 export const resetUpdateTag = createAction(
   'tags/resetUpdateLocal',
   (tagId: Number) => {
@@ -83,10 +104,17 @@ export const createTagAction = createAsyncThunk(
   }
 );
 
+export const addTagActionLocal = createAction('tags/addTagActionLocal', (tag: Tag) => {
+  return {
+    payload: {
+      tag: tag,
+    },
+  };
+});
+
 export const updateTagAction = createAsyncThunk(
   'tags/update',
   async ({ tagId, updateTagDto: updateTagDto }: any) => {
-    console.log('updateTagAction');
     return await updateTag(tagId, updateTagDto);
   }
 );
@@ -118,7 +146,6 @@ export const createTagAndEditAction = (dispatch) => {
     }
   });
 };
-
 
 const tags = createSlice({
   name: 'notes',
@@ -200,6 +227,13 @@ const tags = createSlice({
         const tagId = hashCode(requestId);
         delete state.tags[tagId];
       })
+      .addCase(addTagActionLocal, (state, action) => {
+        console.log('addTagActionLocal', action);
+
+        const tag = action.payload.tag;
+        const tagId = tag.id;
+        state.tags[tagId] = tag;
+      })
       .addCase(resetUpdateTag, (state, action) => {
         console.log('resetUpdateTag', action);
 
@@ -213,6 +247,14 @@ const tags = createSlice({
 
         const tag = action.payload.tag;
         state.tags[tag.id] = action.payload.tag;
+      })
+      .addCase(updateTagVisibilityInFilterDropdownLocal, (state, action) => {
+        console.log('updateTagVisibilityInFilterDropdownLocal', action);
+
+        const tag = { ...action.payload.tag };
+        const visible = action.payload.visible;
+        tag.visibleInFilterDropdown = visible;
+        state.tags[tag.id] = tag;
       })
       .addCase(updateTagAction.pending, (state, action) => {
         console.log('updateTagAction.pending', action);
