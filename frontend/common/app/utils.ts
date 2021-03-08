@@ -13,3 +13,30 @@ export const hashCode = (str) => {
 
 // TODO: Cleanup this part
 export const HOST_URL = location.host === 'willahh.github.io' ? '/notizen' : '';
+
+export const mapOfKeyValueToArrayOfMap = (m) => {
+  const acc = [];
+  const array = Object.keys(m ? m : {})
+    .reduce((acc, v) => {
+      if (m[v]) {
+        acc.push(m[v]);
+      }
+      return acc;
+    }, acc)
+    .sort((a, b) => {
+      return Number(b.id) - Number(a.id);
+    });
+  return array;
+};
+
+export const arrayOfMapToMapOfKeyValue = (arr) => {
+  const acc = {};
+  const map = arr.reduce((acc, v) => {
+      if (v) {
+        acc[v.id].push(v);
+      }
+      return acc;
+    }, acc);
+  return map;
+};
+
