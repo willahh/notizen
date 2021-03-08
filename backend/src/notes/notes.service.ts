@@ -102,7 +102,7 @@ export class NotesService {
     }
 
     const note = await this.noteRepository.findOne(id, {
-      relations: ["tags"]
+      relations: ['tags'],
     });
     if (!note) {
       throw new NotFoundException(`Note #${id} not found`);
@@ -174,11 +174,11 @@ export class NotesService {
 
   async addTag(
     noteId: number,
-    tagName: string,
+    tagId: number,
     debug = false,
     debugThrowError: boolean = false,
   ) {
-    console.log('addTag', noteId, tagName);
+    console.log('addTag', noteId, tagId);
     if (debug) {
       await promiseTimeout();
       maybeThrowRandomError();
@@ -188,11 +188,23 @@ export class NotesService {
     }
     let response = null;
     try {
-      response = await getConnection()
-        .createQueryBuilder()
-        .relation(Note, 'tags')
-        .of(noteId)
-        .add(tagName);
+      if (noteId && tagId) {
+        await getConnection()
+          .createQueryBuilder()
+          .relation(Note, 'tags')
+          .of(noteId)
+          .add(tagId);
+        const note = this.findOneDetailed(noteId, debug, debugThrowError);
+        response = note;
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            message: 'noteId and tagId required',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     } catch (err) {
       throw new HttpException(
         {
@@ -208,11 +220,11 @@ export class NotesService {
 
   async removeTag(
     noteId: number,
-    tagName: string,
+    tagId: number,
     debug = false,
     debugThrowError: boolean = false,
   ) {
-    console.log('removeTag', noteId, tagName);
+    console.log('removeTag', noteId, tagId);
     if (debug) {
       await promiseTimeout();
       maybeThrowRandomError();
@@ -223,12 +235,23 @@ export class NotesService {
 
     let response = null;
     try {
-      response = await getConnection()
-        .createQueryBuilder()
-        .relation(Note, 'tags')
-        .of(noteId)
-        .remove(tagName);
-      console.log('response', response);
+      if (noteId && tagId) {
+        response = await getConnection()
+          .createQueryBuilder()
+          .relation(Note, 'tags')
+          .of(noteId)
+          .remove(tagId);
+        const note = this.findOneDetailed(noteId, debug, debugThrowError);
+        response = note;
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            message: 'noteId and tagId required',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     } catch (err) {
       throw new HttpException(
         {
@@ -245,6 +268,8 @@ export class NotesService {
     debug = false,
     debugThrowError: boolean = false,
   ) {
+    console.log('createTagAndAddToNote');
+
     if (debug) {
       await promiseTimeout();
       maybeThrowRandomError();
@@ -252,7 +277,7 @@ export class NotesService {
         throwError();
       }
     }
-    let note = null;
+    let response = null;
     try {
       const { noteId, tagName } = noteActionDto;
       const createTagDTO: CreateTagDto = {
@@ -263,14 +288,20 @@ export class NotesService {
       const tag = this.tagRepository.create(createTagDTO);
       tag.createDate = new Date();
       tag.updateDate = tag.createDate;
-      await this.tagRepository.save(tag);
+
+      const tagCreated = await this.tagRepository.save(tag);
+      const tagId = tagCreated.id;
 
       await getConnection()
         .createQueryBuilder()
         .relation(Note, 'tags')
         .of(noteId)
-        .add(tagName);
-      note = await this.noteRepository.findOne(noteId);
+        .add(tagId);
+      const note = await this.findOneDetailed(noteId, debug, debugThrowError);
+      response = {
+        note: note,
+        tag: tag
+      }
     } catch (err) {
       throw new HttpException(
         {
@@ -281,6 +312,6 @@ export class NotesService {
       );
     }
 
-    return note;
+    return response;
   }
 }

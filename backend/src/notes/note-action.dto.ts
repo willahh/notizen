@@ -15,5 +15,10 @@ export class NoteActionDto {
   readonly noteId: number;
 
   @IsString()
+  @IsOptional()
   readonly tagName: string;
+
+  @IsNumber()
+  @IsOptional()
+  readonly tagId: number;
 }

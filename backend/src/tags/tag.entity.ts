@@ -4,16 +4,17 @@ import {
   Entity,
   Generated,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class Tag {
-  @Generated('increment')
-  @Column()
+  @PrimaryGeneratedColumn()
+  // @Column({unique: true, generated: true})
   id: number;
 
-  @PrimaryColumn()
+  @Column({unique: true})
   name: string;
 
   @Column({default: true})

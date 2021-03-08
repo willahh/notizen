@@ -16,11 +16,6 @@ import { NoteActionDto, NoteAction } from './note-action.dto';
 import { NotesService } from './notes.service';
 import { UpdateNoteDto } from './update-note.dto';
 
-////////////////////
-// TODO: Generate a new module noteWithTags
-// Add services and controller
-////////////////////
-
 interface findAll extends PaginationQueryDto {
   debug: false;
   debugThrowError: false;
@@ -124,12 +119,12 @@ export class NotesController {
     @Query('debugThrowError') debugThrowError,
     @Body() noteActionDto: NoteActionDto,
   ) {
-    const { tagName } = noteActionDto;
+    const { tagName, tagId } = noteActionDto;
     switch (noteActionDto.actionType) {
       case NoteAction.AddTag:
         return this.notesService.addTag(
           noteId,
-          tagName,
+          tagId,
           debug === 'true',
           debugThrowError === 'true',
         );
@@ -137,7 +132,7 @@ export class NotesController {
       case NoteAction.RemoveTag:
         return this.notesService.removeTag(
           noteId,
-          tagName,
+          tagId,
           debug === 'true',
           debugThrowError === 'true',
         );
