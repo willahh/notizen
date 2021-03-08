@@ -89,6 +89,8 @@ nest generate class common/dto/pagination-query.dto --no-spec
 # 4. Run the server
 npm run start:dev
 
+# Note: npm run start is used by GCP Cloud Engine as default script entry point
+
 # 5. Create a new migration script
 # This will :
 # - Update the db schema 
