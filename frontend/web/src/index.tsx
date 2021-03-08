@@ -6,6 +6,13 @@ import * as serviceWorker from './serviceWorker.js';
 import '@notizen/frontend-common/index.css';
 import App from '@notizen/frontend-common/app/App';
 
+// Debug
+declare global {
+  interface Window { store: any; }
+}
+
+window.store = store || {};
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
