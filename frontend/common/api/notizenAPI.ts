@@ -23,6 +23,8 @@ import {
   createTagDto,
   NoteActionDto,
   CreateTagAndAddToNoteResult,
+  // AddTagToNoteResult,
+  // RemoveTagToNoteResult,
 } from '../interfaces/INote.interface';
 
 /* ----------------- debug ------------------------- */
@@ -141,11 +143,50 @@ export async function createTagAndAddToNote(
   const { noteId } = noteActionDTO;
   const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
   try {
-    const response = await axios.post<CreateTagAndAddToNoteResult>(url, noteActionDTO);
+    const response = await axios.post<CreateTagAndAddToNoteResult>(
+      url,
+      noteActionDTO
+    );
     return {
       note: response.data.note,
-      tag: response.data.tag
-    }
+      tag: response.data.tag,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function addTagToNote(
+  noteActionDTO: NoteActionDto
+): Promise<NoteDetailResult> {
+  console.log('addTagToNote', noteActionDTO);
+
+  const { noteId } = noteActionDTO;
+  const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
+  try {
+    const response = await axios.post<INote>(url, noteActionDTO);
+    const note = response.data;
+    return {
+      note: note,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function removeTagToNote(
+  noteActionDTO: NoteActionDto
+): Promise<NoteDetailResult> {
+  console.log('removeTagToNote', noteActionDTO);
+
+  const { noteId } = noteActionDTO;
+  const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
+  try {
+    const response = await axios.post<INote>(url, noteActionDTO);
+    const note = response.data;
+    return {
+      note: note,
+    };
   } catch (err) {
     throw err;
   }

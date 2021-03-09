@@ -11,7 +11,7 @@ import {
 } from './TagsSlice';
 import { TagComponent } from './Tag';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-
+import { mapOfKeyValueToArrayOfMap } from '../../app/utils';
 interface ITagsProps {}
 
 const Tags: React.FC<ITagsProps> = ({}) => {
@@ -22,22 +22,8 @@ const Tags: React.FC<ITagsProps> = ({}) => {
     (state: RootState) => state.tags.deleteModeActive
   );
   const mode = useSelector((state: RootState) => state.tags.mode);
-  console.log('mode', mode);
-
   const dispatch = useDispatch();
-
-  // TODO: Mutualize generic vector->map-of-kv
-  const acc: Tag[] = [];
-  const tagsList = Object.keys(tags ? tags : [])
-    .reduce((acc, v) => {
-      if (tags[v]) {
-        acc.push(tags[v]);
-      }
-      return acc;
-    }, acc)
-    .sort((a, b) => {
-      return Number(b.id) - Number(a.id);
-    }); // TODO: refactor sorting
+  const tagsList: Tag[] = mapOfKeyValueToArrayOfMap(tags);
 
   useEffect(() => {
     dispatch(fetchTags());
@@ -61,7 +47,7 @@ const Tags: React.FC<ITagsProps> = ({}) => {
               d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
             />
           </svg>
-          <span className="truncate w-full">Tags</span>
+          <div className="truncate w-full">Tags</div>
         </div>
         <button
           className="text-black dark:text-white ml-2"
@@ -140,17 +126,19 @@ const Tags: React.FC<ITagsProps> = ({}) => {
           </button>
         )}
       </div>
-      <TransitionGroup component="ul" className="overflow-auto " type="ul">
-        {tagsList.map((tag) => (
-          <CSSTransition key={tag.id} timeout={400} classNames="tag-item">
-            <TagComponent
-              tag={tag}
-              mode={mode}
-              deleteModeActive={deleteModeActive}
-            />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+      <div className="flex h-full overflow-auto">
+        <TransitionGroup component="ul" className="overflow-auto " type="ul">
+          {tagsList.map((tag) => (
+            <CSSTransition key={tag.id} timeout={400} classNames="tag-item">
+              <TagComponent
+                tag={tag}
+                mode={mode}
+                deleteModeActive={deleteModeActive}
+              />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
     </>
   );
 };

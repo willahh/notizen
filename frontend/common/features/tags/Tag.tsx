@@ -18,12 +18,11 @@ interface TagProps {
 }
 
 const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
-  // console.log('TagComponent cmp', deleteModeActive);
+  console.log('TagComponent cmp');
 
   var { name } = tag;
   const tagMode = tag.mode;
   const dispatch = useDispatch();
-  console.log('mode', mode);
 
   let tagComponent = null;
   switch (tagMode) {
@@ -58,9 +57,9 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
               d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
             />
           </svg>
-          <span className="truncate w-full">{name}</span>
+          <div className="truncate w-full">{name}</div>
           {mode === Mode.Edit && (
-            <span className="inline-flex">
+            <div className="inline-flex">
               <button
                 title="Edit"
                 className="ml-2"
@@ -108,7 +107,7 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
                   />
                 </svg>
               </button>
-            </span>
+            </div>
           )}
         </a>
       );
@@ -196,13 +195,13 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
               d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
             />
           </svg>
-          <span className="flex align-middle">
-            <span className="truncate text-xs w-full flex items-center pr-2">
+          <div className="flex align-middle">
+            <div className="truncate text-xs w-full flex items-center pr-2">
               Confirm ?
-            </span>
+            </div>
             {/* <span className="truncate w-full">{name}</span> */}
-            <span>
-              <span className="relative z-0 inline-flex shadow-sm rounded-md ">
+            <div>
+              <div className="relative z-0 inline-flex shadow-sm rounded-md ">
                 <button
                   type="button"
                   className="relative inline-flex items-center px-2 py-1 rounded-l-md text-xs border border-gray-300 bg-white dark:border-gray-600 dark:bg-black text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
@@ -240,9 +239,9 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
                 >
                   No
                 </button>
-              </span>
-            </span>
-          </span>
+              </div>
+            </div>
+          </div>
         </div>
       );
       break;

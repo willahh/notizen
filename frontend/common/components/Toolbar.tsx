@@ -19,16 +19,17 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
           <div className="py-3 flex justify-between">
             {/* Left buttons */}
             <div>
-              <span className="relative z-0 inline-flex shadow-sm rounded-md sm:shadow-none sm:space-x-3">
-                <span className="inline-flex sm:shadow-sm">
+              <div className="relative z-0 inline-flex shadow-sm rounded-md sm:shadow-none sm:space-x-3">
+                <div className="inline-flex sm:shadow-sm">
                   <button
                     type="button"
                     onClick={() => {
                       const id = Math.floor(Math.random() * 500);
                       dispatch(
                         createNoteThunk({
-                          name: 'Le titre de ma superbe note' + id,
-                          content: 'Ma superbe nouvelle note' + id,
+                          // name: 'Le titre de ma superbe note' + id,
+                          name: '',
+                          content: ''
                         })
                       );
                     }}
@@ -90,8 +91,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                       />
                     </svg>
                   </button> */}
-                </span>
-                <span className="hidden lg:flex space-x-3">
+                </div>
+                <div className="hidden lg:flex space-x-3">
                   <button
                     type="button"
                     className="hidden sm:inline-flex -ml-px relative items-center px-4 py-2 rounded-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
@@ -149,8 +150,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                       />
                     </svg>
                   </button>
-                </span>
-                <span className="-ml-px relative block sm:shadow-sm sm:hidden">
+                </div>
+                <div className="-ml-px relative block sm:shadow-sm sm:hidden">
                   <div>
                     <button
                       type="button"
@@ -158,8 +159,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                       id="menu-3"
                       aria-haspopup="true"
                     >
-                      <span className="sr-only sm:hidden">More</span>
-                      <span className="hidden sm:inline">More</span>
+                      <div className="sr-only sm:hidden">More</div>
+                      <div className="hidden sm:inline">More</div>
                       <svg
                         className="h-5 w-5 text-gray-400 sm:ml-2 sm:-mr-1"
                         x-description="Heroicon name: solid/chevron-down"
@@ -214,8 +215,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                       </a>
                     </div>
                   </div>
-                </span>
-                <span className="inline-flex sm:shadow-sm">
+                </div>
+                <div className="inline-flex sm:shadow-sm">
                   <nav>
                     <NavLink
                       className="-ml-px relative inline-flex items-center px-4 py-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-l-md bg-white dark:bg-black dark:border-gray-800"
@@ -260,8 +261,8 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                       </svg>
                     </NavLink>
                   </nav>
-                </span>
-              </span>
+                </div>
+              </div>
             </div>
             {/* Right buttons */}
           </div>

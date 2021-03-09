@@ -18,7 +18,7 @@ const SidebarOpen: React.FC<ISidebarOpenProps> = ({}) => {
             type="button"
             className="-mr-3 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900"
           >
-            <span className="sr-only">Open sidebar</span>
+            <div className="sr-only">Open sidebar</div>
             {/* Heroicon name: outline/menu */}
             <svg
               className="h-6 w-6"

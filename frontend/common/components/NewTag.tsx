@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,96 +22,29 @@ import {
   TagIcon,
   UpdateNoteDTO,
 } from '../interfaces/INote.interface';
+import { tagIconColorMap, tagIconIconMap } from './TagIcon';
 import {
   arrayOfMapToMapOfKeyValue,
   mapOfKeyValueToArrayOfMap,
 } from '../app/utils';
-import { addNoteLocalAction, createTagAndAddToNoteAction } from '../features/note/noteListSlice';
+import {
+  addNoteLocalAction,
+  addTagToNoteAction,
+  removeTagToNoteAction,
+  createTagAndAddToNoteAction,
+} from '../features/note/noteListSlice';
 
 interface INewTagProps {
-  // note?: INote;
   noteId: number;
   tags: TagEntity[];
   noteTags: Tag[];
 }
-
-interface CreateTagState {
-  mode: Mode;
-  isDropdownOpen: boolean;
-  filterText: string;
-}
-
-const tagIconColor = {
-  [TagColor.default]: 'gray',
-  [TagColor.gray]: 'gray',
-  [TagColor.red]: 'red',
-  [TagColor.yellow]: 'yellow',
-  [TagColor.green]: 'green',
-  [TagColor.blue]: 'blue',
-  [TagColor.indigo]: 'indigo',
-  [TagColor.purple]: 'purple',
-  [TagColor.pink]: 'pink',
-};
-
-const tagIconicon = {
-  [TagIcon.default]: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      className="w-full"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-      />
-    </svg>
-  ),
-  [TagIcon.tag]: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-      />
-    </svg>
-  ),
-  [TagIcon.hashtag]: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
-      />
-    </svg>
-  ),
-};
-
 const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
-  console.log('###NewTag', noteId);
-
-  const state: CreateTagState = {
-    mode: Mode.Default,
-    isDropdownOpen: true,
-    filterText: '',
-  };
+  console.log('NewTag Component', noteId);
 
   const dispatch = useDispatch();
+
+  const [isDropdownOpen, setIsDropDownOpen] = useState(false);
 
   // Here we are taking tags from Redux state
   const tagsFromReduxState = useSelector((state: RootState) => state.tags.tags);
@@ -135,7 +68,34 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
     filterList(tagsArray, filterText);
   }, [tagsFromReduxState, filterText]);
 
-  const { mode, isDropdownOpen } = state;
+  /**
+   * useEffect to manage click outside dropdown to close it
+   */
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        if (isDropdownOpen) {
+          // Close the dropdown if opened
+          setIsDropDownOpen(false);
+        }
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef, isDropdownOpen]);
+
+  const inputFilterRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (isDropdownOpen) {
+      inputFilterRef.current.focus();
+    }
+  }, [isDropdownOpen]);
+
+  // const { mode } = state;
   // const tags: Tag[] = [
   //   { name: 'Tag 1', icon: TagIcon.default, color: TagColor.default },
   //   { name: 'Tag 2', icon: TagIcon.hashtag, color: TagColor.indigo },
@@ -162,38 +122,91 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
     console.log('handleClickItem');
     const visibility = !tag.visibleInFilterDropdown;
     dispatch(updateTagVisibilityInFilterDropdownLocal(tag, visibility));
+    if (visibility) {
+      const noteActionDTO: NoteActionDto = {
+        actionType: NoteAction.AddTag,
+        noteId: noteId,
+        tagId: tag.id,
+      };
+      dispatch(addTagToNoteAction(noteActionDTO));
+    } else {
+      const noteActionDTO: NoteActionDto = {
+        actionType: NoteAction.RemoveTag,
+        noteId: noteId,
+        tagId: tag.id,
+      };
+      dispatch(removeTagToNoteAction(noteActionDTO));
+    }
   };
 
+  const tagOptionHtml = (
+    <div className="p-2 px-4">
+      <div className="flex items-center">
+        <div className="mr-2">Icon:</div>
+        {Object.keys(tagIconIconMap).map((tagIcon) => (
+          <button
+            className={`flex h-full py-2 w-4 mr-2 text-${
+              tagIconIconMap[TagColor.default]
+            }-500
+            `}
+          >
+            {tagIconIconMap[tagIcon]}
+          </button>
+        ))}
+      </div>
+      <div className="flex items-center">
+        <div className="mr-2">Color:</div>
+        {Object.keys(tagIconColorMap).map((tagIconColor) => {
+          return (
+            <button
+              className={`flex w-4 h-4 mr-2
+              rounded-full bg-${tagIconColorMap[tagIconColor]}-400
+              shadow-sm 
+              focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 
+              focus:ring-offset-gray-100 
+              border border-indigo-300 dark:border-indigo-800
+              hover:border-black dark:hover:border-white
+              `}
+            ></button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
-    <div className="inline-flex">
-      {/* <button
-        title="New tag"
-        className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-indigo-100 text-indigo-800 dark:bg-gray-800 dark:text-indigo-100"
-        onClick={() => {
-          createTagAndEditAction(dispatch);
-        }}
-      >
-        aaa
-      </button> */}
-      <div
-        className="relative inline-flex "
-        // style={{ display: 'none' }}
-      >
+    <div key={`NewTag`} className="inline-flex h-full">
+      <div className="relative inline-flex h-full">
         <div>
           <button
             type="button"
-            className="inline-flex justify-center items-center w-full  px-2 py-0.5 rounded-md shadow-sm
+            className="inline-flex justify-center items-center w-full h-full px-2 py-0.5 rounded-md shadow-sm
             text-sm font-medium focus:outline-none text-gray-700 dark:text-gray-200 
             hover:bg-gray-50 dark:hover:bg-gray-900  
             focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 focus:ring-offset-gray-100 
-            border border-indigo-300 dark:border-indigo-800"
+            border border-indigo-300 dark:border-indigo-800
+            transition duration-500 ease-in-out"
             id="options-menu"
-            aria-haspopup="true"
-            aria-expanded="true"
+            // aria-haspopup="true"
+            // aria-expanded="true"
             onClick={() => {
-              // createTagAndEditAction(dispatch);
+              setIsDropDownOpen(!isDropdownOpen);
             }}
           >
+            <svg
+              className="h-4 w-4 text-indigo-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
             <svg
               className="h-4 w-4 text-indigo-400"
               xmlns="http://www.w3.org/2000/svg"
@@ -224,26 +237,34 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
           </button>
         </div>
         <div
-          className={`origin-top-left absolute ${
+          className={`origin-top-left absolute z-10 ${
             !isDropdownOpen ? 'hidden' : ''
-          } left-0 w-56  rounded-md shadow-lg 
+          } left-0 w-72 rounded-md shadow-lg 
           bg-white dark:bg-black
           ring-1 ring-black dark:ring-indigo-800
           divide-y divide-gray-100 dark:divide-gray-900  `}
+          ref={dropdownRef}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
+          onBlur={(e: any) => {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+              // Blur outside the dropdown
+              setIsDropDownOpen(false);
+            }
+          }}
         >
-          <span className="relative flex align-middle h-full">
-            <span
+          <div className="relative flex align-middle h-full">
+            <div
               className={`absolute top-0 left-4 flex h-full z-10 py-2 w-4 mr-2 text-${
-                tagIconColor[TagColor.default]
+                tagIconColorMap[TagColor.default]
               }-500`}
             >
-              {tagIconicon.DEFAULT}
-            </span>
+              {tagIconIconMap.DEFAULT}
+            </div>
             <input
               autoFocus
+              ref={inputFilterRef}
               value={filterText}
               onChange={handleOnChange}
               className="w-full border-0 bg-transparent pl-10
@@ -266,21 +287,21 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                 aria-expanded="true"
                 onClick={() => {
                   console.log('on click');
-                  
                   const noteActionDTO: NoteActionDto = {
                     actionType: NoteAction.CreateTagAndAddToNote,
                     noteId: noteId,
-                    tagName: filterText
+                    tagName: filterText,
                   };
-                  console.log('#noteActionDTO', noteActionDTO);
-                  
-                  const action:any = dispatch(createTagAndAddToNoteAction(noteActionDTO));
+                  const action: any = dispatch(
+                    createTagAndAddToNoteAction(noteActionDTO)
+                  );
                   action.then((action: any) => {
                     if (!action.error) {
                       const tag: Tag = action.payload.tag;
                       const note: INote = action.payload.note;
                       dispatch(addTagActionLocal(tag));
-                      dispatch(addNoteLocalAction(note))
+                      dispatch(addNoteLocalAction(note));
+                      inputFilterRef.current?.focus();
                     } else {
                       console.warn('err', action.error);
                       // TODO: Throw user message
@@ -291,29 +312,31 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                 Add
               </button>
             )}
-          </span>
+          </div>
           <div className="">
+            {tags.length === 0 && tagOptionHtml}
             {tags.map((tag) => {
               const { name, color, visibleInFilterDropdown } = tag;
 
               return (
                 <button
+                  key={`newtag-${tag.id}`}
                   className="flex w-full px-4 py-2 items-center text-sm text-gray-700 hover:text-black dark:hover:text-white
-              rounded-md
-              focus:outline-none focus:ring-1
-              focus:ring-indigo-500 dark:focus:ring-offset-indigo-800 focus:text-black dark:focus:text-white"
+                  rounded-md
+                  focus:outline-none focus:ring-1
+                  focus:ring-indigo-500 dark:focus:ring-offset-indigo-800 focus:text-black dark:focus:text-white"
                   onClick={(e) => {
                     handleClickItem(e, tag);
                   }}
                 >
-                  <span
-                    className={`flex relative w-4 h-4 mr-2 text-${tagIconColor[color]}-500`}
+                  <div
+                    className={`flex relative w-4 h-4 mr-2 text-${tagIconColorMap[color]}-500`}
                   >
-                    {tagIconicon.DEFAULT}
-                  </span>
-                  <span className="flex-1 text-left">{name}</span>
+                    {tagIconIconMap.DEFAULT}
+                  </div>
+                  <div className="flex-1 text-left">{name}</div>
                   {visibleInFilterDropdown && (
-                    <span className="flex flex-shrink-0">
+                    <div className="flex flex-shrink-0">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -328,7 +351,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                    </span>
+                    </div>
                   )}
                 </button>
               );

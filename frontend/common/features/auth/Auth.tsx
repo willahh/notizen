@@ -41,7 +41,7 @@ const Auth: React.FC<IAuthProps> = ({}) => {
                       href="#"
                       className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-black text-sm font-medium text-gray-500 hover:bg-gray-50"
                     >
-                      <span className="sr-only">Sign in with Facebook</span>
+                      <div className="sr-only">Sign in with Facebook</div>
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"
@@ -61,7 +61,7 @@ const Auth: React.FC<IAuthProps> = ({}) => {
                       href="#"
                       className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-black text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-900"
                     >
-                      <span className="sr-only">Sign in with Twitter</span>
+                      <div className="sr-only">Sign in with Twitter</div>
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"
@@ -77,7 +77,7 @@ const Auth: React.FC<IAuthProps> = ({}) => {
                       href="#"
                       className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-black text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-900"
                     >
-                      <span className="sr-only">Sign in with GitHub</span>
+                      <div className="sr-only">Sign in with GitHub</div>
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"
@@ -102,9 +102,9 @@ const Auth: React.FC<IAuthProps> = ({}) => {
                   <div className="w-full border-t border-gray-300 dark:border-gray-600" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-black text-gray-500">
+                  <div className="px-2 bg-white dark:bg-black text-gray-500">
                     Or continue with
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>

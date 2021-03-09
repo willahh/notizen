@@ -5,7 +5,7 @@ import {
   deleteNoteThunk,
   setSelectedNoteId,
 } from '../features/note/noteListSlice';
-import { INote } from '../interfaces/INote.interface';
+import { INote, NoteColor } from '../interfaces/INote.interface';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
@@ -20,20 +20,21 @@ function truncateString(str: string, num: number) {
   return str.slice(0, num) + '...';
 }
 
-const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags }) => {
+const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
+  console.log('NoteItem', color);
+  
   const dispatch = useDispatch();
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
   const isSelected = id === selectedNoteId;
-  console.log('tags', tags);
 
   let itemCls =
     'relative overflow-hidden select-none border-l-4 duration-300 ease-in-out';
   let itemInnerCls =
     'relative py-5 px-4 bg-white dark:bg-black duration-300 ease-in-out transition-all';
   if (isSelected) {
-    itemCls += ' border-indigo-700';
+    itemCls += ` border-${color.toLowerCase()}-700`;
     itemInnerCls += ' transform left-2';
   } else {
     itemCls += ' border-white dark:border-black';
@@ -56,7 +57,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags }) => {
           <div className="flex justify-between space-x-3">
             <div className="min-w-0 flex-1">
               <a href="#" className="block focus:outline-none">
-                <span className="absolute inset-0" aria-hidden="true" />
+                <div className="absolute inset-0" aria-hidden="true" />
                 <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-200">
                   {name}
                 </p>

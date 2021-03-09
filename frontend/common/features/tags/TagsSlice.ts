@@ -11,6 +11,8 @@ import {
   createTagDto,
   NoteActionDto,
   UpdateNoteDTO,
+  TagIcon,
+  TagColor,
 } from '../../interfaces/INote.interface';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { updateTag } from './../../api/notizenAPI';
@@ -177,6 +179,9 @@ const tags = createSlice({
           isActive: false,
           mode: Mode.Default,
           name: createTagDto.name,
+          icon: TagIcon.default,
+          color: TagColor.default,
+          visibleInFilterDropdown: false // TODO 
         };
         console.log('tempTagId', tempTagId);
 

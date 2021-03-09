@@ -29,18 +29,7 @@ button {
   }
 }
 
-.base-style h1 {
-  font-size: 26px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.base-style h2 {
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 12px;
-}
-
+/* NoteDetailEdit */
 .base-style h3 {
   font-size: 20px;
   font-weight: 400;
@@ -63,6 +52,23 @@ button {
 
 .base-style td {
   border: 1px solid #000;
+}
+
+/* Set a placeholder for contentEditable element */
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  position: absolute;
+  background-color: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  [contenteditable][placeholder]:empty:before {
+    color: #ffffffa8;
+  }
+}
+@media (prefers-color-scheme: light) {
+  [contenteditable][placeholder]:empty:before {
+    color: #000000a8;
+  }
 }
 
 /* Animations */
@@ -107,13 +113,125 @@ button {
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* dropdown */
+@keyframes dropdown-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(-40px);
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0px);
+  }
+}
+@keyframes dropdown-exit {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0px);
+  }
+  50% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translateY(-40px);
+  }
+}
+.dropdown-enter {
+  transform-origin: top left;
+  animation: dropdown-enter 400ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+.dropdown-enter-active {
+  transform-origin: top left;
+  opacity: 1;
+  transform: translateY(0);
+}
+.dropdown-exit {
+  transform-origin: top left;
+  animation: dropdown-exit 400ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+.dropdown-exit-active {
+  transform-origin: top left;
+  opacity: 0;
+  transform: translateY(-40px);
+}
+
+/* fav */
+@keyframes fav-enter {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: .5;
+    transform: scale(4);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fav-exit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: .5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.fav-enter {
+  animation: fav-enter 400ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+.fav-enter-active {
+  /* transform: translateY(0); */
+}
+.fav-exit {
+  animation: fav-exit 400ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+.fav-exit-active {
+  /* opacity: 0; */
+  /* transform: translateY(-40px); */
+}
+
+/* note-tag-tiny */
+.note-tag-tiny-enter {
+  /* opacity: 0; */
+  /* transform: scaleX(0); */
+  /* width: 0%; */
+}
+.note-tag-tiny-enter-active {
+  /* opacity: 1; */
+  /* transform: scaleX(1); */
+  /* width: auto; */
+  animation: fav-exit 400ms cubic-bezier(0.4, 0, 0.6, 1);
+  /* transition: all 400ms cubic-bezier(0.4, 0, 0.6, 1); */
+}
+.note-tag-tiny-exit {
+  /* opacity: 1; */
+  /* width: auto; */
+  /* transform: scaleX(1); */
+}
+.note-tag-tiny-exit-active {
+  /* opacity: 0; */
+  /* width: 0%; */
+  /* transform: scaleX(0); */
+  transition: all 400ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+
 /* tag-item */
 .tag-item-enter {
   height: 0;
-  /* left: -200px; */
 }
 .tag-item-enter-active {
-  /* left: 0; */
   height: 40px;
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }

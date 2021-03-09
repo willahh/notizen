@@ -12,6 +12,8 @@ import {
   getNotes,
   createTagAndAddToNote,
   updateNote,
+  addTagToNote,
+  removeTagToNote,
 } from '../../api/notizenAPI';
 import {
   NoteDetailResult,
@@ -88,13 +90,16 @@ export const createNoteThunk = createAsyncThunk(
   }
 );
 
-export const addNoteLocalAction = createAction('tags/addNoteLocalAction', (note: INote) => {
-  return {
-    payload: {
-      note: note
-    },
-  };
-});
+export const addNoteLocalAction = createAction(
+  'tags/addNoteLocalAction',
+  (note: INote) => {
+    return {
+      payload: {
+        note: note,
+      },
+    };
+  }
+);
 
 export const updateNoteThunk = createAsyncThunk(
   'notes/update',
@@ -120,12 +125,28 @@ export const createTagAndAddToNoteAction = createAsyncThunk(
   }
 );
 
+// TODO: Add sufix Action to all action functions
+export const addTagToNoteAction = createAsyncThunk(
+  'notes/addTagToNoteAction',
+  async (noteActionDTO: NoteActionDto) => {
+    return await addTagToNote(noteActionDTO);
+  }
+);
+
+// TODO: Add sufix Action to all action functions
+export const removeTagToNoteAction = createAsyncThunk(
+  'notes/removeTagToNoteAction',
+  async (noteActionDTO: NoteActionDto) => {
+    return await removeTagToNote(noteActionDTO);
+  }
+);
+
 const notes = createSlice({
   name: 'notes',
   initialState: initialNotesState,
   extraReducers: (builder) => {
     builder
-      // setSelectedNoteId ------------------
+      // setSelectedNoteId
       .addCase(setSelectedNoteId, (state, action) => {
         console.log('setSelectedNoteId', action);
         console.log(
@@ -136,7 +157,7 @@ const notes = createSlice({
         state.selectedNoteId = action.payload.selectedNoteId;
       })
 
-      // fetchNote ------------------
+      // fetchNoteThunk
       .addCase(fetchNoteThunk.pending, (state, action) => {
         console.log('fetchNote.pending');
         state.error = null;
@@ -156,16 +177,16 @@ const notes = createSlice({
         state.notesCache = newNotes;
       })
       .addCase(fetchNoteThunk.rejected, (state, action) => {
-        console.log('# fetchNote.rejected', state, action);
+        console.log('# fetchNote.rejected', action);
 
         // TODO: Need fallback to this optimistic rendering
         // state.isLoading = false;
         // state.error = action.error.message;
       })
 
-      // fetchNotes ----------------------
+      // fetchNotes
       .addCase(fetchNotes.pending, (state, action) => {
-        console.log('# fetchNotes.pending', state, action);
+        console.log('# fetchNotes.pending', action);
 
         if (Object.keys(state.notes).length === 0) {
           state.isLoading = true;
@@ -173,7 +194,7 @@ const notes = createSlice({
         state.error = null;
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
-        console.log('# fetchNotes.fulfilled', state, action);
+        console.log('# fetchNotes.fulfilled', action);
 
         state.isLoading = false;
         state.error = null;
@@ -188,7 +209,7 @@ const notes = createSlice({
         // state.error = action.error.message;
       })
 
-      // createNote ----------------------
+      // createNoteThunk
       .addCase(createNoteThunk.pending, (state, action) => {
         console.log('createNoteThunk.pending', state, action);
 
@@ -245,6 +266,8 @@ const notes = createSlice({
         state.notes = newNotes;
         state.notesCache = newNotes;
       })
+
+      // addNoteLocalAction
       .addCase(addNoteLocalAction, (state, action) => {
         console.log('addNoteLocalAction', state, action);
 
@@ -252,9 +275,8 @@ const notes = createSlice({
         const noteId = note.id;
         state.notes[noteId] = note;
       })
-      
 
-      // updateNote ----------------------
+      // updateNoteThunk
       .addCase(updateNoteThunk.pending, (state, action) => {
         console.log('updateNoteThunk.pending', state, action);
 
@@ -293,7 +315,7 @@ const notes = createSlice({
         state.notesCache = newNotes;
       })
 
-      // deleteNote ----------------------
+      // deleteNoteThunk
       .addCase(deleteNoteThunk.pending, (state, action) => {
         console.log('deleteNoteThunk.pending', state, action);
 
@@ -321,25 +343,56 @@ const notes = createSlice({
         state.notes = newNotes;
         state.notesCache = newNotes;
       })
+
+      // createTagAndAddToNoteAction
       .addCase(createTagAndAddToNoteAction.pending, (state, action) => {
         console.log('createTagAndAddToNoteAction.pending', action);
       })
       .addCase(createTagAndAddToNoteAction.fulfilled, (state, action) => {
         console.log('createTagAndAddToNoteAction.fulfilled', action);
 
-        // action.payload.note
-        // action.payload.tag
-
         // Add tag to tags state
         const tag = action.payload.tag;
         const tagId = tag.id;
+        console.error('TODO');
         // TODO
         // state.tags[tagId] = tag;
         // state.tagsCache[tagId] = tag;
-        
       })
       .addCase(createTagAndAddToNoteAction.rejected, (state, action) => {
         console.log('createTagAndAddToNoteAction.rejected', action);
+      })
+
+      // addTagToNoteAction
+      .addCase(addTagToNoteAction.pending, (state, action) => {
+        console.log('addTagToNoteAction.pending', action);
+      })
+      .addCase(addTagToNoteAction.fulfilled, (state, action) => {
+        console.log('addTagToNoteAction.fulfilled', action);
+
+        const note = action.payload.note;
+        const noteId = note.id;
+        state.notes[noteId] = note;
+        state.notesCache[noteId] = note;
+      })
+      .addCase(addTagToNoteAction.rejected, (state, action) => {
+        console.log('addTagToNoteAction.rejected', action);
+      })
+
+      // removeTagToNoteAction
+      .addCase(removeTagToNoteAction.pending, (state, action) => {
+        console.log('removeTagToNoteAction.pending', action);
+      })
+      .addCase(removeTagToNoteAction.fulfilled, (state, action) => {
+        console.log('removeTagToNoteAction.fulfilled', action);
+
+        const note = action.payload.note;
+        const noteId = note.id;
+        state.notes[noteId] = note;
+        state.notesCache[noteId] = note;
+      })
+      .addCase(removeTagToNoteAction.rejected, (state, action) => {
+        console.log('removeTagToNoteAction.rejected', action);
       });
   },
   reducers: {},

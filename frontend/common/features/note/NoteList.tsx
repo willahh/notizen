@@ -69,23 +69,36 @@ const NoteList: React.FC<INoteProps> = () => {
         className="overflow-auto divide-y-1 divide-gray-200 dark:divide-gray-800"
         type="ul"
       >
-        {notesList.map(({ id, name, content, createDate, updateDate, tags}) => {
-         return (
-            <CSSTransition key={id} timeout={400} classNames="item">
-               {/* <div>a</div> */}
-              <NoteItem
-                key={id}
-                id={id}
-                createDate={createDate}
-                updateDate={updateDate}
-                name={name}
-                tags={tags}
-                content={content}
-                isSelected={true}
-              ></NoteItem>
-            </CSSTransition>
-          );
-        })}
+        {notesList.map(
+          ({
+            id,
+            name,
+            content,
+            createDate,
+            updateDate,
+            tags,
+            color,
+            isFav,
+          }) => {
+            return (
+              <CSSTransition key={id} timeout={400} classNames="item">
+                {/* <div>a</div> */}
+                <NoteItem
+                  key={id}
+                  id={id}
+                  createDate={createDate}
+                  updateDate={updateDate}
+                  name={name}
+                  tags={tags}
+                  content={content}
+                  isSelected={true}
+                  color={color}
+                  isFav={isFav}
+                ></NoteItem>
+              </CSSTransition>
+            );
+          }
+        )}
       </TransitionGroup>
     );
   }

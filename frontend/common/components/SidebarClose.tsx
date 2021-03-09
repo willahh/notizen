@@ -9,7 +9,7 @@ const SidebarClose: React.FC<ISidebarCloseProps> = ({}) => {
         type="button"
         className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
       >
-        <span className="sr-only">Close sidebar</span>
+        <div className="sr-only">Close sidebar</div>
         {/* Heroicon name: outline/x */}
         <svg
           className="h-6 w-6 text-white"

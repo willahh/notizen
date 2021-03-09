@@ -35,7 +35,6 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   const handleContentBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const noteId = selectedNoteId;
     const content = contentRef.current?.innerText;
-    console.log('content', content);
 
     const updateNoteDTO: UpdateNoteDTO = {
       content: content,
@@ -66,11 +65,7 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   // TODO showLoading
   const showLoading = true;
   const note = selectedNoteId ? notes[selectedNoteId] : null;
-  console.log('### note', note);
-
-  // const {} = note;
-
-  console.log('## note', note);
+ 
 
   useEffect(() => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
@@ -78,6 +73,11 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     if (selectedNoteId) {
       dispatch(fetchNoteThunk(selectedNoteId));
     }
+    if (note?.content === '') {
+      // Focus on content when note has no content (new note)
+      contentRef.current?.focus();
+    }
+    
   }, [dispatch, selectedNoteId]);
 
   if (error) {
@@ -128,16 +128,18 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
             >
               <NoteTags />
               <h1
-                className="max-w-lg text-justify outline-none"
+                className="max-w-lg outline-none cursor-default text-4xl font-semibold"
                 onBlur={handleTitleBlur}
+                placeholder="Titre"
                 ref={titleRef}
                 contentEditable={true}
                 dangerouslySetInnerHTML={{ __html: note?.name || '' }}
               ></h1>
               <div
-                className="max-w-lg text-justify outline-none"
+                className="max-w-lg text-justify outline-none cursor-default font-thin"
                 onBlur={handleContentBlur}
                 // onKeyUp={handleContentKeyUp}
+                placeholder="Le contenu de ma superbe note"
                 ref={contentRef}
                 contentEditable={true}
                 dangerouslySetInnerHTML={{ __html: note?.content || '' }}

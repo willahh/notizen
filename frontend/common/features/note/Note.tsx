@@ -17,15 +17,12 @@ const Note: React.FC<INoteProps> = () => {
   return (
     <Switch>
       <Route exact path={`${HOST_URL}/note`}>
-      {/* <Route exact path="/note"> */}
         <NoteList />
       </Route>
       <Route exact path={`${HOST_URL}/note/note-list`}>
-      {/* <Route exact path="/note/note-list"> */}
         <NoteList />
       </Route>
       <Route exact path={`${HOST_URL}/note/note-thumb`}>
-      {/* <Route exact path="/note/note-thumb"> */}
         <NoteThumb />
       </Route>
     </Switch>

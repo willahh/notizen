@@ -67,9 +67,9 @@ const NoteItemThumb: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
     <li className="w-52 h-52 overflow-hidden border border-gray-200 dark:border-gray-700 rounded-md p-4">
       <div className="flex flex-col h-full">
         <div className="relative">
-          <span className="absolute right-2 top-2 flex-shrink-0 inline-block px-2 py-0.5 text-xs font-medium rounded-full">
+          <div className="absolute right-2 top-2 flex-shrink-0 inline-block px-2 py-0.5 text-xs font-medium rounded-full">
             Pin
-          </span>
+          </div>
 
           <h3
             className="text-gray-900 dark:text-gray-50"
@@ -85,14 +85,14 @@ const NoteItemThumb: React.FC<INoteItemProps> = ({ id, text, title, tags }) => {
           </div>
         </div>
         <div className="h-10">
-          <span
+          <div
             className={
               'flex-shrink-0 inline-block px-2 py-0.5 text-xs font-medium rounded-full' +
               tagColorClassName
             }
           >
             {tags}
-          </span>
+          </div>
         </div>
       </div>
     </li>
