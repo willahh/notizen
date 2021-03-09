@@ -1,9 +1,13 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { NoteColor } from './note-enum';
 
 export enum NoteAction {
   AddTag = 'ADD_TAG',
   RemoveTag = 'REMOVE_TAG',
-  CreateTagAndAddToNote = 'CREATE_TAG_AND_TO_NOTE'
+  CreateTagAndAddToNote = 'CREATE_TAG_AND_TO_NOTE',
+  AddToFav = 'ADD_TO_FAV',
+  RemoveToFav = 'REMOVE_TO_FAV',
+  UpdateColor = 'UPDATE_COLOR',
 }
 
 export class NoteActionDto {

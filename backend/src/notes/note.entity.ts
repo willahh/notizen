@@ -1,5 +1,8 @@
+import { IsEnum } from "class-validator";
 import { Tag } from "src/tags/tag.entity";
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { NoteColor } from "./note-enum";
+
 
 @Entity()
 export class Note {
@@ -17,6 +20,16 @@ export class Note {
 
   @Column({type: 'timestamp'})
   updateDate: Date;
+
+  @Column({default: false})
+  isFav: boolean;
+
+  @Column({
+    type: "enum",
+    enum: NoteColor,
+    default: NoteColor.GRAY
+})
+  color: NoteColor;
 
   // Many to many relation with note
   // @see https://typeorm.io/#/many-to-many-relations

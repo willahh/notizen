@@ -144,9 +144,6 @@ export class NotesController {
           debugThrowError === 'true',
         );
         break;
-      default:
-        return null;
-        break;
     }
   }
 }
