@@ -11,6 +11,9 @@
     },
     {
       "path": "frontend/common"
+    },
+    {
+      "path": "frontend/desktop"
     }
   ]
 }
