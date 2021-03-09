@@ -1,3 +1,4 @@
+import { TagIcon } from 'src/notes/note-enum';
 import {
   Column,
   CreateDateColumn,
@@ -7,17 +8,17 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TagColor } from './tag-enum';
 
 @Entity()
 export class Tag {
   @PrimaryGeneratedColumn()
-  // @Column({unique: true, generated: true})
   id: number;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   name: string;
 
-  @Column({default: true})
+  @Column({ default: true })
   isActive: boolean;
 
   @CreateDateColumn()
@@ -25,4 +26,20 @@ export class Tag {
 
   @UpdateDateColumn()
   updateDate: Date;
+
+  @Column({
+    type: 'enum',
+    enum: TagIcon,
+    default: TagIcon.TAG,
+  })
+  icon: TagIcon;
+
+  @Column({
+    type: 'enum',
+    enum: TagColor,
+    default: TagColor.GRAY,
+  })
+  color: TagColor;
 }
+
+// npx typeorm migration:generate -n alterNoteTableAddColorAndIsFavColumns

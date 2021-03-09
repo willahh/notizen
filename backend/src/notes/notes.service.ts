@@ -57,14 +57,15 @@ export class NotesService {
       }
     }
     const { limit, offset } = paginationQuery;
-    // TODO NEED TO CACH ERROR
-    return this.noteRepository.find({
-      skip: offset,
-      take: limit,
-      order: {
-        id: 'DESC',
-      },
-    });
+
+    const notes = await this.connection
+    .createQueryBuilder(Note, "note")
+    .leftJoinAndSelect("note.tags", "tag")
+    .orderBy('note.id', 'DESC')
+    .addOrderBy('tag.name', 'ASC')
+    .getMany();
+
+    return notes;
   }
 
   async findOne(
@@ -80,30 +81,6 @@ export class NotesService {
         throwError();
       }
     }
-    const note = await this.noteRepository.findOne(id, {
-      relations: ['tags'],
-    });
-    if (!note) {
-      throw new NotFoundException(`Note #${id} not found`);
-    }
-    return note;
-  }
-
-  // TODO: remove this one, all notes returns dependencies
-  async findOneDetailed(
-    id: number,
-    debug: boolean = false,
-    debugThrowError: boolean = false,
-  ) {
-    console.log('findOneDetailed', id, debug, debugThrowError);
-    if (debug) {
-      await promiseTimeout();
-      maybeThrowRandomError();
-      if (debugThrowError) {
-        throwError();
-      }
-    }
-
     const note = await this.noteRepository.findOne(id, {
       relations: ['tags'],
     });
@@ -129,7 +106,7 @@ export class NotesService {
     note.createDate = new Date();
     note.updateDate = note.createDate;
     await this.noteRepository.save(note);
-    const newNote = this.findOneDetailed(note.id);
+    const newNote = this.findOne(note.id);
 
     return newNote;
   }
@@ -156,7 +133,7 @@ export class NotesService {
     }
     note.updateDate = new Date();
     await this.noteRepository.save(note);
-    const newNote = this.findOneDetailed(note.id);
+    const newNote = this.findOne(note.id);
     return newNote;
   }
 
@@ -174,7 +151,7 @@ export class NotesService {
       }
     }
 
-    const note = await this.findOneDetailed(noteId);
+    const note = await this.findOne(noteId);
     if (!note) {
       throw new NotFoundException(`Note #{id} not found`);
     }
@@ -204,7 +181,7 @@ export class NotesService {
           .relation(Note, 'tags')
           .of(noteId)
           .add(tagId);
-        const note = this.findOneDetailed(noteId, debug, debugThrowError);
+        const note = this.findOne(noteId, debug, debugThrowError);
         response = note;
       } else {
         throw new HttpException(
@@ -250,7 +227,7 @@ export class NotesService {
           .relation(Note, 'tags')
           .of(noteId)
           .remove(tagId);
-        const note = await this.findOneDetailed(noteId, debug, debugThrowError);
+        const note = await this.findOne(noteId, debug, debugThrowError);
         return note;
       } else {
         throw new HttpException(
@@ -288,10 +265,12 @@ export class NotesService {
     }
     let response = null;
     try {
-      const { noteId, tagName } = noteActionDto;
+      const { noteId, tagName, tagIcon, tagColor } = noteActionDto;
       const createTagDTO: CreateTagDto = {
         isActive: true,
         name: tagName,
+        color: tagColor,
+        icon: tagIcon
       };
 
       const tag = this.tagRepository.create(createTagDTO);
@@ -306,7 +285,7 @@ export class NotesService {
         .relation(Note, 'tags')
         .of(noteId)
         .add(tagId);
-      const note = await this.findOneDetailed(noteId, debug, debugThrowError);
+      const note = await this.findOne(noteId, debug, debugThrowError);
       response = {
         note: note,
         tag: tag,
@@ -323,52 +302,4 @@ export class NotesService {
 
     return response;
   }
-
-  // async addToFav(
-  //   noteId: number,
-  //   debug = false,
-  //   debugThrowError: boolean = false,
-  // ) {
-  //   if (debug) {
-  //     await promiseTimeout();
-  //     maybeThrowRandomError();
-  //     if (debugThrowError) {
-  //       throwError();
-  //     }
-  //   }
-  //   const note = await this.noteRepository.preload({
-  //     id: noteId,
-  //     isFav: true
-  //   });
-  //   if (!note) {
-  //     throw new NotFoundException(`Note #${noteId} not found`);
-  //   }
-  //   await this.noteRepository.save(note);
-  //   const newNote = this.findOneDetailed(note.id);
-  //   return newNote;
-  // }
-
-  // async removeToFav(
-  //   noteId: number,
-  //   debug = false,
-  //   debugThrowError: boolean = false,
-  // ) {
-  //   if (debug) {
-  //     await promiseTimeout();
-  //     maybeThrowRandomError();
-  //     if (debugThrowError) {
-  //       throwError();
-  //     }
-  //   }
-  //   const note = await this.noteRepository.preload({
-  //     id: noteId,
-  //     isFav: false
-  //   });
-  //   if (!note) {
-  //     throw new NotFoundException(`Note #${noteId} not found`);
-  //   }
-  //   await this.noteRepository.save(note);
-  //   const newNote = this.findOneDetailed(note.id);
-  //   return newNote;
-  // }
 }

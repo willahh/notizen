@@ -1,5 +1,6 @@
 import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { NoteColor } from './note-enum';
+import { TagColor } from 'src/tags/tag-enum';
+import { NoteColor, TagIcon } from './note-enum';
 
 export enum NoteAction {
   AddTag = 'ADD_TAG',
@@ -25,4 +26,12 @@ export class NoteActionDto {
   @IsNumber()
   @IsOptional()
   readonly tagId: number;
+
+  @IsOptional()
+  @IsEnum(TagIcon)
+  readonly tagIcon: TagIcon;
+
+  @IsOptional()
+  @IsEnum(TagColor)
+  readonly tagColor: TagColor;
 }

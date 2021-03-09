@@ -5,7 +5,7 @@ export enum TagIcon {
 }
 
 // TODO: Share with frontend
-export enum NoteColor {
+export enum TagColor {
   GRAY = 'GRAY',
   RED = 'RED',
   YELLOW = 'YELLOW',

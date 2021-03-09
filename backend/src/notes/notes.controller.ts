@@ -57,20 +57,7 @@ export class NotesController {
       debugThrowError === 'true',
     );
   }
-
-  @Get(':id/detailed')
-  findOneWithTags(
-    @Param('id') id: number,
-    @Query('debug') debug,
-    @Query('debugThrowError') debugThrowError,
-  ) {
-    return this.notesService.findOneDetailed(
-      id,
-      debug === 'true',
-      debugThrowError === 'true',
-    );
-  }
-
+  
   @Post()
   create(
     @Body() createNoteDto: CreateNoteDto,
