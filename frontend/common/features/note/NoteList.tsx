@@ -14,6 +14,7 @@ import MainTemplate from '../../components/MainTemplate';
 import { INote } from '../../interfaces/INote.interface';
 // const scrollbar = require('smooth-scrollbar-react');
 // const ScrollBar = scrollbar.default;
+import { mapOfKeyValueToArrayOfMap } from './../../app/utils';
 
 interface INoteProps {}
 
@@ -23,29 +24,19 @@ const NoteList: React.FC<INoteProps> = () => {
     (state: RootState) => state.notes
   );
 
+  const notesList: INote[] = mapOfKeyValueToArrayOfMap(notes).sort((a, b) => {
+    return Number(b.id) - Number(a.id);
+  }); // TODO: refactor sorting
+
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
-
-  // TODO: Mutualize generic vector->map-of-kv
-  const acc: INote[] = [];
-  const notesList = Object.keys(notes)
-    .reduce((acc, v) => {
-      if (notes[v]) {
-        acc.push(notes[v]);
-      }
-      return acc;
-    }, acc)
-    .sort((a, b) => {
-      return Number(b.id) - Number(a.id);
-    }); // TODO: refactor sorting
-
+  
   useEffect(() => {
     dispatch(fetchNotes());
   }, [dispatch]);
 
   let noteListHtml = null;
-  // let match = useRouteMatch();
 
   if (error) {
     noteListHtml = (
@@ -82,7 +73,6 @@ const NoteList: React.FC<INoteProps> = () => {
           }) => {
             return (
               <CSSTransition key={id} timeout={400} classNames="item">
-                {/* <div>a</div> */}
                 <NoteItem
                   key={id}
                   id={id}
@@ -102,6 +92,7 @@ const NoteList: React.FC<INoteProps> = () => {
       </TransitionGroup>
     );
   }
+  //TODO: Transition horizontal between note + note route
 
   return (
     <MainTemplate>

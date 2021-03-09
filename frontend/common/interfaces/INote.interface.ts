@@ -13,7 +13,7 @@ export interface INote {
   updateDate: Date;
   tags: Tag[];
   isFav: boolean;
-  color: NoteColor
+  color: NoteColor;
 }
 
 export interface Notes {
@@ -26,9 +26,8 @@ export interface NoteDetailResult {
 
 export interface CreateTagAndAddToNoteResult {
   note: INote;
-  tag: Tag
+  tag: Tag;
 }
-
 
 export interface NotesResult {
   notes: Notes;
@@ -52,7 +51,7 @@ export interface CreateNoteDTO {
 export enum NoteAction {
   AddTag = 'ADD_TAG',
   RemoveTag = 'REMOVE_TAG',
-  CreateTagAndAddToNote = 'CREATE_TAG_AND_TO_NOTE'
+  CreateTagAndAddToNote = 'CREATE_TAG_AND_TO_NOTE',
 }
 
 // TODO: Share with the backend
@@ -61,40 +60,42 @@ export interface NoteActionDto {
   noteId: number;
   tagName?: string;
   tagId?: number;
+  tagIcon?: TagIcon;
+  tagColor?: TagColor;
 }
 
 // Tag ------------------------
 // TODO: Share with backend
 export enum TagIcon {
-  default = 'DEFAULT',
-  tag = 'TAG',
-  hashtag = 'HASHTAG',
+  // DEFAULT = 'DEFAULT',
+  TAG = 'TAG',
+  HASHTAG = 'HASHTAG',
 }
 
 // TODO: Share with backend
 export enum TagColor {
-  default = 'GRAY',
-  gray = 'GRAY',
-  red = 'RED',
-  yellow = 'YELLOW',
-  green = 'GREEN',
-  blue = 'BLUE',
-  indigo = 'INDIGO',
-  purple = 'PURPLE',
-  pink = 'PINK',
+  // DEFAULT = 'GRAY',
+  GRAY = 'GRAY',
+  RED = 'RED',
+  YELLOW = 'YELLOW',
+  GREEN = 'GREEN',
+  BLUE = 'BLUE',
+  INDIGO = 'INDIGO',
+  PURPLE = 'PURPLE',
+  PINK = 'PINK',
 }
 
 // TODO: Share with backend
 export enum NoteColor {
-  default = 'GRAY',
-  gray = 'GRAY',
-  red = 'RED',
-  yellow = 'YELLOW',
-  green = 'GREEN',
-  blue = 'BLUE',
-  indigo = 'INDIGO',
-  purple = 'PURPLE',
-  pink = 'PINK',
+  // DEFAULT = 'GRAY',
+  GRAY = 'GRAY',
+  RED = 'RED',
+  YELLOW = 'YELLOW',
+  GREEN = 'GREEN',
+  BLUE = 'BLUE',
+  INDIGO = 'INDIGO',
+  PURPLE = 'PURPLE',
+  PINK = 'PINK',
 }
 
 // TODO: Share with backend
@@ -106,7 +107,6 @@ export interface TagEntity {
   updateDate: Date;
   icon: TagIcon;
   color: TagColor;
-  // noteId?: string;
 }
 
 export enum Mode {
@@ -119,7 +119,6 @@ export interface Tag extends TagEntity {
   mode: Mode;
   icon: TagIcon;
   color: TagColor;
-  visibleInFilterDropdown: boolean;
 }
 
 export interface Tags {

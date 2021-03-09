@@ -22,10 +22,7 @@ export const mapOfKeyValueToArrayOfMap = (m) => {
         acc.push(m[v]);
       }
       return acc;
-    }, acc)
-    .sort((a, b) => {
-      return Number(b.id) - Number(a.id);
-    });
+    }, acc);
   return array;
 };
 

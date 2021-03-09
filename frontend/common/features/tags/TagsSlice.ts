@@ -29,7 +29,7 @@ interface TagsState {
   editModeActive: boolean; // TODO: Remove use mode
 }
 
-const initialTagsState: TagsState = {
+export const initialTagsState: TagsState = {
   error: undefined,
   isLoading: false,
   selectedTagId: undefined,
@@ -74,19 +74,19 @@ export const updateTagLocal = createAction('tags/updateLocal', (tag: Tag) => {
   };
 });
 
-export const updateTagVisibilityInFilterDropdownLocal = createAction(
-  'tag/updateTagVisibilityInFilterDropdownLocal',
-  (tag: Tag, visible: boolean) => {
-    console.log('updateTagVisibilityInFilterDropdownLocal', tag, visible);
+// export const updateTagVisibilityInFilterDropdownLocal = createAction(
+//   'tag/updateTagVisibilityInFilterDropdownLocal',
+//   (tag: Tag, visible: boolean) => {
+//     console.log('updateTagVisibilityInFilterDropdownLocal', tag, visible);
 
-    return {
-      payload: {
-        tag: tag,
-        visible: visible,
-      },
-    };
-  }
-);
+//     return {
+//       payload: {
+//         tag: tag,
+//         visible: visible,
+//       },
+//     };
+//   }
+// );
 
 export const resetUpdateTag = createAction(
   'tags/resetUpdateLocal',
@@ -179,12 +179,9 @@ const tags = createSlice({
           isActive: false,
           mode: Mode.Default,
           name: createTagDto.name,
-          icon: TagIcon.default,
-          color: TagColor.default,
-          visibleInFilterDropdown: false // TODO 
+          icon: TagIcon.TAG,
+          color: TagColor.GRAY,
         };
-        console.log('tempTagId', tempTagId);
-
         state.tags[tempTagId] = tag;
       })
       .addCase(createTagAction.fulfilled, (state, action) => {
@@ -253,14 +250,13 @@ const tags = createSlice({
         const tag = action.payload.tag;
         state.tags[tag.id] = action.payload.tag;
       })
-      .addCase(updateTagVisibilityInFilterDropdownLocal, (state, action) => {
-        console.log('updateTagVisibilityInFilterDropdownLocal', action);
+      // .addCase(updateTagVisibilityInFilterDropdownLocal, (state, action) => {
+      //   console.log('updateTagVisibilityInFilterDropdownLocal', action);
 
-        const tag = { ...action.payload.tag };
-        const visible = action.payload.visible;
-        tag.visibleInFilterDropdown = visible;
-        state.tags[tag.id] = tag;
-      })
+      //   const tag = { ...action.payload.tag };
+      //   const visible = action.payload.visible;
+      //   state.tags[tag.id] = tag;
+      // })
       .addCase(updateTagAction.pending, (state, action) => {
         console.log('updateTagAction.pending', action);
 

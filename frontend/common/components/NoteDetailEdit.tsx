@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CSSTransition } from 'react-transition-group';
 import { RootState } from '../app/rootReducer';
 import {
   fetchNoteThunk,
@@ -18,18 +19,15 @@ interface INoteDetailProps {}
 const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   console.log('NoteDetailEdit');
 
-  // const delay = 5;
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
   );
-  // const [show, setShow] = useState(false);
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
 
   const contentRef = useRef<HTMLDivElement>(null);
-  // const contentRef2 = React.createRef();
   const titleRef = useRef<HTMLDivElement>(null);
 
   const handleContentBlur = (e: React.FocusEvent<HTMLDivElement>) => {
@@ -42,18 +40,6 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: true }));
   };
 
-  // const handleContentKeyUp = (e: React.KeyboardEvent) => {
-  //   console.log('key up', e);
-
-  //   const noteId = selectedNoteId;
-  //   const input = e.target as HTMLElement;
-  //   const updateNoteDTO: UpdateNoteDTO = {
-  //     content: input.innerText,
-  //   };
-  //   dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: false }));
-  //   contentRef.current?.focus();
-  // };
-
   const handleTitleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const noteId = selectedNoteId;
     const updateNoteDTO: UpdateNoteDTO = {
@@ -65,7 +51,6 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   // TODO showLoading
   const showLoading = true;
   const note = selectedNoteId ? notes[selectedNoteId] : null;
- 
 
   useEffect(() => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
@@ -77,7 +62,6 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
       // Focus on content when note has no content (new note)
       contentRef.current?.focus();
     }
-    
   }, [dispatch, selectedNoteId]);
 
   if (error) {
@@ -127,23 +111,27 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
               }}
             >
               <NoteTags />
-              <h1
-                className="max-w-lg outline-none cursor-default text-4xl font-semibold"
-                onBlur={handleTitleBlur}
-                placeholder="Titre"
-                ref={titleRef}
-                contentEditable={true}
-                dangerouslySetInnerHTML={{ __html: note?.name || '' }}
-              ></h1>
-              <div
-                className="max-w-lg text-justify outline-none cursor-default font-thin"
-                onBlur={handleContentBlur}
-                // onKeyUp={handleContentKeyUp}
-                placeholder="Le contenu de ma superbe note"
-                ref={contentRef}
-                contentEditable={true}
-                dangerouslySetInnerHTML={{ __html: note?.content || '' }}
-              ></div>
+              {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
+                <div>
+                  <h1
+                    className="max-w-lg outline-none cursor-default text-4xl font-semibold"
+                    onBlur={handleTitleBlur}
+                    placeholder="Titre"
+                    ref={titleRef}
+                    contentEditable={true}
+                    dangerouslySetInnerHTML={{ __html: note?.name || '' }}
+                  ></h1>
+                  <div
+                    className="max-w-lg text-justify outline-none cursor-default font-thin"
+                    onBlur={handleContentBlur}
+                    // onKeyUp={handleContentKeyUp}
+                    placeholder="Le contenu de ma superbe note"
+                    ref={contentRef}
+                    contentEditable={true}
+                    dangerouslySetInnerHTML={{ __html: note?.content || '' }}
+                  ></div>
+                </div>
+              {/* </CSSTransition> */}
             </div>
           ) : (
             <div></div>

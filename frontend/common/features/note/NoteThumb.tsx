@@ -41,10 +41,9 @@ const NoteThumb: React.FC<INoteProps> = () => {
         acc.push(notes[v]);
       }
       return acc;
-    }, acc)
-    .sort(({ id: a }, { id: b }) => {
-      return Number(a) - Number(b);
-    });
+    }, acc).sort((a, b) => {
+      return Number(b.id) - Number(a.id);
+    }); // TODO: refactor sorting;
 
   useEffect(() => {
     dispatch(fetchNotes());

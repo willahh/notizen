@@ -8,7 +8,6 @@ import {
   createNote,
   deleteNote,
   getNoteByNoteId,
-  getNoteDetailedByNoteId,
   getNotes,
   createTagAndAddToNote,
   updateNote,
@@ -21,6 +20,7 @@ import {
   UpdateNoteDTO,
   NoteActionDto,
   INote,
+  Tag,
 } from '../../interfaces/INote.interface';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { Notes } from '../../interfaces/INote.interface';
@@ -42,7 +42,7 @@ const getNotesFromLocalStorage = () => {
 };
 const notesInitialData = getNotesFromLocalStorage();
 
-const initialNotesState: NoteListState = {
+export const initialNotesState: NoteListState = {
   isLoading: false,
   error: null,
   notes: notesInitialData,
@@ -66,7 +66,7 @@ export const fetchNoteThunk = createAsyncThunk(
   async (noteId: string) => {
     console.log('fetchNote', noteId);
     // return await getNoteByNoteId(noteId);
-    return await getNoteDetailedByNoteId(noteId);
+    return await getNoteByNoteId(noteId);
   }
 );
 
@@ -125,18 +125,27 @@ export const createTagAndAddToNoteAction = createAsyncThunk(
   }
 );
 
-// TODO: Add sufix Action to all action functions
+interface AddTagToNoteAction {
+  noteActionDTO: NoteActionDto,
+  tag: Tag
+}
 export const addTagToNoteAction = createAsyncThunk(
   'notes/addTagToNoteAction',
-  async (noteActionDTO: NoteActionDto) => {
+  async ({noteActionDTO, tag}: AddTagToNoteAction) => {
+    console.log('##addTagToNoteAction');
+    
     return await addTagToNote(noteActionDTO);
   }
 );
 
-// TODO: Add sufix Action to all action functions
+interface RemoveTagToNoteAction {
+  noteActionDTO: NoteActionDto,
+  tag: Tag
+}
 export const removeTagToNoteAction = createAsyncThunk(
   'notes/removeTagToNoteAction',
-  async (noteActionDTO: NoteActionDto) => {
+  async ({noteActionDTO, tag}: RemoveTagToNoteAction) => {
+    console.log('removeTagToNoteAction');
     return await removeTagToNote(noteActionDTO);
   }
 );
@@ -366,22 +375,42 @@ const notes = createSlice({
       // addTagToNoteAction
       .addCase(addTagToNoteAction.pending, (state, action) => {
         console.log('addTagToNoteAction.pending', action);
+
+        const noteId = action.meta.arg.noteActionDTO.noteId;
+        const tag = action.meta.arg.tag;
+        const note = state.notes[noteId];
+
+        note.tags.push(tag);
+        state.notes[noteId] = note;
       })
       .addCase(addTagToNoteAction.fulfilled, (state, action) => {
         console.log('addTagToNoteAction.fulfilled', action);
 
         const note = action.payload.note;
         const noteId = note.id;
+
         state.notes[noteId] = note;
         state.notesCache[noteId] = note;
       })
       .addCase(addTagToNoteAction.rejected, (state, action) => {
         console.log('addTagToNoteAction.rejected', action);
+
+        const noteId = action.meta.arg.noteActionDTO.noteId;
+        const note = state.notesCache[noteId];
+        
+        state.notes[noteId] = note;
       })
 
       // removeTagToNoteAction
       .addCase(removeTagToNoteAction.pending, (state, action) => {
         console.log('removeTagToNoteAction.pending', action);
+
+        const noteId = action.meta.arg.noteActionDTO.noteId;
+        const tagId = action.meta.arg.tag.id;
+        const note = state.notes[noteId];
+        delete note.tags[tagId];
+
+        state.notes[noteId] = note;
       })
       .addCase(removeTagToNoteAction.fulfilled, (state, action) => {
         console.log('removeTagToNoteAction.fulfilled', action);
@@ -393,6 +422,11 @@ const notes = createSlice({
       })
       .addCase(removeTagToNoteAction.rejected, (state, action) => {
         console.log('removeTagToNoteAction.rejected', action);
+
+        const noteId = action.meta.arg.noteActionDTO.noteId;
+        const note = state.notesCache[noteId];
+
+        state.notes[noteId] = note;
       });
   },
   reducers: {},

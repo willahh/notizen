@@ -43,8 +43,7 @@ const NoteLit: React.FC<INoteProps> = () => {
         acc.push(notes[v]);
       }
       return acc;
-    }, [])
-    .sort((a, b) => b.id - a.id); // TODO: refactor sorting
+    }, []);
 
   useEffect(() => {
     dispatch(fetchNotes());

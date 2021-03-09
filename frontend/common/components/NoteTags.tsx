@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import ReactTooltip from 'react-tooltip';
 import { RootState } from '../app/rootReducer';
 import { mapOfKeyValueToArrayOfMap } from '../app/utils';
 import { updateNoteThunk } from '../features/note/noteListSlice';
 import {
   INote,
   NoteColor,
+  TagColor,
   TagEntity,
   UpdateNoteDTO,
 } from '../interfaces/INote.interface';
@@ -23,7 +25,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
     (state: RootState) => state.notes.selectedNoteId
   );
   const tags = useSelector((state: RootState) => state.tags.tags);
-  const note: INote | null = selectedNoteId ? notes[selectedNoteId] : null;
+  const note: INote = selectedNoteId ? notes[selectedNoteId] : null;
   const tagsList: TagEntity[] = mapOfKeyValueToArrayOfMap(tags);
   const noteTags = note?.tags;
   const noteId = note?.id;
@@ -50,6 +52,9 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [dropdownColorRef, isColorDropDownOpen]);
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
 
   // Note: This is required to manage border-left / border-right / radius left / radius right, because of the use
   // of Utility css....
@@ -101,10 +106,11 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
         marginRight: 'auto',
       }}
     >
-      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 mb-2 select-none">
-        <div className="inline-flex">
-          <div title="Color" className="relative inline-flex items-center">
+      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row mb-2 select-none">
+        <div className="inline-flex mr-2">
+          <div className="relative inline-flex items-center">
             <button
+              data-tip="Color"
               className="flex h-full items-center px-2 py-0.5 first-child:border-r-0 rounded rounded-r-none
               text-xs font-medium dark:text-indigo-100
               shadow-sm 
@@ -129,7 +135,6 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
             >
               <div
                 className={`absolute top-8 z-10 left-0 
-               
                 p-4 bg-white rounded-md dark:bg-black border border-indigo-700 shadow-md`}
                 ref={dropdownColorRef}
                 onBlur={(e: any) => {
@@ -190,7 +195,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
 
                             const noteId = note?.id;
                             const updateNoteDTO: UpdateNoteDTO = {
-                              color: iconColor,
+                              color: NoteColor[iconColor],
                             };
                             dispatch(
                               updateNoteThunk({
@@ -211,7 +216,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
           </div>
 
           <button
-            title="fav"
+            data-tip="Fav"
             className="inline-flex items-center px-2 py-0.5 first-child:border-r-0 rounded rounded-l-none
             text-xs font-medium dark:text-indigo-100
             shadow-sm 
@@ -240,31 +245,33 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
             </CSSTransition>
           </button>
         </div>
-        <div className="inline-flex">
-        {/* <TransitionGroup className="inline-flex"> */}
+        {noteTags && (
+          <NewTag noteId={Number(noteId)} tags={tagsList} noteTags={noteTags} />
+        )}
+        <div className="inline-flex ml-2">
+          {/* <TransitionGroup className="inline-flex"> */}
           {noteTags &&
-            noteTags.map(({ id, name }, index) => (
+            noteTags.map(({ id, name, color, icon }, index) => {
+              console.log('icon', color, icon);
+
               // <CSSTransition key={id} timeout={400} classNames="note-tag-tiny">
+              return (
                 <div
                   key={`notetag-${id}`}
                   className={getTagClassName(noteTags, name, index)}
                 >
-                  <svg
-                    className="mr-1.5 h-2 w-2 text-indigo-400"
-                    fill="currentColor"
-                    viewBox="0 0 8 8"
+                  <div
+                    className={`mr-1.5 h-4 w-4 text-${tagIconColorMap[color]}-500`}
                   >
-                    <circle cx="4" cy="4" r="3" />
-                  </svg>
+                    {tagIconIconMap[icon]}
+                  </div>
                   {name}
                 </div>
+              );
               // </CSSTransition>
-            ))}
-        {/* </TransitionGroup> */}
+            })}
+          {/* </TransitionGroup> */}
         </div>
-        {noteTags && (
-          <NewTag noteId={Number(noteId)} tags={tagsList} noteTags={noteTags} />
-        )}
       </div>
     </div>
   );

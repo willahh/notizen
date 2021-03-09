@@ -79,20 +79,6 @@ export async function getNoteByNoteId(
   }
 }
 
-export async function getNoteDetailedByNoteId(
-  noteId: string
-): Promise<NoteDetailResult> {
-  const url = withUrl(`${API_URL}/notes/${noteId}/detailed`);
-  try {
-    const response = await axios.get<INote>(url);
-    return {
-      note: response.data,
-    };
-  } catch (err) {
-    throw err;
-  }
-}
-
 export async function createNote(
   createNoteDTO: CreateNoteDTO
 ): Promise<NoteDetailResult> {
