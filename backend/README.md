@@ -222,7 +222,7 @@ DATABASE_PASSWORD={database_password}
 DB_INSTANCE_NAME={myapplication-xxx:europe-west1:xxx}
 
 # Deploy to production
-yarn deploy
+npm run deploy
 
 ````
 
