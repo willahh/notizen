@@ -13,6 +13,13 @@ button {
   cursor: default;
 }
 
+/* z-index */
+/* tooltip */
+.type-custom {
+  z-index: 999;
+}
+
+/* scrollbar */
 .scrollbar-track {
   background: transparent !important;
 }
