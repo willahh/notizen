@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 import { RootState } from '../app/rootReducer';
 import {
   deleteNoteThunk,
   setSelectedNoteId,
 } from '../features/note/noteListSlice';
 import { INote, NoteColor } from '../interfaces/INote.interface';
+import { tagIconColorMap, tagIconIconMap } from './TagIcon';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
@@ -22,7 +24,7 @@ function truncateString(str: string, num: number) {
 
 const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   //console.log('NoteItem', color);
-  
+
   const dispatch = useDispatch();
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
@@ -43,6 +45,11 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   const btnClassName =
     'relative inline-flex items-center p-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md bg-white dark:bg-black dark:border-gray-800';
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
+  ReactTooltip.rebuild();
+
   return (
     <li
       className="relative overflow-hidden"
@@ -57,15 +64,32 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
           <div className="flex justify-between space-x-3">
             <div className="min-w-0 flex-1">
               <a href="#" className="block focus:outline-none">
-                <div className="absolute inset-0" aria-hidden="true" />
                 <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-200">
                   {name}
                 </p>
-                <p className="text-sm truncate text-gray-500 dark:text-gray-300">
-                  Tag 1, Tag 2
-                  {/* TODO: Need to retrieve tags within Notes (new backend service notesDetailed required*/}
-                  {/* {tags && tags.map(({mode}) => <span>{name}</span>)} */}
-                </p>
+                <div>
+                  {tags.map(({ color, icon, name }) => {
+                    return (
+                      <span
+                        // title={name}
+                        data-tip={name}
+                        data-delay-show={10}
+                        data-effect="solid"
+                        className="inline-flex items-center rounded-full pr-1 lowercase
+                        text-xs dark:text-indigo-100
+                        hover:bg-indigo-200 dark:hover:bg-indigo-700
+                        transition duration-200 ease-in-out
+                        "
+                      >
+                        <span
+                          className={`h-3 w-3 text-${tagIconColorMap[color]}-500`}
+                        >
+                          {tagIconIconMap[icon]}
+                        </span>
+                      </span>
+                    );
+                  })}
+                </div>
               </a>
             </div>
             <time

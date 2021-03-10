@@ -85,7 +85,6 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
   // New tag form fields
   const [formColor, setFormColor] = useState(TagColor.GRAY);
   const [formIcon, setFormIcon] = useState(TagIcon.TAG);
-  console.log('##########formColor', formColor);
   
   /**
    * useEffect to manage click outside dropdown to close it
