@@ -63,7 +63,7 @@ export class TagsService {
   }
 
   async findOne(
-    id: number,
+    id: string,
     debug: boolean = false,
     debugThrowError: boolean = false,
   ) {
@@ -106,7 +106,7 @@ export class TagsService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateTagDto: UpdateTagDto,
     debug = false,
     debugThrowError: boolean = false,
@@ -135,7 +135,7 @@ export class TagsService {
     return tag;
   }
 
-  async remove(id: number, debug = false, debugThrowError: boolean = false) {
+  async remove(id: string, debug = false, debugThrowError: boolean = false) {
     console.log('remove', id);
     if (debug) {
       await promiseTimeout();

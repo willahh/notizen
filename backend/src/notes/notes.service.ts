@@ -69,7 +69,7 @@ export class NotesService {
   }
 
   async findOne(
-    id: number,
+    id: string,
     debug: boolean = false,
     debugThrowError: boolean = false,
   ) {
@@ -112,7 +112,7 @@ export class NotesService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateNoteDto: UpdateNoteDto,
     debug = false,
     debugThrowError: boolean = false,
@@ -138,7 +138,7 @@ export class NotesService {
   }
 
   async remove(
-    noteId: number,
+    noteId: string,
     debug = false,
     debugThrowError: boolean = false,
   ) {
@@ -160,8 +160,8 @@ export class NotesService {
   }
 
   async addTag(
-    noteId: number,
-    tagId: number,
+    noteId: string,
+    tagId: string,
     debug = false,
     debugThrowError: boolean = false,
   ) {
@@ -206,8 +206,8 @@ export class NotesService {
   }
 
   async removeTag(
-    noteId: number,
-    tagId: number,
+    noteId: string,
+    tagId: string,
     debug = false,
     debugThrowError: boolean = false,
   ) {

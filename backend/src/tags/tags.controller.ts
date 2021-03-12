@@ -37,7 +37,7 @@ export class TagsController {
 
   @Get(':id')
   findOne(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
   ) {
@@ -63,7 +63,7 @@ export class TagsController {
 
   @Patch(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateTagDto: UpdateTagDto,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
@@ -78,7 +78,7 @@ export class TagsController {
 
   @Delete(':id')
   delete(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
   ) {

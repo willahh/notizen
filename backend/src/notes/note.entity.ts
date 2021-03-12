@@ -3,6 +3,7 @@ import { Tag } from 'src/tags/tag.entity';
 import {
   Column,
   Entity,
+  Generated,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
@@ -11,8 +12,8 @@ import { NoteColor } from './note-enum';
 
 @Entity()
 export class Note {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: true })
   name: string;
