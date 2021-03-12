@@ -9347,6 +9347,10 @@ isobject@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-4.0.0.tgz#3f1c9155e73b192022a80819bacd0343711697b0"
 
+isomorphic.js@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/isomorphic.js/-/isomorphic.js-0.2.2.tgz#4c76fb70d3e207123dead08675ba97eb75f5615a"
+
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
@@ -10119,6 +10123,12 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lib0@^0.2.35, lib0@^0.2.38:
+  version "0.2.40"
+  resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.40.tgz#7c89c2a7a89f9caaa0a04eaecb944d8e90a731b3"
+  dependencies:
+    isomorphic.js "^0.2.2"
 
 lines-and-columns@^1.1.6:
   version "1.1.6"
@@ -16146,6 +16156,12 @@ xtend@^4.0.0, xtend@^4.0.1, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
 
+y-indexeddb@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/y-indexeddb/-/y-indexeddb-9.0.6.tgz#49aecac11bc229571fb134e0ec0717c0330b731f"
+  dependencies:
+    lib0 "^0.2.35"
+
 y18n@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.1.tgz#8db2b83c31c5d75099bb890b23f3094891e247d4"
@@ -16256,6 +16272,12 @@ yauzl@^2.10.0:
   dependencies:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
+
+yjs@^13.5.1:
+  version "13.5.1"
+  resolved "https://registry.yarnpkg.com/yjs/-/yjs-13.5.1.tgz#addf14fb4120ee007497fcad327eae983b6ec220"
+  dependencies:
+    lib0 "^0.2.38"
 
 yocto-queue@^0.1.0:
   version "0.1.0"
