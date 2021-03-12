@@ -12,17 +12,19 @@ interface ISyncProps {}
 const Sync: React.FC<ISyncProps> = () => {
   console.log('Sync component');
 
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [actionsQueue, setActionsQueue] = useState(yCommandsArray);
   const [showSyncModal, setShowSyncModal] = useState(false);
 
   const updateShowSyncModal = () => {
     console.log('updateShowSyncModal', yCommandsArray.length);
 
-    if (yCommandsArray.length > 0) {
-      setShowSyncModal(true);
-    } else {
-      setShowSyncModal(false);
+    if (navigator.onLine) {
+      if (yCommandsArray.length > 0) {
+        setShowSyncModal(true);
+      } else {
+        setShowSyncModal(false);
+      }
     }
   };
 
@@ -55,6 +57,8 @@ const Sync: React.FC<ISyncProps> = () => {
     setActionsQueue(yCommandsArray);
   }, [yCommandsArray]);
 
+  
+
   return (
     <>
       {showSyncModal && (
@@ -69,7 +73,7 @@ To: "translate-y-0 opacity-100 sm:translate-x-0"
 From: "opacity-100"
 To: "opacity-0"
   */}
-          <div className="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+          <div className="absolute left-6 bottom-6  max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
             <div className="p-4">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
@@ -143,7 +147,7 @@ To: "translate-y-0 opacity-100 sm:translate-x-0"
 From: "opacity-100"
 To: "opacity-0"
   */}
-          <div className="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+          <div className="absolute bottom-6 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
             <div className="p-4">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
@@ -165,14 +169,14 @@ To: "opacity-0"
                   </svg>
                 </div>
 
-                <div>
+                {/* <div>
                   {actionsQueue.map((actionQueue) => (
                     <div>
                       <div>{actionQueue.name}</div>
                       <div>{JSON.stringify(actionQueue.payload)}</div>
                     </div>
                   ))}
-                </div>
+                </div> */}
 
                 <div className="ml-3 w-0 flex-1 pt-0.5">
                   <p className="text-sm font-medium text-gray-900">

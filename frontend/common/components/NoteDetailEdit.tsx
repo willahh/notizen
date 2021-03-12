@@ -7,7 +7,7 @@ import {
   fetchNoteAction,
   FetchNoteActionPayload,
   updateNoteActionAction,
-  UpdateNoteActionActionPayload,
+  UpdateNoteActionPayload,
 } from '../features/note/noteListSlice';
 import { Tag, UpdateNoteDTO } from '../interfaces/INote.interface';
 // import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -35,40 +35,46 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
 
   const handleContentBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const noteId = selectedNoteId;
-    const content = contentRef.current?.innerText;
+    if (noteId) {
+      const content = contentRef.current?.innerText;
 
-    const updateNoteDTO: UpdateNoteDTO = {
-      content: content,
-    };
-    const payload: UpdateNoteActionActionPayload = {
-      noteId: noteId,
-      serverSync: true, // TODO: remove
-      updateNoteDTO: updateNoteDTO,
-    };
-    dispatchCommand({
-      name: updateNoteActionAction.typePrefix,
-      action: updateNoteActionAction(payload),
-      payload,
-      dispatch,
-    });
+      const updateNoteDTO: UpdateNoteDTO = {
+        id: noteId,
+        content: content,
+      };
+      const payload: UpdateNoteActionPayload = {
+        updateNoteDTO: updateNoteDTO,
+      };
+      dispatchCommand({
+        name: updateNoteActionAction.typePrefix,
+        action: updateNoteActionAction(payload),
+        payload,
+        dispatch,
+      });
+    } else {
+      console.error(`noteId : ${selectedNoteId} is undefined`);
+    }
   };
 
   const handleTitleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const noteId = selectedNoteId;
-    const updateNoteDTO: UpdateNoteDTO = {
-      name: titleRef.current?.innerText,
-    };
-    const payload: UpdateNoteActionActionPayload = {
-      noteId: noteId,
-      serverSync: true, // TODO: remove
-      updateNoteDTO: updateNoteDTO,
-    };
-    dispatchCommand({
-      name: updateNoteActionAction.typePrefix,
-      action: updateNoteActionAction(payload),
-      payload,
-      dispatch,
-    });
+    if (noteId) {
+      const updateNoteDTO: UpdateNoteDTO = {
+        id: noteId,
+        name: titleRef.current?.innerText,
+      };
+      const payload: UpdateNoteActionPayload = {
+        updateNoteDTO: updateNoteDTO,
+      };
+      dispatchCommand({
+        name: updateNoteActionAction.typePrefix,
+        action: updateNoteActionAction(payload),
+        payload,
+        dispatch,
+      });
+    } else {
+      console.error(`noteId: ${noteId} is undefined`);
+    }
   };
 
   // TODO showLoading
@@ -80,7 +86,7 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
 
     if (selectedNoteId) {
       const payload: FetchNoteActionPayload = {
-        noteId: selectedNoteId
+        noteId: selectedNoteId,
       };
       dispatchQuery({
         name: fetchNoteAction.typePrefix,

@@ -1,14 +1,15 @@
+import { v4 as uuidv4 } from 'uuid';
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { Mode, Tag } from '../../interfaces/INote.interface';
+import { CreateTagDTO, Mode, Tag, TagColor, TagIcon } from '../../interfaces/INote.interface';
 import {
-  createTagAndEditAction,
   fetchTagsAction,
   FetchTagsActionPayload,
   setModeAction,
   SetModeActionPayload,
+  createTagAndEdit,
 } from './TagsSlice';
 import { TagComponent } from './Tag';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -64,7 +65,17 @@ const Tags: React.FC<ITagsProps> = ({}) => {
           className="text-black dark:text-white ml-2"
           title="Create"
           onClick={() => {
-            createTagAndEditAction(dispatch);
+            const tagId = uuidv4();
+            const tagDTO: CreateTagDTO = {
+              id: tagId,
+              name: 'New tag',
+              createDate: new Date().toISOString(),
+              updateDate: new Date().toISOString(),
+              isActive: false,
+              icon: TagIcon.TAG,
+              color: TagColor.GRAY,
+            };
+            createTagAndEdit(tagDTO, dispatch);
           }}
         >
           <svg

@@ -72,13 +72,13 @@ const NoteLit: React.FC<INoteProps> = () => {
           return (
             <CSSTransition key={id} timeout={400} classNames="item">
               <NoteItem
-                color={NoteColor.GRAY}
                 key={id}
-                createDate={new Date()}
-                isFav= {false}
-                updateDate={new Date()}
                 id={id}
                 name={name}
+                createDate={new Date().toISOString()}
+                updateDate={new Date().toISOString()}
+                color={NoteColor.GRAY}
+                isFav= {false}
                 tags={tags}
                 content={content}
                 isSelected={true}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { dispatchCommand } from '../../app/utils';
-import { Tag, Mode, updateTagDto } from '../../interfaces/INote.interface';
+import { Tag, Mode, UpdateTagDTO } from '../../interfaces/INote.interface';
 import {
   deleteTagAction,
   resetUpdateTagAction,
@@ -186,7 +186,7 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
             }}
             onBlur={(e) => {
               const tagId = tag.id;
-              const updateTagDto: updateTagDto = {
+              const updateTagDto: UpdateTagDTO = {
                 name: e.target.value,
               };
               const payload: UpdateTagActionPayload = {
@@ -216,7 +216,7 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
               } else if (e.keyCode == 13) {
                 // enter
                 const tagId = tag.id;
-                const updateTagDto: updateTagDto = {
+                const updateTagDto: UpdateTagDTO = {
                   name: e.target.value,
                 };
                 const payload: UpdateTagActionPayload = {

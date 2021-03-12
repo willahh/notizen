@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { dispatchCommand } from '../app/utils';
@@ -7,6 +8,7 @@ import {
   createNoteAction,
   CreateNoteActionPayload,
 } from '../features/note/noteListSlice';
+import { CreateNoteDTO } from '../interfaces/INote.interface';
 
 export type IToolbarProps = {};
 
@@ -25,11 +27,13 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                     type="button"
                     onClick={() => {
                       const id = Math.floor(Math.random() * 500);
+                      const createNoteDTO: CreateNoteDTO = {
+                        id: uuidv4(),
+                        content: '',
+                        name: '',
+                      };
                       const payload: CreateNoteActionPayload = {
-                        createNoteDTO: {
-                          content: '',
-                          name: '',
-                        },
+                        createNoteDTO: createNoteDTO,
                       };
                       dispatchCommand({
                         name: createNoteAction.typePrefix,

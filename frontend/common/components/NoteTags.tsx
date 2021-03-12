@@ -3,13 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ReactTooltip from 'react-tooltip';
 import { RootState } from '../app/rootReducer';
-import {
-  dispatchCommand,
-  mapOfKeyValueToArrayOfMap,
-} from '../app/utils';
+import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../app/utils';
 import {
   updateNoteActionAction,
-  UpdateNoteActionActionPayload,
+  UpdateNoteActionPayload,
 } from '../features/note/noteListSlice';
 import {
   INote,
@@ -89,13 +86,12 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
       const noteId = note.id;
       const isFav = note.isFav;
       const updateNoteDTO: UpdateNoteDTO = {
+        id: noteId,
         isFav: !isFav,
       };
 
-      const payload: UpdateNoteActionActionPayload = {
-        noteId: noteId, // TODO: UUID
+      const payload: UpdateNoteActionPayload = {
         updateNoteDTO: updateNoteDTO,
-        serverSync: true, // TODO: remove
       };
       dispatchCommand({
         name: updateNoteActionAction.typePrefix,
@@ -208,22 +204,28 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
                             const iconColor = e.currentTarget.getAttribute(
                               'icon-color'
                             );
-
-                            const noteId = note?.id;
-                            const updateNoteDTO: UpdateNoteDTO = {
-                              color: NoteColor[iconColor],
-                            };
-                            const payload: UpdateNoteActionActionPayload = {
-                              noteId: noteId, // TODO: UUID
-                              updateNoteDTO: updateNoteDTO,
-                              serverSync: true, // TODO: remove
-                            };
-                            dispatchCommand({
-                              name: updateNoteActionAction.typePrefix,
-                              action: updateNoteActionAction(payload),
-                              payload,
-                              dispatch,
-                            });
+                            if (iconColor) {
+                              const noteId = note?.id;
+                              if (noteId) {
+                                const updateNoteDTO: UpdateNoteDTO = {
+                                  id: noteId,
+                                  color: NoteColor[iconColor],
+                                };
+                                const payload: UpdateNoteActionPayload = {
+                                  updateNoteDTO: updateNoteDTO,
+                                };
+                                dispatchCommand({
+                                  name: updateNoteActionAction.typePrefix,
+                                  action: updateNoteActionAction(payload),
+                                  payload,
+                                  dispatch,
+                                });
+                              } else {
+                                console.error(`noteId: ${noteId} is undefined`);
+                              }
+                            } else {
+                              console.warn('!iconColor');
+                            }
                           }}
                         ></button>
                       );
@@ -265,8 +267,8 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
             </CSSTransition>
           </button>
         </div>
-        {noteTags && (
-          <NewTag noteId={Number(noteId)} tags={tagsList} noteTags={noteTags} />
+        {noteTags && noteId && (
+          <NewTag noteId={noteId} tags={tagsList} noteTags={noteTags} />
         )}
         <div className="inline-flex ml-2">
           {/* <TransitionGroup className="inline-flex"> */}

@@ -63,19 +63,18 @@ export const yCommandsArray = ydoc.getArray('commands');
 
 
 // ----------------------------------
-
 // Queue of Commands
-// export const commandsQueue: Command[] = [];
-export const addCommandToCommandsQueue = (command: Command) => {
+export const addCommandToCommandsQueue = async (command: Command) => {
   console.log('[x] [addCommandToCommandsQueue]', command);
 
   const { action, dispatch, name, payload } = command;
 
   // Only add to queue when offline
   if (!navigator.onLine) {
-    yCommandsArray.insert(0, [command]);
+    const index = yCommandsArray.length;
+    yCommandsArray.insert(index, [command]);
   }
-  return dispatch(action);
+  return await dispatch(action);
 };
 
 export const executePendingCommands = () => {
@@ -89,7 +88,12 @@ export const executePendingCommands = () => {
     const actionFn = actionNameToAction.get(command.name);
     if (actionFn) {
       await store.dispatch(actionFn(command.payload));
-      yCommandsArray.delete(0) // Remove the entry after played it
+      // TODO: Need to store failure actions and implement retry or something ...
+      try {
+        yCommandsArray.delete(0) // Remove the entry after played it
+      } catch (err) {
+        console.error(`Cannot delete yCommandsArray at index 0 : ${err}`)
+      }
     } else {
       console.error(`Redux Action function not found for command: ${command.name}`)
     }
@@ -103,13 +107,15 @@ export const executePendingCommands = () => {
     //   }
     // });
   });
+
+  indexeddbProvider.clearData();
 };
 
 // window debugs --------------------
-window.yCommandsArray = yCommandsArray;
-window.Y = Y;
-window.ydoc = ydoc;
-window.persistence = indexeddbProvider;
+// window.yCommandsArray = yCommandsArray;
+// window.Y = Y;
+// window.ydoc = ydoc;
+// window.persistence = indexeddbProvider;
 
 
 
@@ -138,7 +144,7 @@ const Form: React.FC = () => {
   const inputValueRef = useRef();
   return (
     <form>
-      <table>
+      {/* <table>
         <tbody>
           <tr>
             <td>value: </td>
@@ -147,18 +153,18 @@ const Form: React.FC = () => {
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> */}
       <button
         onClick={(e) => {
           e.preventDefault();
 
-          console.log(
-            'inputValueRef.current.value',
-            inputValueRef.current?.value
-          );
-          const v = inputValueRef.current?.value;
+          // console.log(
+          //   'inputValueRef.current.value',
+          //   inputValueRef.current?.value
+          // );
+          // const v = inputValueRef.current?.value;
 
-          insert(0, [v]);
+          // insert(0, [v]);
         }}
       >
         Insert{' '}
@@ -214,8 +220,8 @@ const SyncComponent: React.FC<ISyncProps> = ({}) => {
       // Log a delta every time the type changes
       // Learn more about the delta format here: https://quilljs.com/docs/delta/
       // console.log('delta:', event.changes.delta);
-      const data = event.target?.toArray();
-      setArrDebug(data);
+      // const data = event.target?.toArray();
+      // setArrDebug(data);
     });
   }, [yCommandsArray]);
 

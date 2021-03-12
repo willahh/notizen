@@ -18,13 +18,11 @@ import {
   TagsResult,
   Tag,
   Tags,
-  updateTagDto,
+  UpdateTagDTO,
   TagResult,
-  createTagDto,
-  NoteActionDto,
+  NoteActionDTO,
   CreateTagAndAddToNoteResult,
-  // AddTagToNoteResult,
-  // RemoveTagToNoteResult,
+  CreateTagDTO,
 } from '../interfaces/INote.interface';
 
 /* ----------------- debug ------------------------- */
@@ -48,6 +46,10 @@ const withUrl = (url: string, debugThrowError: boolean = false) => {
 
 /* ----------------- note ------------------------- */
 export async function getNotes(): Promise<NotesResult> {
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/notes?limit=100`);
   try {
     const notesReponse = await axios.get<INote[]>(url);
@@ -68,6 +70,10 @@ export async function getNotes(): Promise<NotesResult> {
 export async function getNoteByNoteId(
   noteId: string
 ): Promise<NoteDetailResult> {
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
     const notesReponse = await axios.get<INote>(url);
@@ -82,6 +88,10 @@ export async function getNoteByNoteId(
 export async function createNote(
   createNoteDTO: CreateNoteDTO
 ): Promise<NoteDetailResult> {
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/notes`);
   try {
     const response = await axios.post<INote>(url, createNoteDTO);
@@ -94,6 +104,10 @@ export async function createNote(
 }
 
 export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
     const response = await axios.delete<INote>(url);
@@ -107,10 +121,14 @@ export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
 }
 
 export async function updateNote(
-  noteId: number,
   updateNoteDTO: UpdateNoteDTO
 ): Promise<NoteDetailResult> {
-  const url = withUrl(`${API_URL}/notes/${noteId}`);
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
+  const { id } = updateNoteDTO;
+  const url = withUrl(`${API_URL}/notes/${id}`);
   try {
     const response = await axios.patch<INote>(url, updateNoteDTO);
     return {
@@ -122,9 +140,12 @@ export async function updateNote(
 }
 
 export async function createTagAndAddToNote(
-  noteActionDTO: NoteActionDto
+  noteActionDTO: NoteActionDTO
 ): Promise<CreateTagAndAddToNoteResult> {
   console.log('createTagAndAddToNote', noteActionDTO);
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
 
   const { noteId } = noteActionDTO;
   const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
@@ -143,9 +164,12 @@ export async function createTagAndAddToNote(
 }
 
 export async function addTagToNote(
-  noteActionDTO: NoteActionDto
+  noteActionDTO: NoteActionDTO
 ): Promise<NoteDetailResult> {
   console.log('addTagToNote', noteActionDTO);
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
 
   const { noteId } = noteActionDTO;
   const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
@@ -161,9 +185,12 @@ export async function addTagToNote(
 }
 
 export async function removeTagToNote(
-  noteActionDTO: NoteActionDto
+  noteActionDTO: NoteActionDTO
 ): Promise<NoteDetailResult> {
   console.log('removeTagToNote', noteActionDTO);
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
 
   const { noteId } = noteActionDTO;
   const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
@@ -180,6 +207,12 @@ export async function removeTagToNote(
 
 /* ----------------- tags ------------------------- */
 export async function getTags(): Promise<TagsResult> {
+  console.log('getTags');
+
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/tags?limit=100`);
 
   try {
@@ -199,13 +232,19 @@ export async function getTags(): Promise<TagsResult> {
 }
 
 export async function createTag(
-  createTagDto: createTagDto
+  createTagDTO: CreateTagDTO
 ): Promise<TagResult> {
+  console.log('createTag', createTagDTO);
+
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/tags/`, true);
   try {
-    const response = await axios.post<Tag>(url, createTagDto);
+    const response = await axios.post<Tag>(url, createTagDTO);
     return {
-      tag: response.data,
+      tagEntity: response.data,
     };
   } catch (err) {
     throw err;
@@ -213,26 +252,38 @@ export async function createTag(
 }
 
 export async function updateTag(
-  tagId: number,
-  updateTagDto: updateTagDto
+  tagId: string,
+  updateTagDto: UpdateTagDTO
 ): Promise<TagResult> {
+  console.log('updateTag', tagId);
+
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/tags/${tagId}`);
   try {
     const response = await axios.patch<Tag>(url, updateTagDto);
     return {
-      tag: response.data,
+      tagEntity: response.data,
     };
   } catch (err) {
     throw err;
   }
 }
 
-export async function deleteTag(tagId: number): Promise<TagResult> {
+export async function deleteTag(tagId: string): Promise<TagResult> {
+  console.log('deleteTag', tagId);
+
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const url = withUrl(`${API_URL}/tags/${tagId}`, true);
   try {
     const response = await axios.delete(url);
     return {
-      tag: response.data,
+      tagEntity: response.data,
     };
   } catch (err) {
     throw err;

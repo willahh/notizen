@@ -86,5 +86,5 @@ export const dispatchCommand = async (command: Command) => {
 
   // TODO: Add a log
   // TODO: Publish an event
-  return addCommandToCommandsQueue(command);
+  return await addCommandToCommandsQueue(command);
 };

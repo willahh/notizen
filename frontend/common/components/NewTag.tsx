@@ -1,47 +1,40 @@
+import { v4 as uuidv4 } from 'uuid';
 import React, { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
 import {
-  addTagActionLocalAction,
-  AddTagActionLocalActionPayload,
-} from '../features/tags/TagsSlice';
-import {
   INote,
+  Mode,
   NoteAction,
-  NoteActionDto,
+  NoteActionDTO,
   Tag,
   TagColor,
   TagEntity,
   TagIcon,
 } from '../interfaces/INote.interface';
 import { tagIconColorMap, tagIconIconMap } from './TagIcon';
+import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../app/utils';
 import {
-  dispatchCommand,
-  mapOfKeyValueToArrayOfMap,
-} from '../app/utils';
-import {
-  addNoteLocalAction,
   addTagToNoteAction,
   removeTagToNoteAction,
   createTagAndAddToNoteAction,
-  AddNoteLocalActionPayload,
   CreateTagAndAddToNoteActionPayload,
   AddTagToNoteActionPayload,
   RemoveTagToNoteActionPayload,
 } from '../features/note/noteListSlice';
 
-// import { addTagToNoteAction } from '../features/noteTagSlice';
 import { CSSTransition } from 'react-transition-group';
+import store from '../app/store';
 
 interface INewTagProps {
-  noteId: number;
+  noteId: string;
   tags: TagEntity[];
   noteTags: Tag[];
 }
 const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
-  console.log('NewTag Component', noteId);
+  console.log('NewTag Component');
 
   const dispatch = useDispatch();
 
@@ -126,7 +119,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
   const inputFilterRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (isDropdownOpen) {
-      inputFilterRef.current.focus();
+      inputFilterRef.current?.focus();
     }
   }, [isDropdownOpen]);
 
@@ -155,7 +148,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
     const nextElementIdToFocus = document.activeElement?.nextElementSibling?.id;
 
     if (addTagInNote) {
-      const noteActionDTO: NoteActionDto = {
+      const noteActionDTO: NoteActionDTO = {
         actionType: NoteAction.AddTag,
         noteId: noteId,
         tagId: tag.id,
@@ -172,7 +165,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
         dispatch: dispatch,
       });
     } else {
-      const noteActionDTO: NoteActionDto = {
+      const noteActionDTO: NoteActionDTO = {
         actionType: NoteAction.RemoveTag,
         noteId: noteId,
         tagId: tag.id,
@@ -201,12 +194,13 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
       <div className="flex items-center">
         <div className="mr-2">Icon:</div>
         {Object.keys(tagIconIconMap).map((tagIcon) => {
-          const isSelected = formIcon === TagIcon[tagIcon];
+          const isSelected = formIcon === tagIcon;
 
           return (
-            <button
-              data-tag-icon={tagIcon}
-              className={`flex py-2 mr-2 items-center
+            tagIcon && (
+              <button
+                data-tag-icon={tagIcon}
+                className={`flex py-2 mr-2 items-center
               w-6 h-6 rounded-full
               border-1
               hover:border-black dark:hover:border-white
@@ -220,13 +214,14 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
               text-${tagIconIconMap[TagColor.GRAY]}-500 
               transition duration-300 ease-in-out
             `}
-              onClick={(e) => {
-                const tagIcon = e.currentTarget.getAttribute('data-tag-icon');
-                setFormIcon(TagIcon[tagIcon]);
-              }}
-            >
-              <span className="w-4 h-4">{tagIconIconMap[tagIcon]}</span>
-            </button>
+                onClick={(e) => {
+                  const tagIcon = e.currentTarget.getAttribute('data-tag-icon');
+                  setFormIcon(TagIcon[tagIcon]);
+                }}
+              >
+                <span className="w-4 h-4">{tagIconIconMap[tagIcon]}</span>
+              </button>
+            )
           );
         })}
       </div>
@@ -254,7 +249,9 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                 const tagColor = e.currentTarget.getAttribute(
                   'data-tag-icon-color'
                 );
-                setFormColor(TagColor[tagColor]);
+                if (tagColor) {
+                  setFormColor(TagColor[tagColor]);
+                }
               }}
             ></button>
           );
@@ -365,43 +362,42 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                   aria-expanded="true"
                   onClick={async () => {
                     console.log('on click');
-                    const noteActionDTO: NoteActionDto = {
+                    const TagId: string = uuidv4();
+                    const tagName: string = filterText;
+                    const tag: Tag = {
+                      id: TagId,
+                      createDate: new Date().toISOString(),
+                      updateDate: new Date().toISOString(),
+                      isActive: true,
+                      color: TagColor.GRAY,
+                      icon: TagIcon.TAG,
+                      mode: Mode.Default, // TODO: is this still used ?
+                      name: tagName,
+                    };
+
+                    const notes = store.getState().notes.notes;
+                    const noteOffline = notes[noteId];
+
+                    // This doesn't works, it should be inside a reducer
+                    noteOffline.tags.push(tag);
+                    notes[noteId] = noteOffline;
+
+                    // online
+                    const noteActionDTO: NoteActionDTO = {
+                      tagId: TagId,
                       actionType: NoteAction.CreateTagAndAddToNote,
                       noteId: noteId,
-                      tagName: filterText,
+                      tagName: tagName,
                       tagColor: formColor,
                       tagIcon: formIcon,
                     };
                     const payloadAA: CreateTagAndAddToNoteActionPayload = {
-                     noteActionDTO: noteActionDTO
+                      noteActionDTO: noteActionDTO,
                     };
-                    let action = await dispatchCommand({
+                    await dispatchCommand({
                       name: createTagAndAddToNoteAction.typePrefix,
                       action: createTagAndAddToNoteAction(payloadAA),
                       payload: payloadAA,
-                      dispatch,
-                    });
-
-                    const tag: Tag = action.payload.tag;
-                    const note: INote = action.payload.note;
-
-                    const payloadA: AddTagActionLocalActionPayload = {
-                      tag: tag
-                    };
-                    await dispatchCommand({
-                      name: addTagActionLocalAction.name,
-                      action: addTagActionLocalAction(payloadA),
-                      payload: payloadA,
-                      dispatch,
-                    });
-
-                    const payload: AddNoteLocalActionPayload = {
-                      note: note
-                    };
-                    await dispatchCommand({
-                      name: addNoteLocalAction.name,
-                      action: addNoteLocalAction(payload),
-                      payload,
                       dispatch,
                     });
 

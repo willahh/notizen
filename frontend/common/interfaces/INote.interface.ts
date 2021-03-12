@@ -9,8 +9,8 @@ export interface INote {
   id: string;
   name?: string;
   content?: string;
-  createDate: Date;
-  updateDate: Date;
+  createDate: string;
+  updateDate: string;
   tags: Tag[];
   isFav: boolean;
   color: NoteColor;
@@ -26,7 +26,7 @@ export interface NoteDetailResult {
 
 export interface CreateTagAndAddToNoteResult {
   note: INote;
-  tag: Tag;
+  tag: TagEntity;
 }
 
 export interface NotesResult {
@@ -35,6 +35,7 @@ export interface NotesResult {
 
 // TODO: Share with the backend
 export interface UpdateNoteDTO {
+  id: string;
   name?: string;
   content?: string;
   isFav?: boolean;
@@ -43,6 +44,7 @@ export interface UpdateNoteDTO {
 
 // TODO: Share with the backend
 export interface CreateNoteDTO {
+  id: string;
   name?: string;
   content?: string;
 }
@@ -55,11 +57,11 @@ export enum NoteAction {
 }
 
 // TODO: Share with the backend
-export interface NoteActionDto {
+export interface NoteActionDTO {
   actionType: NoteAction;
-  noteId: number;
+  noteId: string;
   tagName?: string;
-  tagId?: number;
+  tagId: string;
   tagIcon?: TagIcon;
   tagColor?: TagColor;
 }
@@ -67,14 +69,12 @@ export interface NoteActionDto {
 // Tag ------------------------
 // TODO: Share with backend
 export enum TagIcon {
-  // DEFAULT = 'DEFAULT',
   TAG = 'TAG',
   HASHTAG = 'HASHTAG',
 }
 
 // TODO: Share with backend
 export enum TagColor {
-  // DEFAULT = 'GRAY',
   GRAY = 'GRAY',
   RED = 'RED',
   YELLOW = 'YELLOW',
@@ -87,7 +87,6 @@ export enum TagColor {
 
 // TODO: Share with backend
 export enum NoteColor {
-  // DEFAULT = 'GRAY',
   GRAY = 'GRAY',
   RED = 'RED',
   YELLOW = 'YELLOW',
@@ -98,27 +97,43 @@ export enum NoteColor {
   PINK = 'PINK',
 }
 
-// TODO: Share with backend
-export interface TagEntity {
-  id: number;
-  name: string;
-  isActive: boolean;
-  createDate: Date;
-  updateDate: Date;
-  icon: TagIcon;
-  color: TagColor;
-}
-
 export enum Mode {
   Default = 'DEFAULT',
   Edit = 'EDIT',
   Delete = 'DELETE',
 }
 
-export interface Tag extends TagEntity {
-  mode: Mode;
+// TODO: Share with backend
+export interface TagEntity {
+  id: string;
+  createDate: string;
+  updateDate: string;
+  name: string;
+  isActive: boolean;
   icon: TagIcon;
   color: TagColor;
+}
+
+export interface CreateTagDTO {
+  id: string;
+  createDate: string;
+  updateDate: string;
+  isActive: boolean;
+  icon: TagIcon;
+  color: TagColor;
+  name: string;
+}
+
+export interface UpdateTagDTO {
+  updateDate?: string;
+  isActive?: boolean;
+  icon?: TagIcon;
+  color?: TagColor;
+  name?: string;
+}
+
+export interface Tag extends TagEntity {
+  mode: Mode;
 }
 
 export interface Tags {
@@ -130,13 +145,5 @@ export interface TagsResult {
 }
 
 export interface TagResult {
-  tag: Tag;
-}
-
-export interface updateTagDto {
-  name: string;
-}
-
-export interface createTagDto {
-  name: string;
+  tagEntity: TagEntity;
 }
