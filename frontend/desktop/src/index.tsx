@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { store } from '@notizen/frontend-common/app/store';
+import { store } from '@notizen/frontend-common/src/store';
 import { Provider } from 'react-redux';
 // import * as serviceWorker from './serviceWorker.js';
 import '@notizen/frontend-common/index.css';
-import App from '@notizen/frontend-common/app/App';
+import App from '@notizen/frontend-common/src/App';
 
 // Debug
 declare global {
