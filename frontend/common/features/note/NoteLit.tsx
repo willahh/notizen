@@ -2,25 +2,18 @@ import React, { useEffect } from 'react';
 import { NoteItem } from '../../components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { fetchNotes } from './noteListSlice';
+import { fetchNotesAction, FetchNotesActionPayload } from './noteListSlice';
 import { AreaSecondary } from '../../components/AreaSecondary';
 import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
 import { Toolbar } from '../../components/Toolbar';
-// import { NoteDetail } from '../../components/NoteDetail';
 import { NoteDetailEdit } from '../../components/NoteDetailEdit';
-import MainTemplate from '../../components/MainTemplate';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams,
-} from 'react-router-dom';
+import { BrowserRouter as Router, useRouteMatch } from 'react-router-dom';
 import LitTemplate from '../../components/LitTemplate';
+import { dispatchQuery } from '../../app/utils';
+import { NoteColor } from '../../interfaces/INote.interface';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -37,16 +30,21 @@ const NoteLit: React.FC<INoteProps> = () => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
 
-  const notesList = Object.keys(notes)
-    .reduce((acc, v) => {
-      if (notes[v]) {
-        acc.push(notes[v]);
-      }
-      return acc;
-    }, []);
+  const notesList = Object.keys(notes).reduce((acc, v) => {
+    if (notes[v]) {
+      acc.push(notes[v]);
+    }
+    return acc;
+  }, []);
 
   useEffect(() => {
-    dispatch(fetchNotes());
+    const payload: FetchNotesActionPayload = {};
+    dispatchQuery({
+      name: fetchNotesAction.typePrefix,
+      payload: payload,
+      action: fetchNotesAction(payload),
+      dispatch: dispatch,
+    });
   }, [dispatch]);
 
   let noteListHtml = null;
@@ -69,24 +67,20 @@ const NoteLit: React.FC<INoteProps> = () => {
   } else {
     noteListHtml = (
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
-      <TransitionGroup
-        component="ul"
-        className="overflow-auto "
-        type="ul"
-      > 
-        {notesList.map(({ id, name, content }) => {
+      <TransitionGroup component="ul" className="overflow-auto " type="ul">
+        {notesList.map(({ id, name, content, tags }) => {
           return (
-            <CSSTransition
-              key={id}
-              timeout={400}
-              classNames="item"
-            >
+            <CSSTransition key={id} timeout={400} classNames="item">
               <NoteItem
+                color={NoteColor.GRAY}
                 key={id}
+                createDate={new Date()}
+                isFav= {false}
+                updateDate={new Date()}
                 id={id}
-                title={name}
-                tags={['Tag 1']}
-                text={content}
+                name={name}
+                tags={tags}
+                content={content}
                 isSelected={true}
               ></NoteItem>
             </CSSTransition>

@@ -1,22 +1,20 @@
-import {
-  createTag,
-  deleteTag,
-  getTags,
-  createTagAndAddToNote,
-} from '../../api/notizenAPI';
+import { createTag, deleteTag, getTags } from '../../api/notizenAPI';
 import {
   Tags,
   Mode,
   Tag,
   createTagDto,
-  NoteActionDto,
-  UpdateNoteDTO,
   TagIcon,
   TagColor,
+  updateTagDto,
+  TagsResult,
+  TagResult,
 } from '../../interfaces/INote.interface';
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit';
 import { updateTag } from './../../api/notizenAPI';
-import { hashCode } from '../../app/utils';
+import { dispatchCommand, hashCode } from '../../app/utils';
+import { Dispatch } from 'node_modules/@types/react';
+import { addAction } from '../../app/actions';
 
 interface TagsState {
   isLoading: boolean;
@@ -40,15 +38,28 @@ export const initialTagsState: TagsState = {
   mode: Mode.Default,
 };
 
-export const fetchTags = createAsyncThunk('tags/fetch', async () => {
-  console.log('fetchTags thunk');
+let actionName = '';
+
+actionName = 'tags/fetch';
+export interface FetchTagsActionPayload {}
+export const fetchTagsAction = createAsyncThunk<
+  TagsResult,
+  FetchTagsActionPayload
+>(actionName, async () => {
   return await getTags();
 });
+addAction(actionName, fetchTagsAction);
 
+actionName = 'tags/setTagModeAction';
+export interface SetTagModeActionPayload {
+  tag: Tag;
+  mode: Mode;
+}
 export const setTagModeAction = createAction(
-  'tags/setTagModeAction',
-  (tag: Tag, mode: Mode) => {
-    console.log('setTagMode action');
+  actionName,
+  (payload: SetTagModeActionPayload) => {
+    const { mode, tag } = payload;
+    // TODO: No processing here, should be in action.pending
     const updatedTag: Tag = { ...tag, mode: mode };
     return {
       payload: {
@@ -57,40 +68,51 @@ export const setTagModeAction = createAction(
     };
   }
 );
+addAction(actionName, setTagModeAction);
 
-export const setMode = createAction('tags/setMode', (mode: Mode) => {
-  return {
-    payload: {
-      mode: mode,
-    },
-  };
-});
+actionName = 'tags/setMode';
+export interface SetModeActionPayload {
+  tag?: Tag; // TODO: not used ?
+  mode: Mode;
+}
+export const setModeAction = createAction(
+  actionName,
+  (payload: SetModeActionPayload) => {
+    const { mode, tag } = payload;
+    return {
+      payload: {
+        mode: mode,
+      },
+    };
+  }
+);
+addAction(actionName, setModeAction);
 
-export const updateTagLocal = createAction('tags/updateLocal', (tag: Tag) => {
-  return {
-    payload: {
-      tag: tag,
-    },
-  };
-});
+actionName = 'tags/updateLocal';
+export interface UpdateTagLocalActionPayload {
+  tag: Tag;
+}
+export const updateTagLocalAction = createAction(
+  actionName,
+  (payload: UpdateTagLocalActionPayload) => {
+    const { tag } = payload;
+    return {
+      payload: {
+        tag: tag,
+      },
+    };
+  }
+);
+addAction(actionName, updateTagLocalAction);
 
-// export const updateTagVisibilityInFilterDropdownLocal = createAction(
-//   'tag/updateTagVisibilityInFilterDropdownLocal',
-//   (tag: Tag, visible: boolean) => {
-//     console.log('updateTagVisibilityInFilterDropdownLocal', tag, visible);
-
-//     return {
-//       payload: {
-//         tag: tag,
-//         visible: visible,
-//       },
-//     };
-//   }
-// );
-
-export const resetUpdateTag = createAction(
-  'tags/resetUpdateLocal',
-  (tagId: Number) => {
+actionName = 'tags/resetUpdateLocal';
+export interface ResetUpdateTagActionPayload {
+  tagId: Number;
+}
+export const resetUpdateTagAction = createAction(
+  actionName,
+  (payload: ResetUpdateTagActionPayload) => {
+    const { tagId } = payload;
     return {
       payload: {
         tagId: tagId,
@@ -98,55 +120,99 @@ export const resetUpdateTag = createAction(
     };
   }
 );
+addAction(actionName, resetUpdateTagAction);
 
-export const createTagAction = createAsyncThunk(
-  'tags/create',
-  async (createTagDto: createTagDto) => {
-    return await createTag(createTagDto);
+actionName = 'tags/create';
+export interface CreateTagActionPayload {
+  createTagDto: createTagDto;
+}
+export const createTagAction = createAsyncThunk<
+  TagResult,
+  CreateTagActionPayload
+>(actionName, async (payload) => {
+  const { createTagDto } = payload;
+  return await createTag(createTagDto);
+});
+addAction(actionName, createTagAction);
+
+actionName = 'tags/addTagActionLocal';
+export interface AddTagActionLocalActionPayload {
+  tag: Tag;
+}
+export const addTagActionLocalAction = createAction(
+  actionName,
+  (payload: AddTagActionLocalActionPayload) => {
+    const { tag } = payload;
+    return {
+      payload: {
+        tag: tag,
+      },
+    };
   }
 );
+addAction(actionName, addTagActionLocalAction);
 
-export const addTagActionLocal = createAction('tags/addTagActionLocal', (tag: Tag) => {
-  return {
-    payload: {
-      tag: tag,
-    },
-  };
-});
-
+actionName = 'tags/update';
+export interface UpdateTagActionPayload {
+  tagId: number;
+  updateTagDto: updateTagDto;
+}
 export const updateTagAction = createAsyncThunk(
-  'tags/update',
-  async ({ tagId, updateTagDto: updateTagDto }: any) => {
+  actionName,
+  async (payload: UpdateTagActionPayload) => {
+    const { tagId, updateTagDto } = payload;
     return await updateTag(tagId, updateTagDto);
   }
 );
+addAction(actionName, updateTagAction);
 
-export const deleteTagAction = createAsyncThunk(
-  'tags/delete',
-  async (tagId: number) => {
-    return await deleteTag(tagId);
-  }
-);
+actionName = 'tags/delete';
+export interface DeleteTagActionPayload {
+  tagId: number;
+}
+export const deleteTagAction = createAsyncThunk<
+  TagResult,
+  DeleteTagActionPayload
+>(actionName, async (payload) => {
+  const { tagId } = payload;
+  return await deleteTag(tagId);
+});
+addAction(actionName, deleteTagAction);
 
-export const createTagAndEditAction = (dispatch) => {
+// TODO: Create a standard action
+export const createTagAndEditAction = async (dispatch: Dispatch<any>) => {
   console.log('createTagAndEditAction');
   const createTagDto: createTagDto = {
     name: 'Mon tag',
   };
-  // TODO: Use of any type because we need to set a special dispatch Type to this action, this is not trivial.
-  // @see https://github.com/reduxjs/redux-toolkit/issues/849
-  // https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
-  const actionThunk: any = dispatch(createTagAction(createTagDto));
-  actionThunk.then((action) => {
-    console.log('THEN', action);
-    if (!action.error) {
-      const tag = action.payload.tag;
-      dispatch(setTagModeAction(tag, Mode.Edit));
-    } else {
-      console.warn('err', action.error);
-      // TODO: Throw user message
-    }
+
+  const payload: CreateTagActionPayload = {
+    createTagDto: createTagDto,
+  };
+  let thunkAction: any = await dispatchCommand({
+    name: createTagAction.typePrefix,
+    action: createTagAction(payload),
+    payload,
+    dispatch,
   });
+
+  if (!thunkAction.error) {
+    const tag = thunkAction.payload.tag;
+    // let action = setTagModeAction(tag, Mode.Edit);
+    // await dispatch(action);
+    const payloadB: SetTagModeActionPayload = {
+      tag: tag,
+      mode: Mode.Edit,
+    };
+    await dispatchCommand({
+      name: setTagModeAction.name,
+      action: setTagModeAction(payloadB),
+      payload: payloadB,
+      dispatch,
+    });
+  } else {
+    console.error(thunkAction.error);
+  }
 };
 
 const tags = createSlice({
@@ -155,10 +221,10 @@ const tags = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTags.pending, (state, action) => {
+      .addCase(fetchTagsAction.pending, (state, action) => {
         console.log('fetchTags.pending', action);
       })
-      .addCase(fetchTags.fulfilled, (state, action) => {
+      .addCase(fetchTagsAction.fulfilled, (state, action) => {
         console.log('fetchTags.fulfilled', action);
 
         const tags = action.payload.tags;
@@ -178,7 +244,7 @@ const tags = createSlice({
           updateDate: new Date(),
           isActive: false,
           mode: Mode.Default,
-          name: createTagDto.name,
+          name: createTagDto.createTagDto.name,
           icon: TagIcon.TAG,
           color: TagColor.GRAY,
         };
@@ -196,7 +262,7 @@ const tags = createSlice({
         // TODO: Cannot create two Tag with the same name,
         // this should be handled in the backend
         const acc = {};
-        const tags = Object.keys(state.tags).reduce((acc, k) => {
+        const tags = Object.keys(state.tags).reduce((acc: any, k) => {
           if (k && Number(k) != tempTagId) {
             acc[k] = state.tags[k];
           }
@@ -223,20 +289,23 @@ const tags = createSlice({
       .addCase(createTagAction.rejected, (state, action) => {
         console.log('createTagAction.rejected', action);
 
+        if (!navigator.onLine) {
+          return;
+        }
         // Rollback optimistic create
         // TODO: Display error to user (notification)
         const requestId = action.meta.requestId;
         const tagId = hashCode(requestId);
         delete state.tags[tagId];
       })
-      .addCase(addTagActionLocal, (state, action) => {
+      .addCase(addTagActionLocalAction, (state, action) => {
         console.log('addTagActionLocal', action);
 
         const tag = action.payload.tag;
         const tagId = tag.id;
         state.tags[tagId] = tag;
       })
-      .addCase(resetUpdateTag, (state, action) => {
+      .addCase(resetUpdateTagAction, (state, action) => {
         console.log('resetUpdateTag', action);
 
         const tagId = String(action.payload.tagId);
@@ -244,19 +313,12 @@ const tags = createSlice({
         state.tags[tagId] = tag;
         state.tagsCache[tagId] = tag;
       })
-      .addCase(updateTagLocal, (state, action) => {
+      .addCase(updateTagLocalAction, (state, action) => {
         console.log('updateTagLocal', action);
 
         const tag = action.payload.tag;
         state.tags[tag.id] = action.payload.tag;
       })
-      // .addCase(updateTagVisibilityInFilterDropdownLocal, (state, action) => {
-      //   console.log('updateTagVisibilityInFilterDropdownLocal', action);
-
-      //   const tag = { ...action.payload.tag };
-      //   const visible = action.payload.visible;
-      //   state.tags[tag.id] = tag;
-      // })
       .addCase(updateTagAction.pending, (state, action) => {
         console.log('updateTagAction.pending', action);
 
@@ -277,6 +339,9 @@ const tags = createSlice({
       .addCase(updateTagAction.rejected, (state, action) => {
         console.log('updateTagAction.rejected', action);
 
+        if (!navigator.onLine) {
+          return;
+        }
         // Rollback optimistic update when failure
         // TODO: Display error to user (notification)
         const tagId = action.meta.arg.tagId;
@@ -286,7 +351,7 @@ const tags = createSlice({
       .addCase(deleteTagAction.pending, (state, action) => {
         console.log('deleteTagAction.pending', action);
 
-        const tagId = action.meta.arg;
+        const tagId = action.meta.arg.tagId;
         const newTags = { ...state.tags };
         delete newTags[tagId];
         state.deleteModeActive = false;
@@ -294,16 +359,23 @@ const tags = createSlice({
       })
       .addCase(deleteTagAction.fulfilled, (state, action) => {
         console.log('deleteTagAction.fulfilled', action);
-        state.tagsCache = { ...state.tags };
+
+        const tagId = action.meta.arg.tagId;
+        const newTags = { ...state.tags };
+        delete newTags[tagId];
+        state.tags = newTags;
       })
       .addCase(deleteTagAction.rejected, (state, action) => {
         console.log('deleteTagAction.rejected', action);
 
-        const tagId = action.meta.arg;
+        if (!navigator.onLine) {
+          return;
+        }
+        const tagId = action.meta.arg.tagId;
         const tag = state.tagsCache[tagId];
         state.tags[tagId] = tag;
       })
-      .addCase(setMode, (state, action) => {
+      .addCase(setModeAction, (state, action) => {
         console.log('setMode', action);
         state.mode = action.payload.mode;
       })
@@ -316,6 +388,6 @@ const tags = createSlice({
 });
 
 export default tags.reducer;
-function dispatch(arg0: { payload: { tag: Tag }; type: 'tags/setMode' }) {
-  throw new Error('Function not implemented.');
-}
+// function dispatch(arg0: { payload: { tag: Tag }; type: 'tags/setMode' }) {
+//   throw new Error('Function not implemented.');
+// }

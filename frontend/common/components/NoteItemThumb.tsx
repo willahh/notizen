@@ -3,8 +3,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
 import {
-  deleteNoteThunk,
-  setSelectedNoteId,
+  deleteNoteAction,
+  // setSelectedNoteIdAction,
 } from '../features/note/noteListSlice';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { JsxElement } from 'typescript';

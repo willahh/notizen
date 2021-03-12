@@ -1,10 +1,13 @@
 import React, { useEffect, Suspense, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
+// import { CSSTransition } from 'react-transition-group';
 import { RootState } from '../app/rootReducer';
+import { dispatchCommand, dispatchQuery } from '../app/utils';
 import {
-  fetchNoteThunk,
-  updateNoteThunk,
+  fetchNoteAction,
+  FetchNoteActionPayload,
+  updateNoteActionAction,
+  UpdateNoteActionActionPayload,
 } from '../features/note/noteListSlice';
 import { Tag, UpdateNoteDTO } from '../interfaces/INote.interface';
 // import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -37,7 +40,17 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     const updateNoteDTO: UpdateNoteDTO = {
       content: content,
     };
-    dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: true }));
+    const payload: UpdateNoteActionActionPayload = {
+      noteId: noteId,
+      serverSync: true, // TODO: remove
+      updateNoteDTO: updateNoteDTO,
+    };
+    dispatchCommand({
+      name: updateNoteActionAction.typePrefix,
+      action: updateNoteActionAction(payload),
+      payload,
+      dispatch,
+    });
   };
 
   const handleTitleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
@@ -45,7 +58,17 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     const updateNoteDTO: UpdateNoteDTO = {
       name: titleRef.current?.innerText,
     };
-    dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: true }));
+    const payload: UpdateNoteActionActionPayload = {
+      noteId: noteId,
+      serverSync: true, // TODO: remove
+      updateNoteDTO: updateNoteDTO,
+    };
+    dispatchCommand({
+      name: updateNoteActionAction.typePrefix,
+      action: updateNoteActionAction(payload),
+      payload,
+      dispatch,
+    });
   };
 
   // TODO showLoading
@@ -56,7 +79,15 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
 
     if (selectedNoteId) {
-      dispatch(fetchNoteThunk(selectedNoteId));
+      const payload: FetchNoteActionPayload = {
+        noteId: selectedNoteId
+      };
+      dispatchQuery({
+        name: fetchNoteAction.typePrefix,
+        action: fetchNoteAction(payload),
+        payload,
+        dispatch,
+      });
     }
     if (note?.content === '') {
       // Focus on content when note has no content (new note)
@@ -112,25 +143,25 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
             >
               <NoteTags />
               {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
-                <div>
-                  <h1
-                    className="max-w-lg outline-none cursor-default text-4xl font-semibold"
-                    onBlur={handleTitleBlur}
-                    placeholder="Titre"
-                    ref={titleRef}
-                    contentEditable={true}
-                    dangerouslySetInnerHTML={{ __html: note?.name || '' }}
-                  ></h1>
-                  <div
-                    className="max-w-lg text-justify outline-none cursor-default font-thin"
-                    onBlur={handleContentBlur}
-                    // onKeyUp={handleContentKeyUp}
-                    placeholder="Le contenu de ma superbe note"
-                    ref={contentRef}
-                    contentEditable={true}
-                    dangerouslySetInnerHTML={{ __html: note?.content || '' }}
-                  ></div>
-                </div>
+              <div>
+                <h1
+                  className="max-w-lg outline-none cursor-default text-4xl font-semibold"
+                  onBlur={handleTitleBlur}
+                  placeholder="Titre"
+                  ref={titleRef}
+                  contentEditable={true}
+                  dangerouslySetInnerHTML={{ __html: note?.name || '' }}
+                ></h1>
+                <div
+                  className="max-w-lg text-justify outline-none cursor-default font-thin"
+                  onBlur={handleContentBlur}
+                  // onKeyUp={handleContentKeyUp}
+                  placeholder="Le contenu de ma superbe note"
+                  ref={contentRef}
+                  contentEditable={true}
+                  dangerouslySetInnerHTML={{ __html: note?.content || '' }}
+                ></div>
+              </div>
               {/* </CSSTransition> */}
             </div>
           ) : (

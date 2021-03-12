@@ -3,8 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ReactTooltip from 'react-tooltip';
 import { RootState } from '../app/rootReducer';
-import { mapOfKeyValueToArrayOfMap } from '../app/utils';
-import { updateNoteThunk } from '../features/note/noteListSlice';
+import {
+  dispatchCommand,
+  mapOfKeyValueToArrayOfMap,
+} from '../app/utils';
+import {
+  updateNoteActionAction,
+  UpdateNoteActionActionPayload,
+} from '../features/note/noteListSlice';
 import {
   INote,
   NoteColor,
@@ -25,7 +31,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
     (state: RootState) => state.notes.selectedNoteId
   );
   const tags = useSelector((state: RootState) => state.tags.tags);
-  const note: INote = selectedNoteId ? notes[selectedNoteId] : null;
+  const note: INote | null = selectedNoteId ? notes[selectedNoteId] : null;
   const tagsList: TagEntity[] = mapOfKeyValueToArrayOfMap(tags);
   const noteTags = note?.tags;
   const noteId = note?.id;
@@ -86,7 +92,17 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
         isFav: !isFav,
       };
 
-      dispatch(updateNoteThunk({ noteId, updateNoteDTO, serverSync: true }));
+      const payload: UpdateNoteActionActionPayload = {
+        noteId: noteId, // TODO: UUID
+        updateNoteDTO: updateNoteDTO,
+        serverSync: true, // TODO: remove
+      };
+      dispatchCommand({
+        name: updateNoteActionAction.typePrefix,
+        action: updateNoteActionAction(payload),
+        payload,
+        dispatch,
+      });
     }
   };
 
@@ -197,13 +213,17 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
                             const updateNoteDTO: UpdateNoteDTO = {
                               color: NoteColor[iconColor],
                             };
-                            dispatch(
-                              updateNoteThunk({
-                                noteId,
-                                updateNoteDTO,
-                                serverSync: true,
-                              })
-                            );
+                            const payload: UpdateNoteActionActionPayload = {
+                              noteId: noteId, // TODO: UUID
+                              updateNoteDTO: updateNoteDTO,
+                              serverSync: true, // TODO: remove
+                            };
+                            dispatchCommand({
+                              name: updateNoteActionAction.typePrefix,
+                              action: updateNoteActionAction(payload),
+                              payload,
+                              dispatch,
+                            });
                           }}
                         ></button>
                       );

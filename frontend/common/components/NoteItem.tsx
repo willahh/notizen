@@ -2,9 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { RootState } from '../app/rootReducer';
+import { dispatchCommand, dispatchQuery } from '../app/utils';
 import {
-  deleteNoteThunk,
-  setSelectedNoteId,
+  deleteNoteAction,
+  DeleteNoteActionPayload,
+  setSelectedNoteIdAction,
+  SetSelectedNoteIdActionPayload,
 } from '../features/note/noteListSlice';
 import { INote, NoteColor } from '../interfaces/INote.interface';
 import { tagIconColorMap, tagIconIconMap } from './TagIcon';
@@ -56,7 +59,17 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
       style={{ zIndex: Number(id) }}
       note-id={id}
       onClick={() => {
-        dispatch(setSelectedNoteId(id));
+        console.log('click');
+        
+        const payload: SetSelectedNoteIdActionPayload = {
+          noteId: id,
+        };
+        dispatchQuery({
+          name: setSelectedNoteIdAction.name,
+          payload: payload,
+          action: setSelectedNoteIdAction(payload),
+          dispatch: dispatch,
+        });
       }}
     >
       <div className={itemCls}>
@@ -103,7 +116,15 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
               onClick={(e) => {
                 console.log('onClick', id);
                 e.stopPropagation();
-                dispatch(deleteNoteThunk(id));
+                const payload: DeleteNoteActionPayload = {
+                  noteId: id,
+                };
+                dispatchCommand({
+                  name: deleteNoteAction.typePrefix,
+                  payload: payload,
+                  action: deleteNoteAction(payload),
+                  dispatch: dispatch,
+                });
               }}
             >
               <svg

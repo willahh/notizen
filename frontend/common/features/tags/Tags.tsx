@@ -2,16 +2,21 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { createTagDto, Mode, Tag } from '../../interfaces/INote.interface';
+import { Mode, Tag } from '../../interfaces/INote.interface';
 import {
-  createTagAction,
   createTagAndEditAction,
-  fetchTags,
-  setMode,
+  fetchTagsAction,
+  FetchTagsActionPayload,
+  setModeAction,
+  SetModeActionPayload,
 } from './TagsSlice';
 import { TagComponent } from './Tag';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { mapOfKeyValueToArrayOfMap } from '../../app/utils';
+import {
+  dispatchCommand,
+  dispatchQuery,
+  mapOfKeyValueToArrayOfMap,
+} from '../../app/utils';
 interface ITagsProps {}
 
 const Tags: React.FC<ITagsProps> = ({}) => {
@@ -26,7 +31,13 @@ const Tags: React.FC<ITagsProps> = ({}) => {
   const tagsList: Tag[] = mapOfKeyValueToArrayOfMap(tags);
 
   useEffect(() => {
-    dispatch(fetchTags());
+    const payload: FetchTagsActionPayload = {};
+    dispatchQuery({
+      name: fetchTagsAction.typePrefix,
+      action: fetchTagsAction(payload),
+      payload,
+      dispatch,
+    });
   }, [dispatch]);
 
   return (
@@ -76,7 +87,15 @@ const Tags: React.FC<ITagsProps> = ({}) => {
             className="text-blac dark:text-white ml-2"
             title="Edit"
             onClick={() => {
-              dispatch(setMode(Mode.Edit));
+              const payload: SetModeActionPayload = {
+                mode: Mode.Edit,
+              };
+              dispatchCommand({
+                name: setModeAction.name,
+                action: setModeAction(payload),
+                payload,
+                dispatch,
+              });
             }}
           >
             <svg
@@ -106,7 +125,15 @@ const Tags: React.FC<ITagsProps> = ({}) => {
             className="text-blac dark:text-white ml-2"
             title="Terminer"
             onClick={() => {
-              dispatch(setMode(Mode.Default));
+              const payload: SetModeActionPayload = {
+                mode: Mode.Default,
+              };
+              dispatchCommand({
+                name: setModeAction.name,
+                action: setModeAction(payload),
+                payload,
+                dispatch,
+              });
             }}
           >
             <svg

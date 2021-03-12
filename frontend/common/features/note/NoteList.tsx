@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { NoteItem } from '../../components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { fetchNotes } from './noteListSlice';
+import { fetchNotesAction, FetchNotesActionPayload } from './noteListSlice';
 import { AreaSecondary } from '../../components/AreaSecondary';
 import { NoteFilter } from '../../components/NoteFilter';
 import { MainArea } from '../../components/MainArea';
@@ -14,7 +14,23 @@ import MainTemplate from '../../components/MainTemplate';
 import { INote } from '../../interfaces/INote.interface';
 // const scrollbar = require('smooth-scrollbar-react');
 // const ScrollBar = scrollbar.default;
-import { mapOfKeyValueToArrayOfMap } from './../../app/utils';
+import { dispatchQuery, mapOfKeyValueToArrayOfMap } from './../../app/utils';
+
+
+
+
+
+/****
+ * 
+ * 
+ * 
+ * TODO : Refacto naming and folders hierarchy
+ * https://slashgear.github.io/react-redux-pitfalls-and-best-pratices/
+ * 
+ */
+
+
+
 
 interface INoteProps {}
 
@@ -24,16 +40,22 @@ const NoteList: React.FC<INoteProps> = () => {
     (state: RootState) => state.notes
   );
 
-  const notesList: INote[] = mapOfKeyValueToArrayOfMap(notes).sort((a, b) => {
+  const notesList: INote[] = mapOfKeyValueToArrayOfMap(notes).sort((a: INote, b: INote) => {
     return Number(b.id) - Number(a.id);
   }); // TODO: refactor sorting
 
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
-  
+
   useEffect(() => {
-    dispatch(fetchNotes());
+    const payload: FetchNotesActionPayload = {};
+    dispatchQuery({
+      name: fetchNotesAction.typePrefix,
+      payload: payload,
+      action: fetchNotesAction(payload),
+      dispatch: dispatch,
+    });
   }, [dispatch]);
 
   let noteListHtml = null;

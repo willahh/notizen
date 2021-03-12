@@ -1,14 +1,18 @@
 import React from 'react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/rootReducer';
+import { useDispatch } from 'react-redux';
+import { dispatchCommand } from '../../app/utils';
 import { Tag, Mode, updateTagDto } from '../../interfaces/INote.interface';
 import {
   deleteTagAction,
-  resetUpdateTag,
+  resetUpdateTagAction,
   setTagModeAction,
   updateTagAction,
-  updateTagLocal,
+  updateTagLocalAction,
+  SetTagModeActionPayload,
+  UpdateTagLocalActionPayload,
+  ResetUpdateTagActionPayload,
+  UpdateTagActionPayload,
+  DeleteTagActionPayload,
 } from './TagsSlice';
 
 interface TagProps {
@@ -39,7 +43,16 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
           }
           onDoubleClick={() => {
             if (mode === Mode.Edit) {
-              dispatch(setTagModeAction(tag, Mode.Edit));
+              const payload: SetTagModeActionPayload = {
+                mode: Mode.Edit,
+                tag: tag,
+              };
+              dispatchCommand({
+                name: setTagModeAction.name,
+                action: setTagModeAction(payload),
+                payload,
+                dispatch,
+              });
             }
           }}
         >
@@ -64,7 +77,16 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
                 title="Edit"
                 className="ml-2"
                 onClick={() => {
-                  dispatch(setTagModeAction(tag, Mode.Edit));
+                  const payload: SetTagModeActionPayload = {
+                    mode: Mode.Edit,
+                    tag: tag,
+                  };
+                  dispatchCommand({
+                    name: setTagModeAction.name,
+                    action: setTagModeAction(payload),
+                    payload,
+                    dispatch,
+                  });
                 }}
               >
                 <svg
@@ -88,8 +110,16 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
                 onClick={(e) => {
                   e.stopPropagation();
                   console.log('click delete button');
-
-                  dispatch(setTagModeAction(tag, Mode.Delete));
+                  const payload: SetTagModeActionPayload = {
+                    mode: Mode.Delete,
+                    tag: tag,
+                  };
+                  dispatchCommand({
+                    name: setTagModeAction.name,
+                    action: setTagModeAction(payload),
+                    payload,
+                    dispatch,
+                  });
                 }}
               >
                 <svg
@@ -144,27 +174,61 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
             autoFocus
             onChange={(e) => {
               const updatedTag: Tag = { ...tag, name: e.target.value };
-              dispatch(updateTagLocal(updatedTag));
+              const payload: UpdateTagLocalActionPayload = {
+                tag: updatedTag,
+              };
+              dispatchCommand({
+                name: updateTagLocalAction.name,
+                action: updateTagLocalAction(payload),
+                payload,
+                dispatch,
+              });
             }}
             onBlur={(e) => {
               const tagId = tag.id;
               const updateTagDto: updateTagDto = {
                 name: e.target.value,
               };
-              dispatch(updateTagAction({ tagId, updateTagDto }));
+              const payload: UpdateTagActionPayload = {
+                tagId: tagId,
+                updateTagDto: updateTagDto,
+              };
+              dispatchCommand({
+                name: updateTagAction.typePrefix,
+                action: updateTagAction(payload),
+                payload,
+                dispatch,
+              });
             }}
-            onKeyDown={(e) => {
+            onKeyDown={(e: any) => {
               if (e.keyCode == 27) {
                 // escape
                 const tagId = tag.id;
-                dispatch(resetUpdateTag(tagId));
+                const payload: ResetUpdateTagActionPayload = {
+                  tagId: tagId,
+                };
+                dispatchCommand({
+                  name: resetUpdateTagAction.name,
+                  action: resetUpdateTagAction(payload),
+                  payload,
+                  dispatch,
+                });
               } else if (e.keyCode == 13) {
                 // enter
                 const tagId = tag.id;
                 const updateTagDto: updateTagDto = {
                   name: e.target.value,
                 };
-                dispatch(updateTagAction({ tagId, updateTagDto }));
+                const payload: UpdateTagActionPayload = {
+                  tagId: tagId,
+                  updateTagDto: updateTagDto,
+                };
+                dispatchCommand({
+                  name: updateTagAction.typePrefix,
+                  action: updateTagAction(payload),
+                  payload,
+                  dispatch,
+                });
               }
             }}
           ></input>
@@ -206,15 +270,39 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
                   type="button"
                   className="relative inline-flex items-center px-2 py-1 rounded-l-md text-xs border border-gray-300 bg-white dark:border-gray-600 dark:bg-black text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                   onClick={(e) => {
-                    dispatch(deleteTagAction(tag.id));
+                    const payload: DeleteTagActionPayload = {
+                      tagId: tag.id,
+                    };
+                    dispatchCommand({
+                      name: deleteTagAction.typePrefix,
+                      action: deleteTagAction(payload),
+                      payload,
+                      dispatch,
+                    });
                   }}
                   onKeyDown={(e) => {
                     if (e.keyCode == 27) {
                       // escape
-                      dispatch(resetUpdateTag(tag.id));
+                      const payload: ResetUpdateTagActionPayload = {
+                        tagId: tag.id,
+                      };
+                      dispatchCommand({
+                        name: resetUpdateTagAction.name,
+                        action: resetUpdateTagAction(payload),
+                        payload,
+                        dispatch,
+                      });
                     } else if (e.keyCode == 13) {
                       // enter
-                      dispatch(deleteTagAction(tag.id));
+                      const payload: DeleteTagActionPayload = {
+                        tagId: tag.id,
+                      };
+                      dispatchCommand({
+                        name: deleteTagAction.typePrefix,
+                        action: deleteTagAction(payload),
+                        payload,
+                        dispatch,
+                      });
                     }
                   }}
                 >
@@ -225,15 +313,39 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
                   type="button"
                   className="-ml-px relative inline-flex items-center px-2 py-1 rounded-r-md text-xs border border-gray-300 bg-white dark:border-gray-600 dark:bg-black text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                   onClick={() => {
-                    dispatch(resetUpdateTag(tag.id));
+                    const payload: ResetUpdateTagActionPayload = {
+                      tagId: tag.id,
+                    };
+                    dispatchCommand({
+                      name: resetUpdateTagAction.name,
+                      action: resetUpdateTagAction(payload),
+                      payload,
+                      dispatch,
+                    });
                   }}
                   onKeyDown={(e) => {
                     if (e.keyCode == 27) {
                       // escape
-                      dispatch(resetUpdateTag(tag.id));
+                      const payload: ResetUpdateTagActionPayload = {
+                        tagId: tag.id,
+                      };
+                      dispatchCommand({
+                        name: resetUpdateTagAction.name,
+                        action: resetUpdateTagAction(payload),
+                        payload,
+                        dispatch,
+                      });
                     } else if (e.keyCode == 13) {
                       // enter
-                      dispatch(resetUpdateTag(tag.id));
+                      const payload: ResetUpdateTagActionPayload = {
+                        tagId: tag.id,
+                      };
+                      dispatchCommand({
+                        name: resetUpdateTagAction.name,
+                        action: resetUpdateTagAction(payload),
+                        payload,
+                        dispatch,
+                      });
                     }
                   }}
                 >

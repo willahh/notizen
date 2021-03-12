@@ -1,7 +1,8 @@
 import React, { useEffect, Suspense, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/rootReducer';
-import { fetchNoteThunk } from '../features/note/noteListSlice';
+import { dispatchQuery } from '../app/utils';
+import { fetchNoteAction, FetchNoteActionPayload } from '../features/note/noteListSlice';
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
 
@@ -28,7 +29,15 @@ const NoteDetail: React.FC<INoteDetailProps> = ({}) => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
 
     if (selectedNoteId) {
-      dispatch(fetchNoteThunk(selectedNoteId));
+      const payload: FetchNoteActionPayload = {
+        noteId: selectedNoteId
+      }
+      dispatchQuery({
+        name: fetchNoteAction.typePrefix,
+        payload: payload,
+        action: fetchNoteAction(payload),
+        dispatch: dispatch,
+      })
     }
     // let timer1 = setTimeout(() => setShow(true), 1000);
     // return () => {

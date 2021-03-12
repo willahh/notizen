@@ -2,22 +2,18 @@ import React, { useEffect } from 'react';
 import { NoteItemThumb } from '../../components/NoteItemThumb';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/rootReducer';
-import { fetchNotes } from './noteListSlice';
+import { fetchNotesAction, FetchNotesActionPayload } from './noteListSlice';
 import { NoteFilter } from '../../components/NoteFilter';
-import { MainArea } from '../../components/MainArea';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useRouteMatch,
-  useParams,
 } from 'react-router-dom';
 import MainTemplate from '../../components/MainTemplate';
 import { Toolbar } from '../../components/Toolbar';
 import { INote } from '../../interfaces/INote.interface';
+import { dispatchQuery } from '../../app/utils';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;
@@ -41,12 +37,19 @@ const NoteThumb: React.FC<INoteProps> = () => {
         acc.push(notes[v]);
       }
       return acc;
-    }, acc).sort((a, b) => {
+    }, acc)
+    .sort((a, b) => {
       return Number(b.id) - Number(a.id);
     }); // TODO: refactor sorting;
 
   useEffect(() => {
-    dispatch(fetchNotes());
+    const payload: FetchNotesActionPayload = {};
+    dispatchQuery({
+      name: fetchNotesAction.typePrefix,
+      payload: payload,
+      action: fetchNotesAction(payload),
+      dispatch: dispatch,
+    });
   }, [dispatch]);
 
   let noteListHtml = null;

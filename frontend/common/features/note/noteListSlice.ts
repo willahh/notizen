@@ -21,7 +21,15 @@ import {
   NoteActionDto,
   INote,
   Tag,
+  NoteColor,
+  TagEntity,
+  TagColor,
+  TagIcon,
+  Mode,
+  NotesResult,
+  CreateTagAndAddToNoteResult,
 } from '../../interfaces/INote.interface';
+import { addAction, getAction } from './../../app/actions';
 import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { Notes } from '../../interfaces/INote.interface';
 
@@ -33,7 +41,7 @@ interface NoteListState {
   error: string | null;
   notes: Notes;
   notesCache: Notes;
-  selectedNoteId: string | null;
+  selectedNoteId?: string;
 }
 
 const getNotesFromLocalStorage = () => {
@@ -47,12 +55,19 @@ export const initialNotesState: NoteListState = {
   error: null,
   notes: notesInitialData,
   notesCache: notesInitialData,
-  selectedNoteId: null,
+  selectedNoteId: undefined,
 };
 
-export const setSelectedNoteId = createAction(
-  'notes/setSelectedNoteId',
-  (noteId: string) => {
+let actionName: string = '';
+
+actionName = 'notes/setSelectedNoteId';
+export interface SetSelectedNoteIdActionPayload {
+  noteId?: string;
+}
+export const setSelectedNoteIdAction = createAction(
+  actionName,
+  (payload: SetSelectedNoteIdActionPayload) => {
+    const noteId = payload.noteId;
     return {
       payload: {
         selectedNoteId: noteId,
@@ -60,39 +75,65 @@ export const setSelectedNoteId = createAction(
     };
   }
 );
+addAction(actionName, setSelectedNoteIdAction);
 
-export const fetchNoteThunk = createAsyncThunk(
-  'notes/note',
-  async (noteId: string) => {
-    console.log('fetchNote', noteId);
-    // return await getNoteByNoteId(noteId);
-    return await getNoteByNoteId(noteId);
-  }
-);
+actionName = 'notes/note';
+export interface FetchNoteActionPayload {
+  noteId: string;
+}
+export const fetchNoteAction = createAsyncThunk<
+  NoteDetailResult,
+  FetchNoteActionPayload
+>(actionName, async ({ noteId }) => {
+  console.log('[x] fetchNoteAction', noteId);
+  return await getNoteByNoteId(noteId);
+});
+addAction(actionName, fetchNoteAction);
 
-export const fetchNotes = createAsyncThunk('notes/fetch', async (thunkAPI) => {
+actionName = 'notes/fetch';
+export interface FetchNotesActionPayload {}
+export const fetchNotesAction = createAsyncThunk<
+  NotesResult,
+  FetchNotesActionPayload
+>(actionName, async () => {
   return await getNotes();
 });
+addAction(actionName, fetchNotesAction);
 
-export const deleteNoteThunk = createAsyncThunk(
-  'notes/delete',
-  async (noteId: string) => {
-    console.log('deleteNote new');
-    return await deleteNote(noteId);
-  }
-);
+actionName = 'notes/delete';
+export interface DeleteNoteActionPayload {
+  noteId: string;
+}
+export const deleteNoteAction = createAsyncThunk<
+  NoteDetailResult,
+  DeleteNoteActionPayload
+>(actionName, async (payload) => {
+  const { noteId } = payload;
+  return await deleteNote(noteId);
+});
+addAction(actionName, deleteNoteAction);
 
-export const createNoteThunk = createAsyncThunk(
-  'notes/create',
-  async (createNoteDTO: CreateNoteDTO) => {
-    console.log('createNoteThunk', createNoteDTO);
-    return await createNote(createNoteDTO);
-  }
-);
+actionName = 'notes/create';
+export interface CreateNoteActionPayload {
+  createNoteDTO: CreateNoteDTO;
+}
+export const createNoteAction = createAsyncThunk<
+  NoteDetailResult,
+  CreateNoteActionPayload
+>(actionName, async (payload) => {
+  const { createNoteDTO } = payload;
+  return await createNote(createNoteDTO);
+});
+addAction(actionName, createNoteAction);
 
+actionName = 'tags/addNoteLocalAction';
+export interface AddNoteLocalActionPayload {
+  note: INote;
+}
 export const addNoteLocalAction = createAction(
-  'tags/addNoteLocalAction',
-  (note: INote) => {
+  actionName,
+  (payload: AddNoteLocalActionPayload) => {
+    const { note } = payload;
     return {
       payload: {
         note: note,
@@ -100,55 +141,74 @@ export const addNoteLocalAction = createAction(
     };
   }
 );
+addAction(actionName, addNoteLocalAction);
 
-export const updateNoteThunk = createAsyncThunk(
-  'notes/update',
-  async ({ noteId, updateNoteDTO: UpdateNoteDTO, serverSync }: any) => {
-    console.log('updateNoteThunk', noteId, UpdateNoteDTO, serverSync);
-    if (serverSync) {
-      return await updateNote(noteId, UpdateNoteDTO);
-    } else {
-      var noteDetailResultPromise: Promise<NoteDetailResult> = new Promise(
-        (resolve, reject) => {
-          note: UpdateNoteDTO;
-        }
-      );
-      return noteDetailResultPromise;
-    }
-  }
-);
-
-export const createTagAndAddToNoteAction = createAsyncThunk(
-  'notes/createTagAndAddToNote',
-  async (noteActionDTO: NoteActionDto) => {
-    return await createTagAndAddToNote(noteActionDTO);
-  }
-);
-
-interface AddTagToNoteAction {
-  noteActionDTO: NoteActionDto,
-  tag: Tag
+actionName = 'notes/update';
+export interface UpdateNoteActionActionPayload {
+  noteId?: string;
+  updateNoteDTO: UpdateNoteDTO;
+  serverSync: boolean; // TODO: remove
 }
-export const addTagToNoteAction = createAsyncThunk(
-  'notes/addTagToNoteAction',
-  async ({noteActionDTO, tag}: AddTagToNoteAction) => {
-    console.log('##addTagToNoteAction');
-    
-    return await addTagToNote(noteActionDTO);
-  }
-);
+export const updateNoteActionAction = createAsyncThunk<
+  NoteDetailResult,
+  UpdateNoteActionActionPayload
+>(actionName, async (payload) => {
+  const { noteId, serverSync, updateNoteDTO } = payload;
 
-interface RemoveTagToNoteAction {
-  noteActionDTO: NoteActionDto,
-  tag: Tag
-}
-export const removeTagToNoteAction = createAsyncThunk(
-  'notes/removeTagToNoteAction',
-  async ({noteActionDTO, tag}: RemoveTagToNoteAction) => {
-    console.log('removeTagToNoteAction');
-    return await removeTagToNote(noteActionDTO);
+  if (serverSync) {
+    // TODO: noticeId => UUID
+    return await updateNote(Number(noteId), updateNoteDTO);
+  } else {
+    var noteDetailResultPromise: Promise<NoteDetailResult> = new Promise(
+      (resolve, reject) => {
+        note: updateNoteDTO;
+      }
+    );
+    return noteDetailResultPromise;
   }
-);
+});
+addAction(actionName, updateNoteActionAction);
+
+actionName = 'notes/createTagAndAddToNote';
+export interface CreateTagAndAddToNoteActionPayload {
+  noteActionDTO: NoteActionDto;
+}
+export const createTagAndAddToNoteAction = createAsyncThunk<
+  CreateTagAndAddToNoteResult,
+  CreateTagAndAddToNoteActionPayload,
+  {}
+>(actionName, async (payload) => {
+  const { noteActionDTO } = payload;
+  return await createTagAndAddToNote(noteActionDTO);
+});
+addAction(actionName, createTagAndAddToNoteAction);
+
+actionName = 'notes/addTagToNoteAction';
+export interface AddTagToNoteActionPayload {
+  noteActionDTO: NoteActionDto;
+  tag: Tag;
+}
+export const addTagToNoteAction = createAsyncThunk<
+  NoteDetailResult,
+  AddTagToNoteActionPayload
+>(actionName, async (payload) => {
+  const { noteActionDTO, tag } = payload;
+  return await addTagToNote(noteActionDTO);
+});
+addAction(actionName, addTagToNoteAction);
+
+actionName = 'notes/removeTagToNoteAction';
+export interface RemoveTagToNoteActionPayload {
+  noteActionDTO: NoteActionDto;
+}
+export const removeTagToNoteAction = createAsyncThunk<
+  NoteDetailResult,
+  RemoveTagToNoteActionPayload
+>(actionName, async (payload) => {
+  const { noteActionDTO } = payload;
+  return await removeTagToNote(noteActionDTO);
+});
+addAction(actionName, removeTagToNoteAction);
 
 const notes = createSlice({
   name: 'notes',
@@ -156,45 +216,45 @@ const notes = createSlice({
   extraReducers: (builder) => {
     builder
       // setSelectedNoteId
-      .addCase(setSelectedNoteId, (state, action) => {
+      .addCase(setSelectedNoteIdAction, (state, action) => {
         console.log('setSelectedNoteId', action);
-        console.log(
-          'action.payload.selectedNoteId',
-          action.payload.selectedNoteId
-        );
 
         state.selectedNoteId = action.payload.selectedNoteId;
       })
 
       // fetchNoteThunk
-      .addCase(fetchNoteThunk.pending, (state, action) => {
+      .addCase(fetchNoteAction.pending, (state, action) => {
         console.log('fetchNote.pending');
         state.error = null;
 
-        const noteId = action.meta.arg;
+        const noteId = action.meta.arg.noteId;
         const note = state.notesCache[noteId];
         const newNotes = { ...state.notes, [noteId]: note };
         state.notes = newNotes;
-        state.notesCache = newNotes;
+        state.notesCache = newNotes; // ? Should not update cache on pending ?
       })
-      .addCase(fetchNoteThunk.fulfilled, (state, action) => {
+      .addCase(fetchNoteAction.fulfilled, (state, action) => {
         console.log('fetchNote.fulfilled', state, action);
-        const noteId = action.meta.arg;
+
+        const noteId = action.meta.arg.noteId;
         const note = action.payload.note;
         const newNotes = { ...state.notes, [noteId]: note };
         state.notes = newNotes;
         state.notesCache = newNotes;
       })
-      .addCase(fetchNoteThunk.rejected, (state, action) => {
+      .addCase(fetchNoteAction.rejected, (state, action) => {
         console.log('# fetchNote.rejected', action);
 
+        if (!navigator.onLine) {
+          return;
+        }
         // TODO: Need fallback to this optimistic rendering
         // state.isLoading = false;
         // state.error = action.error.message;
       })
 
       // fetchNotes
-      .addCase(fetchNotes.pending, (state, action) => {
+      .addCase(fetchNotesAction.pending, (state, action) => {
         console.log('# fetchNotes.pending', action);
 
         if (Object.keys(state.notes).length === 0) {
@@ -202,7 +262,7 @@ const notes = createSlice({
         }
         state.error = null;
       })
-      .addCase(fetchNotes.fulfilled, (state, action) => {
+      .addCase(fetchNotesAction.fulfilled, (state, action) => {
         console.log('# fetchNotes.fulfilled', action);
 
         state.isLoading = false;
@@ -211,16 +271,34 @@ const notes = createSlice({
         state.notes = notes;
         state.notesCache = notes;
       })
-      .addCase(fetchNotes.rejected, (state, action) => {
+      .addCase(fetchNotesAction.rejected, (state, action) => {
         console.log('# fetchNotes.rejected', state, action);
 
+        if (!navigator.onLine) {
+          return;
+        }
         state.isLoading = false;
         // state.error = action.error.message;
       })
 
       // createNoteThunk
-      .addCase(createNoteThunk.pending, (state, action) => {
+      .addCase(createNoteAction.pending, (state, action) => {
         console.log('createNoteThunk.pending', state, action);
+
+        // 03
+        // TODO: Need to use a UUID for offline compatibility
+        const noteIdTemp = 'temp-' + action.meta.requestId;
+        const newNote: INote = {
+          id: noteIdTemp,
+          createDate: new Date(),
+          updateDate: new Date(),
+          color: NoteColor.GRAY,
+          isFav: false,
+          tags: [],
+          content: '',
+          name: '',
+        };
+        state.notes[noteIdTemp] = newNote;
 
         // 02
         // const noteIdTemp = 'temp-' + action.meta.requestId;
@@ -234,7 +312,7 @@ const notes = createSlice({
         // state.notes = newNotes;
         // state.notesCache = newNotes;
       })
-      .addCase(createNoteThunk.fulfilled, (state, action) => {
+      .addCase(createNoteAction.fulfilled, (state, action) => {
         console.log('createNoteThunk.fulfilled', state, action);
 
         // 01
@@ -263,20 +341,39 @@ const notes = createSlice({
         state.notesCache = newNotes;
         state.selectedNoteId = newNote.id;
       })
-      .addCase(createNoteThunk.rejected, (state, action) => {
+      .addCase(createNoteAction.rejected, (state, action) => {
         console.log('createNoteThunk.rejected', state, action);
+
+        if (!navigator.onLine) {
+          return;
+        }
+        // 03
+        // const noteIdTemp = 'temp-' + action.meta.requestId;
+        // const newNote: INote = {
+        //   ...action.meta.arg,
+        //   id: noteIdTemp,
+        //   createDate: new Date(),
+        //   updateDate: new Date(),
+        //   color: NoteColor.GRAY,
+        //   isFav: false,
+        //   tags: [],
+        //   content: '',
+        //   name: '',
+        // };
+        // delete state.notes[noteIdTemp];
 
         // Rollback delete action with note from cache
         // TODO: Display error to user (notification)
-        const noteId = 99999999999;
-        const newNotes = { ...state.notes };
-        delete newNotes[noteId];
+        // const noteId = 99999999999;
+        // const newNotes = { ...state.notes };
+        // delete newNotes[noteId];
 
-        state.notes = newNotes;
-        state.notesCache = newNotes;
+        // state.notes = newNotes;
+        // state.notesCache = newNotes;
       })
 
       // addNoteLocalAction
+      // TODO: Do not use this action
       .addCase(addNoteLocalAction, (state, action) => {
         console.log('addNoteLocalAction', state, action);
 
@@ -286,90 +383,132 @@ const notes = createSlice({
       })
 
       // updateNoteThunk
-      .addCase(updateNoteThunk.pending, (state, action) => {
+      .addCase(updateNoteActionAction.pending, (state, action) => {
         console.log('updateNoteThunk.pending', state, action);
 
         // Optimistic rendering
         const noteId = action.meta.arg.noteId;
-        const note = state.notes[noteId];
-        const newNote = {
-          ...note,
-          ...action.meta.arg.updateNoteDTO,
-          noteId: noteId,
-        }; // TODO: add types
-        const newNotes = { ...state.notes, [noteId]: newNote };
+        if (noteId) {
+          const note = state.notes[noteId];
+          const newNote = {
+            ...note,
+            ...action.meta.arg.updateNoteDTO,
+            noteId: noteId,
+          };
+          const notes = { ...state.notes, [noteId]: newNote };
 
-        state.notes = newNotes;
-        state.notesCache = newNotes;
+          state.notes = notes;
+          state.notesCache = notes;
+        }
       })
-      .addCase(updateNoteThunk.fulfilled, (state, action) => {
+      .addCase(updateNoteActionAction.fulfilled, (state, action) => {
         console.log('updateNoteThunk.fulfilled', state, action);
 
-        const noteId = action.payload.note.id;
-        const newNotes = { ...state.notes, [noteId]: action.payload.note };
+        const note = action.payload.note;
+        const noteId = note.id;
+        const notes = { ...state.notes, [noteId]: note };
 
-        state.notes = newNotes;
-        state.notesCache = newNotes;
+        state.notes = notes;
+        state.notesCache = notes;
       })
-      .addCase(updateNoteThunk.rejected, (state, action) => {
+      .addCase(updateNoteActionAction.rejected, (state, action) => {
         console.log('updateNoteThunk.rejected', state, action);
 
+        if (!navigator.onLine) {
+          return;
+        }
+        // Rollback delete action with note from cache
+        // TODO: Display error to user (notification)
+        const noteId = action.meta.arg.noteId;
+        if (noteId) {
+          const noteCached = state.notesCache[noteId];
+          const notes = { ...state.notes, [noteId]: noteCached };
+
+          state.notes = notes;
+          state.notesCache = notes;
+        }
+      })
+
+      // deleteNoteThunk
+      .addCase(deleteNoteAction.pending, (state, action) => {
+        console.log('deleteNoteThunk.pending', state, action);
+
+        const noteId = action.meta.arg.noteId;
+        const notes = { ...state.notes };
+        delete notes[noteId];
+
+        state.notes = notes;
+        state.notesCache = notes;
+      })
+      .addCase(deleteNoteAction.fulfilled, (state, action) => {
+        console.log('deleteNoteThunk.fulfilled', action);
+
+        const noteId = action.meta.arg.noteId;
+        const notes = { ...state.notes };
+        delete notes[noteId];
+
+        state.notes = notes;
+        state.notesCache = notes;
+      })
+      .addCase(deleteNoteAction.rejected, (state, action) => {
+        console.log('deletNoteThunk.rejected', action);
+
+        if (!navigator.onLine) {
+          return;
+        }
         // Rollback delete action with note from cache
         // TODO: Display error to user (notification)
         const noteId = action.meta.arg.noteId;
         const noteCached = state.notesCache[noteId];
-        const newNotes = { ...state.notes, [noteId]: noteCached };
+        const notes = { ...state.notes, [noteId]: noteCached };
 
-        state.notes = newNotes;
-        state.notesCache = newNotes;
-      })
-
-      // deleteNoteThunk
-      .addCase(deleteNoteThunk.pending, (state, action) => {
-        console.log('deleteNoteThunk.pending', state, action);
-
-        const noteId = action.meta.arg;
-        const newNotes = { ...state.notes };
-        delete newNotes[noteId];
-
-        state.notes = newNotes;
-        state.notesCache = newNotes;
-      })
-      .addCase(deleteNoteThunk.fulfilled, (state, action) => {
-        console.log('deleteNoteThunk.fulfilled', action);
-
-        // return state;
-      })
-      .addCase(deleteNoteThunk.rejected, (state, action) => {
-        console.log('deletNoteThunk.rejected', action);
-
-        // Rollback delete action with note from cache
-        // TODO: Display error to user (notification)
-        const noteId = action.meta.arg;
-        const noteCached = state.notesCache[noteId];
-        const newNotes = { ...state.notes, [noteId]: noteCached };
-
-        state.notes = newNotes;
-        state.notesCache = newNotes;
+        state.notes = notes;
+        state.notesCache = notes;
       })
 
       // createTagAndAddToNoteAction
       .addCase(createTagAndAddToNoteAction.pending, (state, action) => {
         console.log('createTagAndAddToNoteAction.pending', action);
+
+        const tag: Tag = {
+          color: action.meta.arg.noteActionDTO.tagColor
+            ? TagColor[action.meta.arg.noteActionDTO.tagColor]
+            : TagColor.GRAY,
+          name: action.meta.arg.noteActionDTO.tagName || '',
+          icon: action.meta.arg.noteActionDTO.tagIcon
+            ? TagIcon[action.meta.arg.noteActionDTO.tagIcon]
+            : TagIcon.TAG,
+          createDate: new Date(),
+          updateDate: new Date(),
+          id: Math.round(Math.random() * 999), // TODO: UUID
+          isActive: true,
+          mode: Mode.Default, // TODO: Is this required ?
+        };
+
+        // TODO: Add this Tag to notes
+        const noteId = action.meta.arg.noteActionDTO.noteId;
+        const note = state.notes[noteId];
+        note.tags.push(tag);
+
+        state.notes[noteId] = note;
       })
       .addCase(createTagAndAddToNoteAction.fulfilled, (state, action) => {
         console.log('createTagAndAddToNoteAction.fulfilled', action);
 
-        // Add tag to tags state
+        const note = action.payload.note;
+        const noteId = note.id;
         const tag = action.payload.tag;
-        const tagId = tag.id;
-        console.error('TODO');
-        // TODO
-        // state.tags[tagId] = tag;
-        // state.tagsCache[tagId] = tag;
+
+        note.tags.push(tag);
+        state.notes[noteId] = note;
+        state.notesCache[noteId] = note;
       })
       .addCase(createTagAndAddToNoteAction.rejected, (state, action) => {
         console.log('createTagAndAddToNoteAction.rejected', action);
+
+        if (!navigator.onLine) {
+          return;
+        }
       })
 
       // addTagToNoteAction
@@ -395,10 +534,12 @@ const notes = createSlice({
       .addCase(addTagToNoteAction.rejected, (state, action) => {
         console.log('addTagToNoteAction.rejected', action);
 
-        const noteId = action.meta.arg.noteActionDTO.noteId;
-        const note = state.notesCache[noteId];
-        
-        state.notes[noteId] = note;
+        if (!navigator.onLine) {
+          return;
+        }
+        // const noteId = action.meta.arg.noteActionDTO.noteId;
+        // const note = state.notesCache[noteId];
+        // state.notes[noteId] = note;
       })
 
       // removeTagToNoteAction
@@ -406,27 +547,34 @@ const notes = createSlice({
         console.log('removeTagToNoteAction.pending', action);
 
         const noteId = action.meta.arg.noteActionDTO.noteId;
-        const tagId = action.meta.arg.tag.id;
+        const tagId = action.meta.arg.noteActionDTO.tagId;
         const note = state.notes[noteId];
-        delete note.tags[tagId];
-
-        state.notes[noteId] = note;
+        if (tagId) {
+          delete note.tags[tagId];
+          state.notes[noteId] = note;
+        }
       })
       .addCase(removeTagToNoteAction.fulfilled, (state, action) => {
         console.log('removeTagToNoteAction.fulfilled', action);
 
         const note = action.payload.note;
+        const tagId = action.meta.arg.noteActionDTO.tagId;
         const noteId = note.id;
-        state.notes[noteId] = note;
-        state.notesCache[noteId] = note;
+        if (tagId) {
+          delete note.tags[tagId];
+          state.notes[noteId] = note;
+          state.notesCache[noteId] = note;
+        }
       })
       .addCase(removeTagToNoteAction.rejected, (state, action) => {
         console.log('removeTagToNoteAction.rejected', action);
 
+        if (!navigator.onLine) {
+          return;
+        }
         const noteId = action.meta.arg.noteActionDTO.noteId;
-        const note = state.notesCache[noteId];
-
-        state.notes[noteId] = note;
+        const noteCached = state.notesCache[noteId];
+        state.notes[noteId] = noteCached;
       });
   },
   reducers: {},

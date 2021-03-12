@@ -1,23 +1,23 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, NavLink, useRouteMatch } from 'react-router-dom';
+import { dispatchCommand } from '../app/utils';
+import { NavLink } from 'react-router-dom';
 import { HOST_URL } from '../app/utils';
-import { createNoteThunk } from '../features/note/noteListSlice';
+import {
+  createNoteAction,
+  CreateNoteActionPayload,
+} from '../features/note/noteListSlice';
 
 export type IToolbarProps = {};
 
 const Toolbar: React.FC<IToolbarProps> = ({}) => {
   const dispatch = useDispatch();
-  // let match = useRouteMatch();
-  // console.log('#match : ', match);
 
   return (
     <div className="sticky top-0 h-16 flex-shrink-0 border-b-1 border-gray-200 bg-white dark:bg-black dark:border-gray-800">
-      {/* Toolbar*/}
       <div className="flex flex-col justify-items-end">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="py-3 flex justify-between">
-            {/* Left buttons */}
             <div>
               <div className="relative z-0 inline-flex shadow-sm rounded-md sm:shadow-none sm:space-x-3">
                 <div className="inline-flex sm:shadow-sm">
@@ -25,15 +25,20 @@ const Toolbar: React.FC<IToolbarProps> = ({}) => {
                     type="button"
                     onClick={() => {
                       const id = Math.floor(Math.random() * 500);
-                      dispatch(
-                        createNoteThunk({
-                          // name: 'Le titre de ma superbe note' + id,
+                      const payload: CreateNoteActionPayload = {
+                        createNoteDTO: {
+                          content: '',
                           name: '',
-                          content: ''
-                        })
-                      );
+                        },
+                      };
+                      dispatchCommand({
+                        name: createNoteAction.typePrefix,
+                        action: createNoteAction(payload),
+                        payload,
+                        dispatch,
+                      });
                     }}
-                    className="relative inline-flex items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800 dark:border-gray-800"
+                    className="relative inline-flex items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
                   >
                     <svg
                       className="h-5 w-5 text-gray-400"
