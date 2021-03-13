@@ -8,7 +8,10 @@ import App from '@notizen/frontend-common/src/App';
 
 // Debug
 declare global {
-  interface Window { store: any; }
+  interface Window {
+    store: any;
+    requestPending: any;
+  }
 }
 
 window.store = store || {};
@@ -16,7 +19,7 @@ window.store = store || {};
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-        <App />
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

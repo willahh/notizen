@@ -20,6 +20,7 @@ import {
 } from '../../interfaces';
 import { addAction } from '../../actions';
 
+
 /**
  * NOTES_SET_SELECTED_NOTE_ID
  */
@@ -144,6 +145,7 @@ export interface AddTagToNoteActionPayload {
   noteActionDTO: NoteActionDTO;
   tag: Tag;
 }
+
 export const addTagToNoteAction = createAsyncThunk<
   NoteDetailResult,
   AddTagToNoteActionPayload

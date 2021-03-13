@@ -43,7 +43,7 @@ export const arrayOfMapToMapOfKeyValue = (arr: any) => {
 /**
  * Dispatch a Query.
  * Encapsulate a Redux Action.
- * Query is use for read actions.
+ * Query is used for read actions.
  *
  * @param query Query
  * @returns ReduxAction
@@ -69,7 +69,7 @@ export const dispatchQuery = async (query: Query) => {
 /**
  * Dispatch a Command.
  * Encapsulate a Redux Action.
- * Query is use for write actions.
+ * Command is used for write actions.
  *
  * @param command Command
  * @returns ReduxAction

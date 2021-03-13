@@ -16,6 +16,9 @@ const Sync: React.FC<ISyncProps> = () => {
   const [actionsQueue, setActionsQueue] = useState(yCommandsArray);
   const [showSyncModal, setShowSyncModal] = useState(false);
 
+  console.log('yCommandsArray.length', yCommandsArray.length);
+  
+
   const updateShowSyncModal = () => {
     console.log('updateShowSyncModal', yCommandsArray.length);
 
@@ -28,16 +31,6 @@ const Sync: React.FC<ISyncProps> = () => {
     }
   };
 
-  indexeddbProvider.whenSynced.then(() => {
-    console.log('loaded data from indexed db');
-    updateShowSyncModal();
-  });
-
-  yCommandsArray.observe((event) => {
-    console.log('[x] on yCommandsArray update');
-    updateShowSyncModal();
-  });
-
   const handleNetworkChange = () => {
     console.log('handleNetworkChange');
 
@@ -46,6 +39,16 @@ const Sync: React.FC<ISyncProps> = () => {
   };
 
   useEffect(() => {
+    indexeddbProvider.whenSynced.then(() => {
+      console.log('loaded data from indexed db');
+      updateShowSyncModal();
+    });
+
+    yCommandsArray.observe((event) => {
+      console.log('[x] on yCommandsArray update');
+      updateShowSyncModal();
+    });
+
     window.addEventListener('offline', handleNetworkChange);
     window.addEventListener('online', handleNetworkChange);
     return () => {
@@ -56,8 +59,6 @@ const Sync: React.FC<ISyncProps> = () => {
   useEffect(() => {
     setActionsQueue(yCommandsArray);
   }, [yCommandsArray]);
-
-  
 
   return (
     <>

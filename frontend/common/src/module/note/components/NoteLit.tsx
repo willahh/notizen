@@ -26,9 +26,10 @@ const NoteLit: React.FC<INoteProps> = () => {
     (state: RootState) => state.notes
   );
 
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
-  }, [notes]);
+  // TODO: Put this outside of component, maybe with a Redux Middleware
+  // useEffect(() => {
+  //   localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
+  // }, [notes]);
 
   const notesList = Object.keys(notes).reduce((acc, v) => {
     if (notes[v]) {

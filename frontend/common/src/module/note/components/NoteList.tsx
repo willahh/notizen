@@ -31,9 +31,10 @@ const NoteList: React.FC<INoteProps> = () => {
     }
   ); // TODO: refactor sorting
 
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
-  }, [notes]);
+  // TODO: Put this outside of component, maybe with a Redux Middleware
+  // useEffect(() => {
+  //   localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
+  // }, [notes]);
 
   useEffect(() => {
     const payload: FetchNotesActionPayload = {};
