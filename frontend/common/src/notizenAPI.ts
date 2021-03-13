@@ -31,17 +31,22 @@ const DEBUG = false;
 // TODO: use a .env to manage environments
 const API_URL = 'http://localhost:3000';
 // const API_URL = 'https://notizenapp-306803.ew.r.appspot.com';
-const withDebug = (url: string, debug: boolean, debugThrowError: boolean) => {
+const withDebug = (
+  url: string,
+  debug: boolean,
+  debugThrowError: boolean,
+  sleepDelay?: number
+) => {
   if (debug) {
     const a = url.includes('?') ? '&' : '?';
-    url += a + 'debug=true' + (debugThrowError ? '&debugThrowError=true' : '');
+    url += a + 'debug=true' + (debugThrowError ? '&debugThrowError=true' : '') + (sleepDelay ? `&sleepDelay=${sleepDelay}` : '');
   }
   return url;
 };
-const withUrl = (url: string, debugThrowError: boolean = false) => {
+const withUrl = (url: string, debugThrowError: boolean = false, sleepDelay: number = undefined) => {
   console.log('withUrl', debugThrowError);
 
-  return withDebug(url, DEBUG, debugThrowError);
+  return withDebug(url, DEBUG, debugThrowError, sleepDelay);
 };
 
 /* ----------------- note ------------------------- */
@@ -172,7 +177,7 @@ export async function addTagToNote(
   }
 
   const { noteId } = noteActionDTO;
-  const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
+  const url = withUrl(`${API_URL}/notes/${noteId}/actions`, false, 2000);
   try {
     const response = await axios.post<INote>(url, noteActionDTO);
     const note = response.data;
@@ -193,7 +198,7 @@ export async function removeTagToNote(
   }
 
   const { noteId } = noteActionDTO;
-  const url = withUrl(`${API_URL}/notes/${noteId}/actions`);
+  const url = withUrl(`${API_URL}/notes/${noteId}/actions`, false, 2000);
   try {
     const response = await axios.post<INote>(url, noteActionDTO);
     const note = response.data;
