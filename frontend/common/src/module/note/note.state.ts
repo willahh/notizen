@@ -1,11 +1,31 @@
-import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
+// import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
 import { Notes } from '../../interfaces';
 
-const getNotesFromLocalStorage = () => {
-  const localStorageData = window.localStorage.getItem(LOCAL_STORAGE_NOTES_KEY);
-  return localStorageData ? JSON.parse(localStorageData) : {};
-};
-const notesInitialData = getNotesFromLocalStorage();
+// TODO: Use cached state from YJS
+// const getNotesFromLocalStorage = () => {
+//   const localStorageData = window.localStorage.getItem(LOCAL_STORAGE_NOTES_KEY);
+//   return localStorageData ? JSON.parse(localStorageData) : {};
+// };
+// const notesInitialData = getNotesFromLocalStorage();
+const notesInitialData = {};
+
+enum SortKey {
+  CreateDate = 'CREATE_DATE',
+  UpdateDate = 'UPDATE_DATE',
+  Name = 'NAME',
+}
+const defaultSortKey = SortKey.Name;
+
+enum SortOrder {
+  Asc = 'ASC',
+  Desc = 'DESC',
+}
+const defaultSortOrder = SortOrder.Asc;
+
+// type ActionName = string;
+// type PendingRequestCount = number;
+// type PendingRequest = Map<ActionName, PendingRequestCount>;
+
 
 interface NoteListState {
   isLoading: boolean;
@@ -13,6 +33,9 @@ interface NoteListState {
   notes: Notes;
   notesCache: Notes;
   selectedNoteId?: string;
+  sortKey: SortKey;
+  sortOrder: SortOrder;
+  pendingRequests: any;
 }
 
 export const initialNotesState: NoteListState = {
@@ -20,5 +43,8 @@ export const initialNotesState: NoteListState = {
   error: null,
   notes: notesInitialData,
   notesCache: notesInitialData,
+  sortKey: defaultSortKey,
+  sortOrder: defaultSortOrder,
   selectedNoteId: undefined,
+  pendingRequests: {}
 };
