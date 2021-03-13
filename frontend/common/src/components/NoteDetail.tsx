@@ -11,23 +11,18 @@ interface INoteDetailProps {}
 const NoteDetail: React.FC<INoteDetailProps> = ({}) => {
   console.log('NoteDetail');
 
-  const delay = 5;
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
   );
-  // const [show, setShow] = useState(false);
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
 
-  // TODO showLoading
   const showLoading = true;
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   useEffect(() => {
-    console.log('#notedetail effect selectedNoteId', selectedNoteId);
-
     if (selectedNoteId) {
       const payload: FetchNoteActionPayload = {
         noteId: selectedNoteId
@@ -39,10 +34,6 @@ const NoteDetail: React.FC<INoteDetailProps> = ({}) => {
         dispatch: dispatch,
       })
     }
-    // let timer1 = setTimeout(() => setShow(true), 1000);
-    // return () => {
-    //   clearTimeout(timer1);
-    // };
   }, [dispatch, selectedNoteId]);
 
   if (error) {

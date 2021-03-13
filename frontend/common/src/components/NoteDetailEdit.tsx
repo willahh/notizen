@@ -76,7 +76,6 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
     }
   };
 
-  // TODO showLoading
   const showLoading = true;
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
