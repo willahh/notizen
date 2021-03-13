@@ -2,11 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import {
   INote,
-  Tag,
   NoteColor,
-  TagColor,
-  TagIcon,
-  Mode,
 } from '../../interfaces';
 import {
   addTagToNoteAction,
@@ -21,6 +17,36 @@ import {
 } from './note.actions';
 import { initialNotesState } from './note.state';
 
+const NOTE_ACTION = 'NOTES/ACTION';
+
+const actionPendingAfterHook = (state: any, actionNameConst: string): void => {
+  console.log('[x] actionPendingAfterHook', actionNameConst);
+
+  if (state.pendingRequests[actionNameConst] === undefined) {
+    state.pendingRequests[actionNameConst] = 0;
+  }
+  state.pendingRequests[actionNameConst]++;
+};
+const isRequestPending = (
+  state: any,
+  actionNameConst: string
+): boolean => {
+  console.log('[x] actionFulfilledBeforeHook', actionNameConst);
+  state.pendingRequests[actionNameConst]--;
+  console.log('[x] cnt', state.pendingRequests[actionNameConst]);
+  if (state.pendingRequests[actionNameConst] > 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+declare global {
+  interface Window {
+    store: any;
+    requestPending: any;
+  }
+}
 const notes = createSlice({
   name: 'notes',
   initialState: initialNotesState,
@@ -43,9 +69,10 @@ const notes = createSlice({
         state.error = null;
 
         const noteId = action.meta.arg.noteId;
-        const note = state.notesCache[noteId];
+        const note = state.notes[noteId];
         const newNotes = { ...state.notes, [noteId]: note };
         state.notes = newNotes;
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(fetchNoteAction.fulfilled, (state, action) => {
         console.log('fetchNote.fulfilled', state, action);
@@ -53,6 +80,10 @@ const notes = createSlice({
         const noteId = action.meta.arg.noteId;
         const note = action.payload.note;
         const newNotes = { ...state.notes, [noteId]: note };
+
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
         state.notes = newNotes;
         state.notesCache = newNotes;
       })
@@ -112,14 +143,19 @@ const notes = createSlice({
         };
         const noteId = note.id;
         state.notes[noteId] = note;
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(createNoteAction.fulfilled, (state, action) => {
         console.log('createNoteThunk.fulfilled', state, action);
 
         const note: INote = action.payload.note;
+        const noteId = note.id;
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
 
-        state.notes[note.id] = note;
-        state.notesCache[note.id] = note;
+        state.notes[noteId] = note;
+        state.notesCache[noteId] = note;
       })
       .addCase(createNoteAction.rejected, (state, action) => {
         console.log('createNoteThunk.rejected', state, action);
@@ -152,13 +188,18 @@ const notes = createSlice({
         const notes = { ...state.notes, [noteId]: newNote };
         state.notes = notes;
         state.notesCache = notes;
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(updateNoteActionAction.fulfilled, (state, action) => {
         console.log('updateNoteThunk.fulfilled', state, action);
 
+        
         const note = action.payload.note;
         const noteId = note.id;
         const notes = { ...state.notes, [noteId]: note };
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
         state.notes = notes;
         state.notesCache = notes;
       })
@@ -187,12 +228,16 @@ const notes = createSlice({
         delete notes[noteId];
         state.notes = notes;
         state.notesCache = notes;
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(deleteNoteAction.fulfilled, (state, action) => {
         console.log('deleteNoteThunk.fulfilled', action);
-
+        
         const noteId = action.meta.arg.noteId;
         const notes = { ...state.notes };
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
         delete notes[noteId];
         state.notes = notes;
         state.notesCache = notes;
@@ -220,12 +265,17 @@ const notes = createSlice({
         const noteId = noteActionDTO.noteId;
         const tag = action.meta.arg.tag;
         state.notes[noteId].tags.push(tag);
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(createTagAndAddToNoteAction.fulfilled, (state, action) => {
         console.log('createTagAndAddToNoteAction.fulfilled', action);
 
+        
         const note: INote = action.payload.note;
         const noteId = note.id;
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
         state.notes[noteId] = note;
         state.notesCache[noteId] = note;
       })
@@ -251,12 +301,17 @@ const notes = createSlice({
         const note = state.notes[noteId];
         note.tags.push(tag);
         state.notes[noteId] = note;
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(addTagToNoteAction.fulfilled, (state, action) => {
         console.log('addTagToNoteAction.fulfilled', action);
 
+        
         const note = action.payload.note;
         const noteId = note.id;
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
         state.notes[noteId] = note;
         state.notesCache[noteId] = note;
       })
@@ -267,7 +322,7 @@ const notes = createSlice({
           return;
         }
         const noteId = action.meta.arg.noteActionDTO.noteId;
-        const note = state.notesCache[noteId]
+        const note = state.notesCache[noteId];
         state.notes[noteId] = note;
       })
 
@@ -278,24 +333,30 @@ const notes = createSlice({
         console.log('removeTagToNoteAction.pending', action);
 
         const noteId = action.meta.arg.noteActionDTO.noteId;
-        const tagId = action.meta.arg.noteActionDTO.noteId;
+        const tagId = action.meta.arg.noteActionDTO.tagId;
         const note = state.notes[noteId];
         const tags = note.tags.filter((tag) => {
           return tag.id !== tagId;
         });
 
         note.tags = tags;
+
         state.notes[noteId] = note;
+        actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(removeTagToNoteAction.fulfilled, (state, action) => {
         console.log('removeTagToNoteAction.fulfilled', action);
 
+        
         const note = action.payload.note;
         const tagId = action.meta.arg.noteActionDTO.tagId;
         const noteId = note.id;
         const tags = note.tags.filter((tag) => {
           return tag.id !== tagId;
         });
+        if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
+          return;
+        }
 
         note.tags = tags;
         state.notes[noteId] = note;
