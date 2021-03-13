@@ -1,11 +1,10 @@
-import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { CSSTransition } from 'react-transition-group';
 import { Note } from '@notizen/frontend-common/src/module/note/components/Note';
 import { Sync } from '@notizen/frontend-common/src/module/sync/Sync';
 import { Auth } from '@notizen/frontend-common/src/module/auth/Auth';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { HOST_URL } from './utils';
+import { HOST_URL } from './constants';
 
 const routes = [
   { path: `${HOST_URL}/`, name: 'Home', Component: Auth },

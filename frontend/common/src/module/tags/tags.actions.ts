@@ -15,30 +15,28 @@ import { dispatchCommand } from '../../utils';
 import { addAction } from '../../actions';
 
 /**
- * tags/fetch
+ * TAGS_FETCH_TAGS
  */
-let actionName = '';
-
-actionName = 'tags/fetch';
+export const TAGS_FETCH_TAGS = 'TAGS/FETCH_TAGS';
 export interface FetchTagsActionPayload {}
 export const fetchTagsAction = createAsyncThunk<
   TagsResult,
   FetchTagsActionPayload
->(actionName, async () => {
+>(TAGS_FETCH_TAGS, async () => {
   return await getTags();
 });
-addAction(actionName, fetchTagsAction);
+addAction(TAGS_FETCH_TAGS, fetchTagsAction);
 
 /**
- * tags/setTagModeAction
+ * TAGS_SET_TAG_MODE_ACTION
  */
-actionName = 'tags/setTagModeAction';
+export const TAGS_SET_TAG_MODE_ACTION = 'TAGS/SET_TAG_MODE_ACTION';
 export interface SetTagModeActionPayload {
   tag: Tag;
   mode: Mode;
 }
 export const setTagModeAction = createAction(
-  actionName,
+  TAGS_SET_TAG_MODE_ACTION,
   (payload: SetTagModeActionPayload) => {
     const { mode, tag } = payload;
     const updatedTag: Tag = { ...tag, mode: mode };
@@ -49,18 +47,18 @@ export const setTagModeAction = createAction(
     };
   }
 );
-addAction(actionName, setTagModeAction);
+addAction(TAGS_SET_TAG_MODE_ACTION, setTagModeAction);
 
 /**
- * tags/setMode
+ * TAGS_SET_MODE
  */
-actionName = 'tags/setMode';
+export const TAGS_SET_MODE = 'TAGS/SET_MODE';
 export interface SetModeActionPayload {
   tag?: Tag; // TODO: not used ?
   mode: Mode;
 }
 export const setModeAction = createAction(
-  actionName,
+  TAGS_SET_MODE,
   (payload: SetModeActionPayload) => {
     const { mode, tag } = payload;
     return {
@@ -70,17 +68,17 @@ export const setModeAction = createAction(
     };
   }
 );
-addAction(actionName, setModeAction);
+addAction(TAGS_SET_MODE, setModeAction);
 
 /**
- * tags/updateLocal
+ * TAGS_UPDATE_TAG_LOCAL
  */
-actionName = 'tags/updateLocal';
+export const TAGS_UPDATE_TAG_LOCAL = 'TAGS/UPDATE_TAG_LOCAL';
 export interface UpdateTagLocalActionPayload {
   tag: Tag;
 }
 export const updateTagLocalAction = createAction(
-  actionName,
+  TAGS_UPDATE_TAG_LOCAL,
   (payload: UpdateTagLocalActionPayload) => {
     const { tag } = payload;
     return {
@@ -90,17 +88,17 @@ export const updateTagLocalAction = createAction(
     };
   }
 );
-addAction(actionName, updateTagLocalAction);
+addAction(TAGS_UPDATE_TAG_LOCAL, updateTagLocalAction);
 
 /**
- * tags/resetUpdateLocal
+ * TAGS_RESET_UPDATE_LOCAL
  */
-actionName = 'tags/resetUpdateLocal';
+export const TAGS_RESET_UPDATE_LOCAL = 'TAGS/RESET_UPDATE_LOCAL';
 export interface ResetUpdateTagActionPayload {
   tagId: string;
 }
 export const resetUpdateTagAction = createAction(
-  actionName,
+  TAGS_RESET_UPDATE_LOCAL,
   (payload: ResetUpdateTagActionPayload) => {
     const { tagId } = payload;
     return {
@@ -110,29 +108,50 @@ export const resetUpdateTagAction = createAction(
     };
   }
 );
-addAction(actionName, resetUpdateTagAction);
+addAction(TAGS_RESET_UPDATE_LOCAL, resetUpdateTagAction);
 
 /**
- * tags/create
+ * TAGS_CREATE_TAG
  */
-actionName = 'tags/create';
+export const TAGS_CREATE_TAG = 'TAGS/CREATE_TAG';
 export interface CreateTagActionPayload {
   createTagDTO: CreateTagDTO;
 }
 export const createTagAction = createAsyncThunk<
   TagResult,
   CreateTagActionPayload
->(actionName, async (payload) => {
+>(TAGS_CREATE_TAG, async (payload) => {
   console.log('createTagAction');
 
   const { createTagDTO } = payload;
 
   return await createTag(createTagDTO);
 });
-addAction(actionName, createTagAction);
+addAction(TAGS_CREATE_TAG, createTagAction);
 
 /**
- * tags/createTagAndEdit
+ * TAGS_ADD_TAG_LOCAL
+ */
+export const TAGS_ADD_TAG_LOCAL = 'TAGS/ADD_TAG_LOCAL';
+export interface AddTagLocalPayload {
+  tag: Tag;
+}
+export const addTagLocal = createAction(
+  TAGS_ADD_TAG_LOCAL,
+  (payload: AddTagLocalPayload) => {
+    const { tag } = payload;
+    return {
+      payload: {
+        tag: tag,
+      },
+    };
+  }
+);
+addAction(TAGS_ADD_TAG_LOCAL, addTagLocal);
+
+/**
+ * TAGS_CREATE_TAG_AND_EDIT
+ * Custom action which dispatch 2 commands
  */
 export const createTagAndEdit = async (
   createTagDTO: CreateTagDTO,
@@ -173,34 +192,34 @@ export const createTagAndEdit = async (
 };
 
 /**
- * tags/update
+ * TAGS_UPDATE_TAG
  */
-actionName = 'tags/update';
+export const TAGS_UPDATE_TAG = 'TAGS/UPDATE_TAG';
 export interface UpdateTagActionPayload {
   tagId: string;
   updateTagDto: UpdateTagDTO;
 }
 export const updateTagAction = createAsyncThunk(
-  actionName,
+  TAGS_UPDATE_TAG,
   async (payload: UpdateTagActionPayload) => {
     const { tagId, updateTagDto } = payload;
     return await updateTag(tagId, updateTagDto);
   }
 );
-addAction(actionName, updateTagAction);
+addAction(TAGS_UPDATE_TAG, updateTagAction);
 
 /**
- * tags/delete
+ * TAGS_DELETE_TAG
  */
-actionName = 'tags/delete';
+export const TAGS_DELETE_TAG = 'TAGS/DELETE_TAG';
 export interface DeleteTagActionPayload {
   tagId: string;
 }
 export const deleteTagAction = createAsyncThunk<
   TagResult,
   DeleteTagActionPayload
->(actionName, async (payload) => {
+>(TAGS_DELETE_TAG, async (payload) => {
   const { tagId } = payload;
   return await deleteTag(tagId);
 });
-addAction(actionName, deleteTagAction);
+addAction(TAGS_DELETE_TAG, deleteTagAction);

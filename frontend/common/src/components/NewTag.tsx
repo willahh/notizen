@@ -27,6 +27,7 @@ import {
 
 import { CSSTransition } from 'react-transition-group';
 import store from '../store';
+import { addTagLocal, AddTagLocalPayload } from '../module/tags/tags.actions';
 
 interface INewTagProps {
   noteId: string;
@@ -249,9 +250,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                 const tagColor = e.currentTarget.getAttribute(
                   'data-tag-icon-color'
                 );
-                if (tagColor) {
-                  setFormColor(TagColor[tagColor]);
-                }
+                setFormColor(TagColor[tagColor]);
               }}
             ></button>
           );
@@ -362,42 +361,44 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                   aria-expanded="true"
                   onClick={async () => {
                     console.log('on click');
-                    const TagId: string = uuidv4();
-                    const tagName: string = filterText;
-                    const tag: Tag = {
-                      id: TagId,
-                      createDate: new Date().toISOString(),
-                      updateDate: new Date().toISOString(),
-                      isActive: true,
-                      color: TagColor.GRAY,
-                      icon: TagIcon.TAG,
-                      mode: Mode.Default, // TODO: is this still used ?
-                      name: tagName,
-                    };
 
-                    const notes = store.getState().notes.notes;
-                    const noteOffline = notes[noteId];
-
-                    // This doesn't works, it should be inside a reducer
-                    noteOffline.tags.push(tag);
-                    notes[noteId] = noteOffline;
-
-                    // online
                     const noteActionDTO: NoteActionDTO = {
-                      tagId: TagId,
                       actionType: NoteAction.CreateTagAndAddToNote,
                       noteId: noteId,
-                      tagName: tagName,
+                      tagId: uuidv4(),
                       tagColor: formColor,
                       tagIcon: formIcon,
+                      tagName: filterText,
                     };
-                    const payloadAA: CreateTagAndAddToNoteActionPayload = {
+                    const tag: Tag = {
+                      id: noteId,
+                      createDate: new Date().toISOString(),
+                      updateDate: new Date().toISOString(),
+                      name: filterText,
+                      color: TagColor.GRAY,
+                      icon: TagIcon.TAG,
+                      isActive: true,
+                      mode: Mode.Default
+                    }
+                    const payload: CreateTagAndAddToNoteActionPayload = {
+                      tag: tag,
                       noteActionDTO: noteActionDTO,
                     };
+                    
                     await dispatchCommand({
                       name: createTagAndAddToNoteAction.typePrefix,
-                      action: createTagAndAddToNoteAction(payloadAA),
-                      payload: payloadAA,
+                      action: createTagAndAddToNoteAction(payload),
+                      payload,
+                      dispatch,
+                    });
+                    
+                    const addTagLocalPayload: AddTagLocalPayload = {
+                      tag: tag,
+                    };
+                    dispatchCommand({
+                      name: addTagLocal.name,
+                      action: addTagLocal(addTagLocalPayload),
+                      payload,
                       dispatch,
                     });
 

@@ -1,7 +1,12 @@
+/**
+ * TODO :
+ *  - Display error to user when in rejected action
+ */
 import { Mode, Tag } from '../../interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 import { initialTagsState } from './tags.state';
 import {
+  addTagLocal,
   createTagAction,
   deleteTagAction,
   fetchTagsAction,
@@ -18,7 +23,9 @@ const tags = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // fetchTagsAction
+      /**
+       * TAGS_FETCH_TAGS
+       */
       .addCase(fetchTagsAction.pending, (state, action) => {
         console.log('fetchTags.pending', action);
       })
@@ -30,7 +37,9 @@ const tags = createSlice({
         state.tagsCache = tags;
       })
 
-      // createTagAction
+      /**
+       * TAGS_CREATE_TAG
+       */
       .addCase(createTagAction.pending, (state, action) => {
         console.log('createTagAction.pending', action);
 
@@ -56,7 +65,6 @@ const tags = createSlice({
           return;
         }
 
-        // Rollback action
         const tag: Tag = {
           ...action.meta.arg.createTagDTO,
           mode: Mode.Default,
@@ -65,7 +73,21 @@ const tags = createSlice({
         delete state.tags[tagId];
       })
 
-      // resetUpdateTagAction
+      /**
+       * TAGS_ADD_TAG_LOCAL
+       */
+      .addCase(addTagLocal, (state, action) => {
+        console.log('addTagLocal', action);
+
+        const tag = action.payload.tag;
+        const tagId = tag.id;
+        state.tags[tagId] = tag;
+        state.tagsCache[tagId] = tag;
+      })
+
+      /**
+       * TAGS_RESET_UPDATE_LOCAL
+       */
       .addCase(resetUpdateTagAction, (state, action) => {
         console.log('resetUpdateTag', action);
 
@@ -75,15 +97,20 @@ const tags = createSlice({
         state.tagsCache[tagId] = tag;
       })
 
-      // updateTagLocalAction
+      /**
+       * TAGS_UPDATE_TAG_LOCAL
+       */
       .addCase(updateTagLocalAction, (state, action) => {
         console.log('updateTagLocal', action);
 
         const tag = action.payload.tag;
-        state.tags[tag.id] = action.payload.tag;
+        const tagId = tag.id;
+        state.tags[tagId] = action.payload.tag;
       })
 
-      // updateTagAction
+      /**
+       * TAGS_UPDATE_TAG
+       */
       .addCase(updateTagAction.pending, (state, action) => {
         console.log('updateTagAction.pending', action);
 
@@ -98,8 +125,9 @@ const tags = createSlice({
         console.log('updateTagAction.fulfilled', action);
 
         const tag: Tag = { ...action.payload.tagEntity, mode: Mode.Default };
-        state.tags[tag.id] = tag;
-        state.tagsCache[tag.id] = tag;
+        const tagId = tag.id;
+        state.tags[tagId] = tag;
+        state.tagsCache[tagId] = tag;
       })
       .addCase(updateTagAction.rejected, (state, action) => {
         console.log('updateTagAction.rejected', action);
@@ -108,14 +136,14 @@ const tags = createSlice({
           return;
         }
 
-        // Rollback
-        // TODO: Display error to user (notification)
         const tagId = action.meta.arg.tagId;
         const tag = state.tagsCache[tagId];
         state.tags[tagId] = tag;
       })
 
-      // deleteTagAction
+      /**
+       * TAGS_DELETE_TAG
+       */
       .addCase(deleteTagAction.pending, (state, action) => {
         console.log('deleteTagAction.pending', action);
 
@@ -140,19 +168,22 @@ const tags = createSlice({
           return;
         }
 
-        // rollback
         const tagId = action.meta.arg.tagId;
         const tag = state.tagsCache[tagId];
         state.tags[tagId] = tag;
       })
 
-      // setModeAction
+      /**
+       * TAGS_SET_MODE
+       */
       .addCase(setModeAction, (state, action) => {
         console.log('setMode', action);
         state.mode = action.payload.mode;
       })
 
-      // setTagModeAction
+      /**
+       * TAGS_SET_TAG_MODE_ACTION
+       */
       .addCase(setTagModeAction, (state, action) => {
         console.log('setMode', action);
         const tag = action.payload.tag;

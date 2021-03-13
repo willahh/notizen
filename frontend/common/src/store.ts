@@ -1,4 +1,4 @@
-import { configureStore, ThunkAction, Action, Middleware, createSerializableStateInvariantMiddleware } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import rootReducer, { RootState } from './rootReducer';
 
 export const store = configureStore({

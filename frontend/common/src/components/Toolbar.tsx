@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { dispatchCommand } from '../utils';
 import { NavLink } from 'react-router-dom';
-import { HOST_URL } from '../utils';
+import { HOST_URL } from '../constants';
 import {
   createNoteAction,
   CreateNoteActionPayload,

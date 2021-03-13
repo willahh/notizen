@@ -65,9 +65,9 @@ export const yCommandsArray = ydoc.getArray('commands');
 // ----------------------------------
 // Queue of Commands
 export const addCommandToCommandsQueue = async (command: Command) => {
-  console.log('[x] [addCommandToCommandsQueue]', command);
+  console.log('[addCommandToCommandsQueue]', command);
 
-  const { action, dispatch, name, payload } = command;
+  const { action, dispatch } = command;
 
   // Only add to queue when offline
   if (!navigator.onLine) {
@@ -78,12 +78,12 @@ export const addCommandToCommandsQueue = async (command: Command) => {
 };
 
 export const executePendingCommands = () => {
-  console.log('[x] executePendingCommands');
+  console.log('executePendingCommands');
 
   const commands: any = yCommandsArray.toArray();
 
   commands.forEach(async (command: any) => {
-    console.log('[x] command', command, command.action);
+    console.log('command', command, command.action);
 
     const actionFn = actionNameToAction.get(command.name);
     if (actionFn) {
@@ -99,11 +99,11 @@ export const executePendingCommands = () => {
     }
     // TODO: Catch action error
     // store.dispatch(action).then((action: any) => {
-    //   console.log('[x] THEN', action);
+    //   console.log('THEN', action);
     //   if (!action.error) {
 
     //   } else {
-    //     console.warn('[x] action err', action.error);
+    //     console.warn('action err', action.error);
     //   }
     // });
   });

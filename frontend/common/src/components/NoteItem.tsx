@@ -60,7 +60,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
       note-id={id}
       onClick={() => {
         console.log('click');
-        
+
         const payload: SetSelectedNoteIdActionPayload = {
           noteId: id,
         };
@@ -81,26 +81,32 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
                   {name}
                 </p>
                 <div>
-                  {tags.map(({ color, icon, name }) => {
-                    return (
-                      <span
-                        // title={name}
-                        data-tip={name}
-                        data-delay-show={10}
-                        data-effect="solid"
-                        className="inline-flex items-center rounded-full pr-1 lowercase
+                  {tags.map((tag) => {
+                    if (tag) {
+                      const { color, icon, name } = tag;
+                      return (
+                        <span
+                          // title={name}
+                          data-tip={name}
+                          data-delay-show={10}
+                          data-effect="solid"
+                          className="inline-flex items-center rounded-full pr-1 lowercase
                         text-xs dark:text-indigo-100
                         hover:bg-indigo-200 dark:hover:bg-indigo-700
                         transition duration-200 ease-in-out
                         "
-                      >
-                        <span
-                          className={`h-3 w-3 text-${tagIconColorMap[color]}-500`}
                         >
-                          {tagIconIconMap[icon]}
+                          <span
+                            className={`h-3 w-3 text-${tagIconColorMap[color]}-500`}
+                          >
+                            {tagIconIconMap[icon]}
+                          </span>
                         </span>
-                      </span>
-                    );
+                      );
+                    } else {
+                      console.error('tag is undefined');
+                      return <></>;
+                    }
                   })}
                 </div>
               </a>

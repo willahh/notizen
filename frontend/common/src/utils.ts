@@ -3,6 +3,7 @@ import {
   addCommandToCommandsQueue as addCommandToCommandsQueue,
 } from './module/sync/Sync';
 
+
 export const hashCode = (str: string) => {
   var hash = 0,
     i,
@@ -16,8 +17,6 @@ export const hashCode = (str: string) => {
   return hash;
 };
 
-// TODO: Cleanup this part
-export const HOST_URL = location.host === 'willahh.github.io' ? '/notizen' : '';
 
 export const mapOfKeyValueToArrayOfMap = (m: any) => {
   const acc: any = [];
@@ -78,7 +77,7 @@ export const dispatchQuery = async (query: Query) => {
 export interface Command {
   name: string;
   payload: Object;
-  action: any; // TODO: describe this, it is either a ReduxAction or a ReduxThunkAction
+  action: any; // TODO: describe this type, it is either a ReduxAction or a ReduxThunkAction
   dispatch: Dispatch<any>;
 }
 export const dispatchCommand = async (command: Command) => {
