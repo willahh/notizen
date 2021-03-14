@@ -1,26 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React, {
+  useEffect,
+  useRef,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { CSSTransition } from 'react-transition-group';
-// import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { RootState } from './../rootReducer';
-import { dispatchCommand, dispatchQuery } from './../utils';
+import { RootState } from '../rootReducer';
+import { dispatchCommand, dispatchQuery } from '../utils';
 import {
   fetchNoteAction,
   FetchNoteActionPayload,
   updateNoteActionAction,
   UpdateNoteActionPayload,
 } from '../module/note/note.actions';
-import { Tag, UpdateNoteDTO } from './../interfaces';
+import { Tag, UpdateNoteDTO } from '../interfaces';
 import { NoteTags } from './NoteTags';
 
-const scrollbar = require('smooth-scrollbar-react');
-const ScrollBar = scrollbar.default;
+import NotizenEditor from '../module/editor/Editor';
 
 interface INoteDetailProps {}
 
-const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
-  console.log('NoteDetailEdit');
-
+const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
+  console.log('NoteDetailEditNew');
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
@@ -165,6 +164,7 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
                   contentEditable={true}
                   dangerouslySetInnerHTML={{ __html: note?.content || '' }}
                 ></div>
+                <NotizenEditor />
               </div>
               {/* </CSSTransition> */}
             </div>
@@ -181,4 +181,4 @@ const NoteDetailEdit: React.FC<INoteDetailProps> = ({}) => {
   }
 };
 
-export { NoteDetailEdit };
+export { NoteDetailEditNew };

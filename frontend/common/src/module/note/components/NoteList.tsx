@@ -7,8 +7,6 @@ import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecon
 import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';
 import { MainArea } from '@notizen/frontend-common/src/components/MainArea';
 import { Toolbar } from '@notizen/frontend-common/src/components/Toolbar';
-import { NoteDetailEdit } from '@notizen/frontend-common/src/components/NoteDetailEdit';
-import { LOCAL_STORAGE_NOTES_KEY } from '@notizen/frontend-common/src/constants';
 import MainTemplate from '@notizen/frontend-common/src/components/MainTemplate';
 import { INote } from '@notizen/frontend-common/src/interfaces';
 import {
@@ -16,6 +14,7 @@ import {
   mapOfKeyValueToArrayOfMap,
 } from '@notizen/frontend-common/src/utils';
 import { fetchNotesAction, FetchNotesActionPayload } from './../note.actions';
+import { NoteDetailEditNew } from '../../../components/NoteDetailEditNew';
 
 interface INoteProps {}
 
@@ -116,7 +115,7 @@ const NoteList: React.FC<INoteProps> = () => {
             {noteListHtml}
           </AreaSecondary>
           <MainArea>
-            <NoteDetailEdit />
+            <NoteDetailEditNew />
           </MainArea>
         </div>
       </div>

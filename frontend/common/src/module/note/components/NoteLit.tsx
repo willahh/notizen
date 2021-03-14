@@ -8,15 +8,14 @@ import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecon
 import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';
 import { MainArea } from '@notizen/frontend-common/src/components/MainArea';
 import { Toolbar } from '@notizen/frontend-common/src/components/Toolbar';
-import { NoteDetailEdit } from '@notizen/frontend-common/src/components/NoteDetailEdit';
-import { LOCAL_STORAGE_NOTES_KEY } from '@notizen/frontend-common/src/constants';
+import { NoteDetailEditNew } from '@notizen/frontend-common/src/components/NoteDetailEditNew';
 import LitTemplate from '@notizen/frontend-common/src/components/LitTemplate';
 import { dispatchQuery } from '@notizen/frontend-common/src/utils';
 import { NoteColor } from '@notizen/frontend-common/src/interfaces';
 import { fetchNotesAction, FetchNotesActionPayload } from '../note.actions';
 
-const scrollbar = require('smooth-scrollbar-react');
-const ScrollBar = scrollbar.default;
+// const scrollbar = require('smooth-scrollbar-react');
+// const ScrollBar = scrollbar.default;
 
 interface INoteProps {}
 
@@ -99,7 +98,7 @@ const NoteLit: React.FC<INoteProps> = () => {
       </AreaSecondary>
       <MainArea>
         <Toolbar />
-        <NoteDetailEdit />
+        <NoteDetailEditNew />
       </MainArea>
     </LitTemplate>
   );

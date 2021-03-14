@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Note } from '@notizen/frontend-common/src/module/note/components/Note';
 import { Sync } from '@notizen/frontend-common/src/module/sync/Sync';
 import { Auth } from '@notizen/frontend-common/src/module/auth/Auth';
+import { EditorTestPage } from '@notizen/frontend-common/src/module/editor/EditorTestPage';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { HOST_URL } from './constants';
 
@@ -11,6 +12,7 @@ const routes = [
   { path: `${HOST_URL}/auth`, name: 'Auth', Component: Auth },
   { path: `${HOST_URL}/note`, name: 'Note', Component: Note },
   { path: `${HOST_URL}/sync`, name: 'Sync', Component: Sync },
+  { path: `${HOST_URL}/editor`, name: 'Editor', Component: EditorTestPage },
 ];
 
 function App() {
