@@ -6,7 +6,7 @@ import { RootState } from '@notizen/frontend-common/src/rootReducer';
 import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecondary';
 import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';
 import { MainArea } from '@notizen/frontend-common/src/components/MainArea';
-import { Toolbar } from '@notizen/frontend-common/src/components/Toolbar';
+// import { Toolbar } from './noteDetail/Toolbar';
 import MainTemplate from '@notizen/frontend-common/src/components/MainTemplate';
 import { INote } from '@notizen/frontend-common/src/interfaces';
 import {
@@ -14,7 +14,7 @@ import {
   mapOfKeyValueToArrayOfMap,
 } from '@notizen/frontend-common/src/utils';
 import { fetchNotesAction, FetchNotesActionPayload } from './../note.actions';
-import { NoteDetailEditNew } from '../../../components/NoteDetailEditNew';
+import { NoteDetailEditNew } from './noteDetail/NoteDetailEditNew';
 
 interface INoteProps {}
 
@@ -64,41 +64,43 @@ const NoteList: React.FC<INoteProps> = () => {
   } else {
     noteListHtml = (
       /* <ScrollBar damping={0.5} thumbMinSize={20}> */
-      <TransitionGroup
-        component="ul"
-        className="overflow-auto divide-y-1 divide-gray-200 dark:divide-gray-800"
-        type="ul"
-      >
-        {notesList.map(
-          ({
-            id,
-            name,
-            content,
-            createDate,
-            updateDate,
-            tags,
-            color,
-            isFav,
-          }) => {
-            return (
-              <CSSTransition key={id} timeout={400} classNames="item">
-                <NoteItem
-                  key={id}
-                  id={id}
-                  createDate={createDate}
-                  updateDate={updateDate}
-                  name={name}
-                  tags={tags}
-                  content={content}
-                  isSelected={true}
-                  color={color}
-                  isFav={isFav}
-                ></NoteItem>
-              </CSSTransition>
-            );
-          }
-        )}
-      </TransitionGroup>
+      <div className="flex relative overflow-auto">
+        <div className="pointer-events-none absolute h-8 left-1 inset-x-0 z-10 bg-gradient-to-b from-white dark:from-black"></div>
+        <div className="pointer-events-none absolute h-16 left-0 bottom-0 inset-x-0 z-10 bg-gradient-to-t from-white dark:from-black"></div>
+        <div className="overflow-auto">
+          <TransitionGroup component="ul" className="divide-y-1 divide-gray-200 dark:divide-gray-800 " type="ul" style={{border: "2px solid orange;"}}>
+            {notesList.map(
+              ({
+                id,
+                name,
+                content,
+                createDate,
+                updateDate,
+                tags,
+                color,
+                isFav,
+              }) => {
+                return (
+                  <CSSTransition key={id} timeout={400} classNames="item">
+                    <NoteItem
+                      key={id}
+                      id={id}
+                      createDate={createDate}
+                      updateDate={updateDate}
+                      name={name}
+                      tags={tags}
+                      content={content}
+                      isSelected={true}
+                      color={color}
+                      isFav={isFav}
+                    ></NoteItem>
+                  </CSSTransition>
+                );
+              }
+            )}
+          </TransitionGroup>
+        </div>
+      </div>
     );
   }
   //TODO: Transition horizontal between note + note route
@@ -106,9 +108,6 @@ const NoteList: React.FC<INoteProps> = () => {
   return (
     <MainTemplate>
       <div className="flex w-full flex-col">
-        <div>
-          <Toolbar />
-        </div>
         <div className="flex h-full">
           <AreaSecondary>
             <NoteFilter />

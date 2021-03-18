@@ -8,7 +8,7 @@ import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecon
 import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';
 import { MainArea } from '@notizen/frontend-common/src/components/MainArea';
 import { Toolbar } from '@notizen/frontend-common/src/components/Toolbar';
-import { NoteDetailEditNew } from '@notizen/frontend-common/src/components/NoteDetailEditNew';
+import { NoteDetailEditNew } from '@notizen/frontend-common/src/module/note/components/noteDetail/NoteDetailEditNew';
 import LitTemplate from '@notizen/frontend-common/src/components/LitTemplate';
 import { dispatchQuery } from '@notizen/frontend-common/src/utils';
 import { NoteColor } from '@notizen/frontend-common/src/interfaces';

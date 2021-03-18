@@ -8,12 +8,7 @@ import {
   updateNoteActionAction,
   UpdateNoteActionPayload,
 } from '../module/note/note.actions';
-import {
-  INote,
-  NoteColor,
-  TagEntity,
-  UpdateNoteDTO,
-} from '../interfaces';
+import { INote, NoteColor, TagEntity, UpdateNoteDTO } from '../interfaces';
 import { NewTag } from './NewTag';
 import { tagIconColorMap, tagIconIconMap, noteIconColorMap } from './TagIcon';
 
@@ -108,16 +103,8 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
   }
 
   return (
-    <div
-      key={`NoteTags`}
-      className=""
-      style={{
-        width: '482px',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-      }}
-    >
-      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row mb-2 select-none">
+    <div key={`NoteTags`} className="flex justify-end p-2">
+      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row select-none">
         <div className="inline-flex mr-2">
           <div className="relative inline-flex items-center">
             <button

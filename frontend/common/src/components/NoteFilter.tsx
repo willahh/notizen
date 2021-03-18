@@ -1,24 +1,25 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { CreateNoteDTO } from '../interfaces';
+import {
+  createNoteAction,
+  CreateNoteActionPayload,
+} from '../module/note/note.actions';
+import { dispatchCommand } from '../utils';
 
 export type INoteFilterProps = {};
 
 const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
+  const dispatch = useDispatch();
+
   return (
-    <div className="flex-shrink-0 h-16 border-b-1 border-gray-200 bg-white dark:bg-black dark:border-gray-800">
-      <div className="h-16 flex flex-col justify-center">
-        <div className="max-w-2xl relative text-gray-400 focus-within:text-gray-500">
-          <label htmlFor="search" className="sr-only">
-            Search in notes
-          </label>
-          <input
-            id="search"
-            type="search"
-            placeholder="Search in notes"
-            className="block w-full border-transparent pl-12 placeholder-gray-500 focus:border-transparent sm:text-sm focus:ring-0 dark:bg-black"
-          />
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4">
+    <div className="flex-shrink-0 border-b-1 border-gray-200 bg-white dark:bg-black dark:border-gray-800">
+      <div className="flex flex-col justify-center p-2">
+        <div className="flex align-middle">
+          <div className="flex-none self-center">
             <svg
-              className="h-5 w-5"
+              className="h-5 w-5 text-gray-400"
               x-description="Heroicon name: solid/search"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -31,6 +32,55 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
                 clipRule="evenodd"
               />
             </svg>
+          </div>
+          <div className="flex-grow self-center">
+            <input
+              id="search"
+              type="search"
+              placeholder="Search in notes"
+              className="block w-full p-0 pl-2 border-transparent placeholder-gray-500 focus:border-transparent sm:text-sm 
+              focus:ring-0 dark:bg-black"
+            />
+          </div>
+          <div className="flex-none self-center">
+            <button
+              type="button"
+              className="relative inline-flex items-center p-2 rounded-md border-1 border-gray-300 
+              text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 
+              focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 
+              bg-white dark:bg-black dark:border-gray-800"
+              onClick={() => {
+                const createNoteDTO: CreateNoteDTO = {
+                  id: uuidv4(),
+                  content: '',
+                  name: '',
+                };
+                const payload: CreateNoteActionPayload = {
+                  createNoteDTO: createNoteDTO,
+                };
+                dispatchCommand({
+                  name: createNoteAction.typePrefix,
+                  action: createNoteAction(payload),
+                  payload,
+                  dispatch,
+                });
+              }}
+            >
+              <svg
+                className="h-5 w-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

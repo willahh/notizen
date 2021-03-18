@@ -8,6 +8,15 @@ body {
   font-weight: 200;
   font-style: normal;
 }
+
+.fill-current-color  svg {
+  fill: currentColor;
+}
+
+.svg-color svg {
+  color: rgb(126, 126, 126);
+}
+
 a,
 button {
   cursor: default;
@@ -127,7 +136,7 @@ button {
     transform: scale(0) translateY(-40px);
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
   }
   100% {
     opacity: 1;
@@ -140,7 +149,7 @@ button {
     transform: scale(1) translateY(0px);
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
   }
   100% {
     opacity: 0;
@@ -173,7 +182,7 @@ button {
     transform: scale(1);
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
     transform: scale(4);
   }
   100% {
@@ -187,7 +196,7 @@ button {
     transform: scale(1);
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
     transform: scale(1);
   }
   100% {
@@ -253,7 +262,6 @@ button {
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
 /* noteDetail */
 .noteDetail-enter {
   left: -200px;
@@ -264,20 +272,16 @@ button {
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
-
-
-
-
-
-.display-enter, .display-appear {
+.display-enter,
+.display-appear {
   top: var(--menu-starting-top);
   width: var(--toggler-width);
   max-height: var(--toggler-height);
   color: var(--fade-from-color);
   background-color: var(--toggler-bg-color);
 }
-.display-enter-active, .display-appear-active {
+.display-enter-active,
+.display-appear-active {
   top: var(--menu-ending-top);
   width: var(--menu-width);
   max-height: var(--menu-max-height);
@@ -285,7 +289,6 @@ button {
   background-color: var(--menu-bg-color);
   transition: all var(--timeout);
 }
-
 
 /* page transition */
 .page {
@@ -311,11 +314,6 @@ button {
   transform: translateX(-100%);
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
-
-
-
-
 
 /* editor */
 .editor-block:hover > .icon {

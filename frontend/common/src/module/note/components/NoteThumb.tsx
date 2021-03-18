@@ -11,7 +11,7 @@ import {
   useRouteMatch,
 } from 'react-router-dom';
 import MainTemplate from '../../../components/MainTemplate';
-import { Toolbar } from '../../../components/Toolbar';
+import { SideToolbar } from './noteDetail/SideToolbar';
 import { INote } from '../../../interfaces';
 import { dispatchQuery } from '../../../utils';
 
@@ -100,7 +100,7 @@ const NoteThumb: React.FC<INoteProps> = () => {
     <MainTemplate>
       <div className="flex w-full flex-col">
         <div>
-          <Toolbar />
+          <SideToolbar />
           <NoteFilter />
         </div>
         <div className="flex h-full">{noteListHtml}</div>
