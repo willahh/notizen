@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, getConnection, Repository } from 'typeorm';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { CreateNoteDto } from './create-note.dto';
+import { CreateNoteDTO } from './create-note.dto';
 import { Note } from './note.entity';
 import { UpdateNoteDto } from './update-note.dto';
 import { Tag } from 'src/tags/tag.entity';
@@ -91,7 +91,7 @@ export class NotesService {
   }
 
   async create(
-    createNoteDTO: CreateNoteDto,
+    createNoteDTO: CreateNoteDTO,
     debug = false,
     debugThrowError: boolean = false,
   ) {

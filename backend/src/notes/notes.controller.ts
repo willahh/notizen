@@ -11,7 +11,7 @@ import {
 import { IsOptional } from 'class-validator';
 import { TagsService } from 'src/tags/tags.service';
 import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
-import { CreateNoteDto } from './create-note.dto';
+import { CreateNoteDTO } from './create-note.dto';
 import { NoteActionDto, NoteAction } from './note-action.dto';
 import { NotesService } from './notes.service';
 import { UpdateNoteDto } from './update-note.dto';
@@ -60,7 +60,7 @@ export class NotesController {
   
   @Post()
   create(
-    @Body() createNoteDto: CreateNoteDto,
+    @Body() createNoteDto: CreateNoteDTO,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
   ) {

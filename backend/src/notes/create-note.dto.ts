@@ -1,6 +1,6 @@
-import { IsString, IsDate, IsUUID, IsOptional } from "class-validator";
+import { IsString, IsDate, IsUUID, IsOptional, IsJSON, IsArray } from "class-validator";
 
-export class CreateNoteDto {
+export class CreateNoteDTO {
   @IsUUID()
   @IsOptional()
   id?: string;
@@ -16,6 +16,6 @@ export class CreateNoteDto {
   @IsString()
   readonly name: string;
 
-  @IsString()
-  readonly content: string;
+  @IsArray()
+  readonly content: Array<Object>;
 }

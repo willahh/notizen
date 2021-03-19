@@ -18,8 +18,8 @@ export class Note {
   @Column({ nullable: true })
   name: string;
 
-  @Column({ nullable: true })
-  content: string;
+  @Column({ type: 'jsonb', nullable: true, default: [] })
+  content: Array<Object>;
 
   @Column({ type: 'timestamp' })
   createDate: Date;
