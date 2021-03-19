@@ -2,13 +2,14 @@
  * Interfaces should be shared between frontend and backend (domain ?).
  * https://stackoverflow.com/questions/59571680/react-backend-project-structure-when-sharing-code
  */
+import { Node } from 'slate';
 
 // Notes ------------------------
 // TODO: Share with backend
 export interface INote {
   id: string;
   name?: string;
-  content?: string;
+  content?: Node[];
   createDate: string;
   updateDate: string;
   tags: Tag[];
@@ -37,7 +38,7 @@ export interface NotesResult {
 export interface UpdateNoteDTO {
   id: string;
   name?: string;
-  content?: string;
+  content?: Node[];
   isFav?: boolean;
   color?: NoteColor;
 }
@@ -46,7 +47,7 @@ export interface UpdateNoteDTO {
 export interface CreateNoteDTO {
   id: string;
   name?: string;
-  content?: string;
+  content?: Node[];
 }
 
 // TODO: Share with the backend

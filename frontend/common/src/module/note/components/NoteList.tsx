@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { NoteItem } from '@notizen/frontend-common/src/components/NoteItem';
+import { NoteItem } from '@notizen/frontend-common/src/module/note/components/NoteItem';
 import { RootState } from '@notizen/frontend-common/src/rootReducer';
 import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecondary';
 import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';

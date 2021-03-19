@@ -16,7 +16,7 @@ const EditorTestPage: React.FC<IEditorTestPageProps> = ({}) => {
   return (
     <div className="bg-white dark:bg-black p-20 h-screen">
       <h2 className="dark:text-white text-xl">Editor test</h2>
-      <NotizenEditor editor={editor} nodes={nodes}></NotizenEditor>
+      <NotizenEditor editor={editor} nodes={nodes} noteId={"xxxxxx"}></NotizenEditor>
     </div>
   );
 };

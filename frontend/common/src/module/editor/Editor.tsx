@@ -77,6 +77,12 @@ import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { Commands } from './Commands';
 import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
 import { renderElement } from './elements/elements';
+import { UpdateNoteDTO } from '../../interfaces';
+import { noteIconColorMap } from '../../components/TagIcon';
+import { updateNoteActionAction, UpdateNoteActionPayload } from '../note/note.actions';
+import { dispatchCommand } from '../../utils';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 // Define a React component to render leaves with bold text.
 const Leaf = (props) => {
@@ -94,14 +100,21 @@ const Leaf = (props) => {
 interface IEditor {
   editor: Editor & ReactEditor;
   nodes: Node[];
+  noteId: string;
 }
 
-export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes }) => {
-  console.log('NotizenEditor', nodes);
+export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
+  console.log('NotizenEditor', noteId);
+
+  const dispatch = useDispatch();
 
   // Keep track of state for the value of the editor.
-  // const [value, setValue] = useState(node);
   const [value, setValue] = useState(nodes);
+
+  useEffect(() => {
+    console.log('[x] useEffect nodes');
+    setValue(nodes);
+  }, [nodes])
 
   const renderElementMemoized = renderElement(editor);
 
@@ -122,6 +135,26 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes }) => {
     });
     ReactEditor.focus(editor);
   };
+
+  const handleEditorBlur = (event) => {
+    console.log('handleEditorBlur', event, editor);
+
+    // const content: string = JSON.stringify(editor.children);
+    const content = editor.children;
+    const updateNoteDTO: UpdateNoteDTO = {
+      id: noteId,
+      content: content
+    }
+    const payload: UpdateNoteActionPayload = {
+      updateNoteDTO: updateNoteDTO
+    }
+    dispatchCommand({
+      name: updateNoteActionAction.typePrefix,
+      action: updateNoteActionAction(payload),
+      dispatch: dispatch,
+      payload: payload
+    })
+  }
 
   return (
     <Slate
@@ -145,6 +178,7 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes }) => {
         renderElement={renderElementMemoized}
         renderLeaf={renderLeaf}
         className="h-full text-black dark:text-white"
+        onBlur={handleEditorBlur}
         onClick={(event) => {
           console.log('onClick', event, event.currentTarget, event.currentTarget.closest('[data-slate-node="element"]'));
           // addDefaultAtTheEndAndFocus(editor);

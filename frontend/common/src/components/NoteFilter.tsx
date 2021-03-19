@@ -52,8 +52,8 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
               onClick={() => {
                 const createNoteDTO: CreateNoteDTO = {
                   id: uuidv4(),
-                  content: '',
-                  name: '',
+                  // content: '',
+                  // name: '',
                 };
                 const payload: CreateNoteActionPayload = {
                   createNoteDTO: createNoteDTO,

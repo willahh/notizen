@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
-import { RootState } from '../rootReducer';
-import { dispatchCommand, dispatchQuery } from '../utils';
+import { RootState } from '../../../rootReducer';
+import { dispatchCommand, dispatchQuery } from '../../../utils';
 import {
   deleteNoteAction,
   DeleteNoteActionPayload,
   setSelectedNoteIdAction,
   SetSelectedNoteIdActionPayload,
-} from '../module/note/note.actions';
-import { INote } from '../interfaces';
-import { tagIconColorMap, tagIconIconMap } from './TagIcon';
+} from '../note.actions';
+import { INote } from '../../../interfaces';
+import { tagIconColorMap, tagIconIconMap } from '../../../components/TagIcon';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
@@ -149,11 +149,11 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
               </svg>
             </button>
           </div>
-          <div className="mt-1 max-h-10 overflow-hidden">
+          {/* <div className="mt-1 max-h-10 overflow-hidden">
             <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-500">
               {content ? truncateString(content, 64) : 'Ma nouvelle note'}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </li>

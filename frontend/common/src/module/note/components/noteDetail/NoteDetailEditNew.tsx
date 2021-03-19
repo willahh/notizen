@@ -37,28 +37,55 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const titleRef = useRef<HTMLDivElement>(null);
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
-  // const handleContentBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-  //   const noteId = selectedNoteId;
-  //   if (noteId) {
-  //     const content = contentRef.current?.innerText;
 
-  //     const updateNoteDTO: UpdateNoteDTO = {
-  //       id: noteId,
-  //       content: content,
-  //     };
-  //     const payload: UpdateNoteActionPayload = {
-  //       updateNoteDTO: updateNoteDTO,
-  //     };
-  //     dispatchCommand({
-  //       name: updateNoteActionAction.typePrefix,
-  //       action: updateNoteActionAction(payload),
-  //       payload,
-  //       dispatch,
-  //     });
-  //   } else {
-  //     console.error(`noteId : ${selectedNoteId} is undefined`);
-  //   }
-  // };
+
+  // Create a Slate editor object that won't change across renders.
+  const editor = useMemo(() => withReact(createEditor()), []);
+  useEffect(() => {
+    console.log('#notedetail effect selectedNoteId', selectedNoteId);
+
+    if (selectedNoteId) {
+      const payload: FetchNoteActionPayload = {
+        noteId: selectedNoteId,
+      };
+      dispatchQuery({
+        name: fetchNoteAction.typePrefix,
+        action: fetchNoteAction(payload),
+        payload,
+        dispatch,
+      });
+      // setNodes();
+    }
+    // if (note?.content === '') {
+    //   // Focus on content when note has no content (new note)
+    //   contentRef.current?.focus();
+    // }
+  }, [dispatch, selectedNoteId]);
+
+  if (!note) {
+    return (
+      <div>
+        <img
+          className="absolute bottom-0 right-0 opacity-30"
+          src={illustration}
+          alt=""
+        />
+      </div>
+    );
+  }
+
+  let nodes = note.content;
+
+  if (Array.isArray(nodes) && nodes.length === 0) {
+    console.log('[x] nodes empty array');
+
+    nodes = [
+      {
+        type: 'paragraph',
+        children: [{ type: 'paragraph', text: 'empty' }],
+      },
+    ];
+  }
 
   const handleTitleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     const noteId = selectedNoteId;
@@ -81,42 +108,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
     }
   };
 
-  const initNodes: Node[] = [
-    {
-      type: 'paragraph',
-      // text: '',
-      children: [
-        { type: 'paragraph', text: 'test' },
-        { type: 'paragraph', text: 'test' },
-      ],
-    },
-  ];
-  useEffect(() => {
-    console.log('#notedetail effect selectedNoteId', selectedNoteId);
-
-    if (selectedNoteId) {
-      const payload: FetchNoteActionPayload = {
-        noteId: selectedNoteId,
-      };
-      dispatchQuery({
-        name: fetchNoteAction.typePrefix,
-        action: fetchNoteAction(payload),
-        payload,
-        dispatch,
-      });
-    }
-    if (note?.content === '') {
-      // Focus on content when note has no content (new note)
-      contentRef.current?.focus();
-    }
-  }, [dispatch, selectedNoteId]);
-
-  // Create a Slate editor object that won't change across renders.
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const r = Math.round(Math.random()) === 1;
-  const [anim, setAnim] = useState(r);
-  console.log('#anim', anim, r);
-  
+  const anim = false;
 
   return (
     <>
@@ -126,37 +118,36 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
       {/* <ScrollBar damping={0.5} thumbMinSize={20}> */}
 
       <div className="h-full overflow-auto base-style bg-gray-50 dark:text-gray-300 dark:bg-gray-900 ">
-        {note ? (
-          <CSSTransition
-            in={anim}
-            timeout={300}
-            classNames="style-dropdown"
-            // unmountOnExit
-          >
-            <div className="flex justify-center h-full p-8 pt-0">
-              <div className="">
-                <div className="relative self-auto" style={{ width: 800 }}>
-                  <NoteTags />
-                  <div
-                    className="flex bg-white dark:bg-black
+        <CSSTransition
+          in={anim}
+          timeout={300}
+          classNames="style-dropdown"
+          // unmountOnExit
+        >
+          <div className="flex justify-center h-full p-8 pt-0">
+            <div className="">
+              <div className="relative self-auto" style={{ width: 800 }}>
+                <NoteTags />
+                <div
+                  className="flex bg-white dark:bg-black
                shadow-2xl
                dark:border-black
                dark:ring-1 dark:ring-offset-black"
-                    style={{ minHeight: 600 }}
-                  >
-                    {/* <NoteToolbar editor={editor} /> */}
+                  style={{ minHeight: 600 }}
+                >
+                  {/* <NoteToolbar editor={editor} /> */}
 
-                    <div className="flex flex-col w-full p-10">
-                      {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
-                      <h1
-                        className="outline-none cursor-default text-4xl font-semibold"
-                        onBlur={handleTitleBlur}
-                        placeholder="Titre"
-                        ref={titleRef}
-                        contentEditable={true}
-                        dangerouslySetInnerHTML={{ __html: note?.name || '' }}
-                      ></h1>
-                      {/* <div
+                  <div className="flex flex-col w-full p-10">
+                    {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
+                    <h1
+                      className="outline-none cursor-default text-4xl font-semibold"
+                      onBlur={handleTitleBlur}
+                      placeholder="Titre"
+                      ref={titleRef}
+                      contentEditable={true}
+                      dangerouslySetInnerHTML={{ __html: note?.name || '' }}
+                    ></h1>
+                    {/* <div
                     className="text-justify outline-none cursor-default font-thin"
                     onBlur={handleContentBlur}
                     // onKeyUp={handleContentKeyUp}
@@ -166,26 +157,21 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
                     dangerouslySetInnerHTML={{ __html: note?.content || '' }}
                   ></div> */}
 
-                      <NotizenEditor editor={editor} nodes={initNodes} />
-                      {/* </CSSTransition> */}
-                    </div>
+                    <NotizenEditor
+                      editor={editor}
+                      nodes={nodes}
+                      noteId={selectedNoteId}
+                    />
+                    {/* </CSSTransition> */}
                   </div>
                 </div>
               </div>
-              <div className="">
-                <SideToolbar />
-              </div>
             </div>
-          </CSSTransition>
-        ) : (
-          <div>
-            <img
-              className="absolute bottom-0 right-0 opacity-30"
-              src={illustration}
-              alt=""
-            />
+            <div className="">
+              <SideToolbar />
+            </div>
           </div>
-        )}
+        </CSSTransition>
       </div>
       {/* </ScrollBar> */}
       {/* </Suspense> */}

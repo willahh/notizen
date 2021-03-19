@@ -86,7 +86,7 @@ const NoteThumb: React.FC<INoteProps> = () => {
                 id={id}
                 title={name}
                 tags={['Tag 1']}
-                text={content}
+                text="text"
                 isSelected={true}
               />
             </CSSTransition>
