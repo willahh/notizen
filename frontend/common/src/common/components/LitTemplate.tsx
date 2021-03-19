@@ -1,6 +1,6 @@
 import React from 'react';
-import { MenuMobile } from '@notizen/frontend-common/src/components/MenuMobile';
-import { Main } from '@notizen/frontend-common/src/components/Main';
+import { MenuMobile } from './MenuMobile';
+import { Main } from './Main';
 
 interface ILitTemplateProps {
   children: React.ReactElement | React.ReactElement[];

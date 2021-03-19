@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './../../assets/notizen.svg';
+import logo from './../../../assets/notizen.svg';
 
 export type ILogoProps = {};
 

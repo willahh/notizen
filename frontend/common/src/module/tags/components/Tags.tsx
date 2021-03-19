@@ -3,19 +3,19 @@ import React from 'react';
 import { useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../rootReducer';
+import { RootState } from '../../../common/rootReducer';
 import {
   dispatchCommand,
   dispatchQuery,
   mapOfKeyValueToArrayOfMap,
-} from '../../../utils';
+} from '../../../common/utils';
 import {
   CreateTagDTO,
   Mode,
   Tag,
   TagColor,
   TagIcon,
-} from '../../../interfaces';
+} from '../../../common/interfaces';
 import {
   fetchTagsAction,
   FetchTagsActionPayload,

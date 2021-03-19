@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { NoteItem } from '@notizen/frontend-common/src/module/note/components/NoteItem';
-import { RootState } from '@notizen/frontend-common/src/rootReducer';
-import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecondary';
-import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';
-import { MainArea } from '@notizen/frontend-common/src/components/MainArea';
+import { RootState } from '@notizen/frontend-common/src/common/rootReducer';
+import { AreaSecondary } from '@notizen/frontend-common/src/common/components/AreaSecondary';
+import { NoteFilter } from './NoteFilter';
+import { MainArea } from '@notizen/frontend-common/src/common/components/MainArea';
 // import { Toolbar } from './noteDetail/Toolbar';
-import MainTemplate from '@notizen/frontend-common/src/components/MainTemplate';
-import { INote } from '@notizen/frontend-common/src/interfaces';
+import MainTemplate from '@notizen/frontend-common/src/common/components/MainTemplate';
+import { INote } from '@notizen/frontend-common/src/common/interfaces';
 import {
   dispatchQuery,
   mapOfKeyValueToArrayOfMap,
-} from '@notizen/frontend-common/src/utils';
+} from '@notizen/frontend-common/src/common/utils';
 import { fetchNotesAction, FetchNotesActionPayload } from './../note.actions';
 import { NoteDetailEditNew } from './noteDetail/NoteDetailEditNew';
 

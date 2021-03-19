@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HOST_URL } from '../../constants';
+import { HOST_URL } from '../../common/constants';
 import loginBackgroundImage from './../../../assets/notizen-icon.svg';
 
 export type IAuthProps = {};

@@ -8,7 +8,7 @@ import {
   updateNote,
   addTagToNote,
   removeTagToNote,
-} from '../../notizenAPI';
+} from '../../common/notizenAPI';
 import {
   NoteDetailResult,
   CreateNoteDTO,
@@ -17,8 +17,8 @@ import {
   Tag,
   NotesResult,
   CreateTagAndAddToNoteResult,
-} from '../../interfaces';
-import { addAction } from '../../actions';
+} from '../../common/interfaces';
+import { addAction } from '../../common/actions';
 
 
 /**
@@ -145,8 +145,6 @@ export interface AddTagToNoteActionPayload {
   noteActionDTO: NoteActionDTO;
   tag: Tag;
 }
-
-
 
 export const addTagToNoteAction = createAsyncThunk<
   NoteDetailResult,

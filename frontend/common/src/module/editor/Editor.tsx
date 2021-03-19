@@ -77,10 +77,10 @@ import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { Commands } from './Commands';
 import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
 import { renderElement } from './elements/elements';
-import { UpdateNoteDTO } from '../../interfaces';
-import { noteIconColorMap } from '../../components/TagIcon';
+import { UpdateNoteDTO } from '../../common/interfaces';
+import { noteIconColorMap } from '../../common/components/TagIcon';
 import { updateNoteActionAction, UpdateNoteActionPayload } from '../note/note.actions';
-import { dispatchCommand } from '../../utils';
+import { dispatchCommand } from '../../common/utils';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 

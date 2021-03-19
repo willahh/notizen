@@ -1,12 +1,12 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { CreateNoteDTO } from '../interfaces';
+import { CreateNoteDTO } from '../../../common/interfaces';
 import {
   createNoteAction,
   CreateNoteActionPayload,
-} from '../module/note/note.actions';
-import { dispatchCommand } from '../utils';
+} from '../note.actions';
+import { dispatchCommand } from '../../../common/utils';
 
 export type INoteFilterProps = {};
 

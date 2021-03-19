@@ -14,7 +14,7 @@ import {
   ICON_TEXTCOLOR,
   ICON_UNDERLINE,
   ICON_UNDO,
-} from '@notizen/frontend-common/src/components/Icons';
+} from '@notizen/frontend-common/src/common/components/Icons'; 
 
 interface NoteToolbar {
   editor: object;

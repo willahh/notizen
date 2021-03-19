@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './../rootReducer';
+import { RootState } from '../../../../common/rootReducer';
 import {
   INote,
   Mode,
@@ -13,9 +13,9 @@ import {
   TagColor,
   TagEntity,
   TagIcon,
-} from './../interfaces';
-import { tagIconColorMap, tagIconIconMap } from './TagIcon';
-import { dispatchCommand, mapOfKeyValueToArrayOfMap } from './../utils';
+} from '../../../../common/interfaces';
+import { tagIconColorMap, tagIconIconMap } from './../../../../common/components/TagIcon';
+import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../../../../common/utils';
 import {
   addTagToNoteAction,
   removeTagToNoteAction,
@@ -23,11 +23,11 @@ import {
   CreateTagAndAddToNoteActionPayload,
   AddTagToNoteActionPayload,
   RemoveTagToNoteActionPayload,
-} from '../module/note/note.actions';
+} from '../../note.actions';
 
 import { CSSTransition } from 'react-transition-group';
-import store from '../store';
-import { addTagLocal, AddTagLocalPayload } from '../module/tags/tags.actions';
+import store from '../../../../common/store';
+import { addTagLocal, AddTagLocalPayload } from '../../../tags/tags.actions';
 
 interface INewTagProps {
   noteId: string;

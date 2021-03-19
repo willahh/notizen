@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   INote,
   NoteColor,
-} from '../../interfaces';
+} from '../../common/interfaces';
 import {
   addTagToNoteAction,
   createNoteAction,

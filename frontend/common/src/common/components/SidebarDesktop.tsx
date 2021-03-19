@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tags } from '../module/tags/components/Tags';
+import { Tags } from './../../module/tags/components/Tags';
 import { UserProfileCard } from './UserProfileCard';
 
 export type ISidebarDesktopProps = {};
@@ -31,8 +31,8 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
   }, []);
 
   const logoSrc = isColorSchemeDark
-    ? require('./../../assets/notizen-dark.svg').default
-    : require('./../../assets/notizen.svg').default;
+    ? require('./../../../assets/notizen-dark.svg').default
+    : require('./../../../assets/notizen.svg').default;
 
   return (
     <div className="hidden lg:flex lg:flex-shrink-0 border-r-1 dark:border-gray-800">

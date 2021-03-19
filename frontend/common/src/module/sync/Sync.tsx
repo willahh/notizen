@@ -21,9 +21,9 @@ import React, { useEffect, useState } from 'react';
 import * as Y from 'yjs';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import { useRef } from 'react';
-import { store } from './../../store';
-import { Command } from '../../utils';
-import { actionNameToAction } from '../../actions';
+import { store } from './../../common/store';
+import { Command } from '../../common/utils';
+import { actionNameToAction } from '../../common/actions';
 
 export const ydoc = new Y.Doc();
 const roomName = 'notizen';

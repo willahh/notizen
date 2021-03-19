@@ -8,7 +8,7 @@ import {
   ICON_STRIKE,
   ICON_TEXTCOLOR,
   ICON_UNDERLINE,
-} from '@notizen/frontend-common/src/components/Icons';
+} from '@notizen/frontend-common/src/common/components/Icons';
 
 interface NoteToolbarInline {
   editor: object;

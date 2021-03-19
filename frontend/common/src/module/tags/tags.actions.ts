@@ -1,5 +1,5 @@
 import { Dispatch } from 'node_modules/@types/react';
-import { createTag, deleteTag, getTags } from '../../notizenAPI';
+import { createTag, deleteTag, getTags } from '../../common/notizenAPI';
 import {
   Mode,
   Tag,
@@ -8,11 +8,11 @@ import {
   TagResult,
   CreateTagDTO,
   TagEntity,
-} from '../../interfaces';
+} from '../../common/interfaces';
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import { updateTag } from '../../notizenAPI';
-import { dispatchCommand } from '../../utils';
-import { addAction } from '../../actions';
+import { updateTag } from '../../common/notizenAPI';
+import { dispatchCommand } from '../../common/utils';
+import { addAction } from '../../common/actions';
 
 /**
  * TAGS_FETCH_TAGS

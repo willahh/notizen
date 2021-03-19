@@ -1,5 +1,5 @@
 // import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
-import { Notes } from '../../interfaces';
+import { Notes } from '../../common/interfaces';
 
 // TODO: Use cached state from YJS
 // const getNotesFromLocalStorage = () => {

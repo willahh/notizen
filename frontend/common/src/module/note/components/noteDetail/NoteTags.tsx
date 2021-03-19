@@ -2,15 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import ReactTooltip from 'react-tooltip';
-import { RootState } from '../rootReducer';
-import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../utils';
+import { RootState } from '../../../../common/rootReducer';
+import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../../../../common/utils';
 import {
   updateNoteActionAction,
   UpdateNoteActionPayload,
-} from '../module/note/note.actions';
-import { INote, NoteColor, TagEntity, UpdateNoteDTO } from '../interfaces';
+} from '../../note.actions';
+import { INote, NoteColor, TagEntity, UpdateNoteDTO } from '../../../../common/interfaces';
 import { NewTag } from './NewTag';
-import { tagIconColorMap, tagIconIconMap, noteIconColorMap } from './TagIcon';
+import { tagIconColorMap, tagIconIconMap, noteIconColorMap } from '../../../../common/components/TagIcon';
 
 interface INoteTagsProps {}
 

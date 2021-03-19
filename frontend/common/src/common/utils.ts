@@ -1,7 +1,7 @@
 import { Dispatch } from 'node_modules/@types/react';
 import {
   addCommandToCommandsQueue as addCommandToCommandsQueue,
-} from './module/sync/Sync';
+} from './../module/sync/Sync';
 
 
 export const hashCode = (str: string) => {

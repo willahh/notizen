@@ -1,7 +1,7 @@
 import {
   Tags,
   Mode,
-} from '../../interfaces';
+} from '../../common/interfaces';
 
 export interface TagsState {
   isLoading: boolean;

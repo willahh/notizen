@@ -1,6 +1,6 @@
 import React from 'react';
-import { SidebarDesktop } from '@notizen/frontend-common/src/components/SidebarDesktop';
-import { MenuMobile } from '@notizen/frontend-common/src/components/MenuMobile';
+import { SidebarDesktop } from './SidebarDesktop';
+import { MenuMobile } from './MenuMobile';
 import { Sync } from './Sync';
 
 interface IMainTemplateProps {

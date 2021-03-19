@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { BrowserRouter as Router, useRouteMatch } from 'react-router-dom';
-import { NoteItem } from '@notizen/frontend-common/src/components/NoteItem';
+import { NoteItem } from '@notizen/frontend-common/src/module/note/components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@notizen/frontend-common/src/rootReducer';
-import { AreaSecondary } from '@notizen/frontend-common/src/components/AreaSecondary';
-import { NoteFilter } from '@notizen/frontend-common/src/components/NoteFilter';
-import { MainArea } from '@notizen/frontend-common/src/components/MainArea';
-import { Toolbar } from '@notizen/frontend-common/src/components/Toolbar';
+import { RootState } from '@notizen/frontend-common/src/common/rootReducer';
+import { AreaSecondary } from '@notizen/frontend-common/src/common/components/AreaSecondary';
+import { NoteFilter } from '@notizen/frontend-common/src/module/note/components/NoteFilter';
+import { MainArea } from '@notizen/frontend-common/src/common/components/MainArea';
+// import { Toolbar } from '@notizen/frontend-common/src/common/components/Toolbar';
 import { NoteDetailEditNew } from '@notizen/frontend-common/src/module/note/components/noteDetail/NoteDetailEditNew';
-import LitTemplate from '@notizen/frontend-common/src/components/LitTemplate';
-import { dispatchQuery } from '@notizen/frontend-common/src/utils';
-import { NoteColor } from '@notizen/frontend-common/src/interfaces';
+import LitTemplate from '@notizen/frontend-common/src/common/components/LitTemplate';
+import { dispatchQuery } from '@notizen/frontend-common/src/common/utils';
+import { NoteColor } from '@notizen/frontend-common/src/common/interfaces';
 import { fetchNotesAction, FetchNotesActionPayload } from '../note.actions';
 
 // const scrollbar = require('smooth-scrollbar-react');
@@ -97,7 +97,7 @@ const NoteLit: React.FC<INoteProps> = () => {
         {noteListHtml}
       </AreaSecondary>
       <MainArea>
-        <Toolbar />
+        {/* <Toolbar /> */}
         <NoteDetailEditNew />
       </MainArea>
     </LitTemplate>

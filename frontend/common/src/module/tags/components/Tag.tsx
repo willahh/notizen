@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { dispatchCommand } from '../../../utils';
-import { Tag, Mode, UpdateTagDTO } from '../../../interfaces';
+import { dispatchCommand } from '../../../common/utils';
+import { Tag, Mode, UpdateTagDTO } from '../../../common/interfaces';
 import {
   deleteTagAction,
   resetUpdateTagAction,

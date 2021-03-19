@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../rootReducer';
-import { dispatchCommand, dispatchQuery } from '../../../../utils';
+import { RootState } from '../../../../common/rootReducer';
+import { dispatchCommand, dispatchQuery } from '../../../../common/utils';
 import {
   fetchNoteAction,
   FetchNoteActionPayload,
   updateNoteActionAction,
   UpdateNoteActionPayload,
 } from '../../note.actions';
-import { UpdateNoteDTO } from '../../../../interfaces';
-import { NoteTags } from '../../../../components/NoteTags';
+import { UpdateNoteDTO } from '../../../../common/interfaces';
+import { NoteTags } from './NoteTags';
 import NotizenEditor from '../../../editor/Editor';
 import { createEditor, Node } from 'slate';
 import { NoteToolbar } from './NoteToolbar';

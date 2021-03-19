@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { dispatchCommand } from '../../../../utils';
+import { dispatchCommand } from '../../../../common/utils';
 import { NavLink } from 'react-router-dom';
-import { HOST_URL } from '../../../../constants';
+import { HOST_URL } from '../../../../common/constants';
 import { createNoteAction, CreateNoteActionPayload } from '../../note.actions';
-import { CreateNoteDTO } from '../../../../interfaces';
+import { CreateNoteDTO } from '../../../../common/interfaces';
 import {
   ICON_BGCOLOR,
   ICON_BOLD,
@@ -23,7 +23,7 @@ import {
   ICON_TEXTCOLOR,
   ICON_UNDERLINE,
   ICON_UNDO,
-} from '../../../../components/Icons';
+} from '../../../../common/components/Icons';
 import { CSSTransition } from 'react-transition-group';
 
 const StyleButton: React.FC = () => {

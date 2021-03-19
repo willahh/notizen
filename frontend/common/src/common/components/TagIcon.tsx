@@ -1,4 +1,4 @@
-import { TagColor, TagIcon } from '../interfaces';
+import { TagColor, TagIcon } from '../../common/interfaces';
 
 export const tagIconColorMap = {
   [TagColor.GRAY]: 'gray',

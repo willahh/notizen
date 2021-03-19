@@ -5,7 +5,7 @@ import {
   yCommandsArray,
   executePendingCommands,
   indexeddbProvider,
-} from './../module/sync/Sync';
+} from './../../module/sync/Sync';
 
 interface ISyncProps {}
 

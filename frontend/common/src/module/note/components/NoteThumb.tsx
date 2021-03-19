@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
-import { NoteItemThumb } from '../../../components/NoteItemThumb';
+import { NoteItemThumb } from './NoteItemThumb';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../rootReducer';
+import { RootState } from '../../../common/rootReducer';
 import { fetchNotesAction, FetchNotesActionPayload } from '../note.actions';
-import { NoteFilter } from '../../../components/NoteFilter';
-import { LOCAL_STORAGE_NOTES_KEY } from '../../../constants';
+import { NoteFilter } from './NoteFilter';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   BrowserRouter as Router,
   useRouteMatch,
 } from 'react-router-dom';
-import MainTemplate from '../../../components/MainTemplate';
+import MainTemplate from './../../../common/components/MainTemplate';
 import { SideToolbar } from './noteDetail/SideToolbar';
-import { INote } from '../../../interfaces';
-import { dispatchQuery } from '../../../utils';
+import { INote } from './../../../common/interfaces';
+import { dispatchQuery } from './../../../common/utils';
 
 const scrollbar = require('smooth-scrollbar-react');
 const ScrollBar = scrollbar.default;

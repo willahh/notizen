@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { store } from '@notizen/frontend-common/src/store';
+import { store } from '@notizen/frontend-common/src/common/store';
 import { Provider } from 'react-redux';
 // import * as serviceWorker from './serviceWorker.js';
 import '@notizen/frontend-common/index.css';

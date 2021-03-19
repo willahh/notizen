@@ -1,11 +1,11 @@
 import React from 'react';
 // import { useSpring, animated } from 'react-spring';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../rootReducer';
+import { RootState } from '../../../common/rootReducer';
 import {
   deleteNoteAction,
   // setSelectedNoteIdAction,
-} from '../module/note/note.actions';
+} from '../note.actions';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { JsxElement } from 'typescript';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';

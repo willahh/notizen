@@ -2,7 +2,7 @@
  * TODO :
  *  - Display error to user when in rejected action
  */
-import { Mode, Tag } from '../../interfaces';
+import { Mode, Tag } from '../../common/interfaces';
 import { createSlice } from '@reduxjs/toolkit';
 import { initialTagsState } from './tags.state';
 import {

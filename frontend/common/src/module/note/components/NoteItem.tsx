@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
-import { RootState } from '../../../rootReducer';
-import { dispatchCommand, dispatchQuery } from '../../../utils';
+import { RootState } from '../../../common/rootReducer';
+import { dispatchCommand, dispatchQuery } from '../../../common/utils';
 import {
   deleteNoteAction,
   DeleteNoteActionPayload,
   setSelectedNoteIdAction,
   SetSelectedNoteIdActionPayload,
 } from '../note.actions';
-import { INote } from '../../../interfaces';
-import { tagIconColorMap, tagIconIconMap } from '../../../components/TagIcon';
+import { INote } from '../../../common/interfaces';
+import { tagIconColorMap, tagIconIconMap } from './../../../common/components/TagIcon';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 

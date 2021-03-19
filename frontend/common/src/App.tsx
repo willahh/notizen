@@ -5,7 +5,7 @@ import { Sync } from '@notizen/frontend-common/src/module/sync/Sync';
 import { Auth } from '@notizen/frontend-common/src/module/auth/Auth';
 import { EditorTestPage } from '@notizen/frontend-common/src/module/editor/EditorTestPage';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { HOST_URL } from './constants';
+import { HOST_URL } from './common/constants';
 
 const routes = [
   { path: `${HOST_URL}/`, name: 'Home', Component: Auth },
