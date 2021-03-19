@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { dispatchCommand } from '../../../../utils';
 import { NavLink } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { HOST_URL } from '../../../../constants';
 import { createNoteAction, CreateNoteActionPayload } from '../../note.actions';
 import { CreateNoteDTO } from '../../../../interfaces';
 import {
+  ICON_BGCOLOR,
+  ICON_BOLD,
   ICON_CALENDAR,
   ICON_CHECKBOX,
   ICON_CODE,
@@ -14,8 +16,234 @@ import {
   ICON_DRAW,
   ICON_FONT,
   ICON_INFO,
+  ICON_ITALIC,
   ICON_QUOTE,
+  ICON_REDO,
+  ICON_STRIKE,
+  ICON_TEXTCOLOR,
+  ICON_UNDERLINE,
+  ICON_UNDO,
 } from '../../../../components/Icons';
+import { CSSTransition } from 'react-transition-group';
+
+const StyleButton: React.FC = () => {
+  console.log('StyleButton');
+
+  const iconFillCls = `flex w-5 h-5 fill-current-color text-gray-500`;
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const buttonRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        if (isDropDownOpen) {
+          // Close the dropdown if opened
+          setIsDropDownOpen(false);
+        }
+      }
+    }
+    if (isDropDownOpen) {
+      dropdownRef.current?.focus();
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownRef, isDropDownOpen]);
+
+  const iconCls = `flex w-2 h-2 float-left`;
+  const btnCls = `relative inline-flex items-center px-4 py-2
+  fill-current-color
+  border border-gray-300 dark:border-gray-800
+  text-xs text-gray-700 dark:text-gray-300 hover:text-indigo-700 dark:hover:text-indigo-200
+  focus:z-10 focus:outline-none focus:ring-1
+  focus:ring-indigo-500
+  focus:ring-2 focus:ring-offset-0 focus:border-indigo-500
+  hover:bg-indigo-50 dark:hover:bg-indigo-900
+  transition duration-500 ease-in-out
+  `;
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        ref={buttonRef}
+        data-type="Font"
+        className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
+        onClick={(e) => {
+          console.log('click');
+
+          if (!isDropDownOpen) {
+            setIsDropDownOpen(true);
+          }
+        }}
+      >
+        <span className={iconFillCls}>{ICON_FONT}</span>
+      </button>
+
+      <CSSTransition
+        in={isDropDownOpen}
+        timeout={300}
+        classNames="style-dropdown"
+        unmountOnExit
+      >
+        <div
+          className="tooltip origin-top-right absolute -top-4 right-14 w-56 z-10
+        rounded-md shadow-lg "
+          ref={dropdownRef}
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="options-menu"
+          onBlur={(e: any) => {
+            console.log('blur');
+
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+              setIsDropDownOpen(false);
+            }
+          }}
+        >
+          <div className="relative">
+            <div className="flex flex-col absolute p-8 z-10">
+              <div>
+                <button
+                  type="button"
+                  data-tip="Bold"
+                  // onMouseDown={(event) => {
+                  //   event.preventDefault();
+                  //   Commands.toggleCodeBlock(editor);
+                  // }}
+                  className={`${btnCls} -ml-px`}
+                >
+                  <span className={iconCls}>{ICON_BOLD}</span>
+                </button>
+                <button
+                  type="button"
+                  data-tip="Italic"
+                  // onMouseDown={(event) => {
+                  //   event.preventDefault();
+                  //   Commands.toggleCodeBlock(editor);
+                  // }}
+                  className={`${btnCls} -ml-px`}
+                >
+                  <span className={iconCls}>{ICON_ITALIC}</span>
+                </button>
+                <button
+                  type="button"
+                  data-tip="Strike"
+                  // onMouseDown={(event) => {
+                  //   event.preventDefault();
+                  //   Commands.toggleCodeBlock(editor);
+                  // }}
+                  className={`${btnCls} -ml-px`}
+                >
+                  <span className={iconCls}>{ICON_STRIKE}</span>
+                </button>
+                <button
+                  type="button"
+                  data-tip="Understrike"
+                  // onMouseDown={(event) => {
+                  //   event.preventDefault();
+                  //   Commands.toggleCodeBlock(editor);
+                  // }}
+                  className={`${btnCls} -ml-px`}
+                >
+                  <span className={iconCls}>{ICON_UNDERLINE}</span>
+                </button>
+                <button
+                  type="button"
+                  data-tip="Text color"
+                  // onMouseDown={(event) => {
+                  //   event.preventDefault();
+                  //   Commands.toggleCodeBlock(editor);
+                  // }}
+                  className={`${btnCls} -ml-px`}
+                >
+                  <span className={iconCls}>{ICON_TEXTCOLOR}</span>
+                </button>
+                <button
+                  type="button"
+                  data-tip="Background color"
+                  // onMouseDown={(event) => {
+                  //   event.preventDefault();
+                  //   Commands.toggleCodeBlock(editor);
+                  // }}
+                  className={`${btnCls} -ml-px`}
+                >
+                  <span className={iconCls}>{ICON_BGCOLOR}</span>
+                </button>
+              </div>
+              <div className="flex flex-col">
+                <button
+                  className="outline-none cursor-default text-xl font-semibold text-left"
+                  role="menuitem"
+                >
+                  Heading 1
+                </button>
+                <button
+                  className="outline-none cursor-default text-lg font-medium text-left"
+                  role="menuitem"
+                >
+                  Heading 2
+                </button>
+                <button
+                  className="outline-none cursor-default text-base font-medium text-left"
+                  role="menuitem"
+                >
+                  Heading 3
+                </button>
+                <button
+                  className="outline-none cursor-default text-base text-left"
+                  role="menuitem"
+                >
+                  Text
+                </button>
+                <button
+                  className="outline-none cursor-default text-base text-left"
+                  role="menuitem"
+                >
+                  Bullet list
+                </button>
+                <button
+                  className="outline-none cursor-default text-base text-left"
+                  role="menuitem"
+                >
+                  Number list
+                </button>
+              </div>
+            </div>
+            <svg
+              className="absolute style-dropdown"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 282.13 297.5"
+            >
+              <defs>
+                <style
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      '.cls-1{fill:#f7f7f7;stroke:#c2ccd3;stroke-miterlimit:10;}',
+                  }}
+                />
+              </defs>
+              <g id="Calque_2" data-name="Calque 2">
+                <g id="Calque_1-2" data-name="Calque 1">
+                  <path
+                    className="cls-1"
+                    d="M281,43.88l-7.29-5.28a1.64,1.64,0,0,1-.67-1.32V14.69A14.19,14.19,0,0,0,258.81.5H14.69A14.19,14.19,0,0,0,.5,14.69V282.81A14.19,14.19,0,0,0,14.69,297H258.81A14.19,14.19,0,0,0,273,282.81V55.17a1.62,1.62,0,0,1,.48-1.15l7.67-7.67A1.63,1.63,0,0,0,281,43.88Z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </CSSTransition>
+    </div>
+  );
+};
 
 export type IToolbarProps = {};
 
@@ -30,14 +258,7 @@ const SideToolbar: React.FC<IToolbarProps> = ({}) => {
       style={{ paddingTop: 100 }}
     >
       {/* <!-- TODO: Dropdown font like Notes app --> */}
-      <button
-        type="button"
-        data-type="Font"
-        onClick={() => {}}
-        className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
-      >
-        <span className={iconFillCls}>{ICON_FONT}</span>
-      </button>
+      <StyleButton></StyleButton>
 
       <button
         type="button"
@@ -113,6 +334,24 @@ const SideToolbar: React.FC<IToolbarProps> = ({}) => {
         className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
       >
         <span className={iconFillCls}>{ICON_DRAW}</span>
+      </button>
+
+      <button
+        type="button"
+        data-tip="Undo"
+        onClick={() => {}}
+        className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
+      >
+        <span className={iconFillCls}>{ICON_UNDO}</span>
+      </button>
+
+      <button
+        type="button"
+        data-tip="Redo"
+        onClick={() => {}}
+        className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
+      >
+        <span className={iconFillCls}>{ICON_REDO}</span>
       </button>
 
       <br />

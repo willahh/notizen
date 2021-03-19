@@ -70,7 +70,7 @@ import React, { useMemo, useState, useCallback } from 'react';
  */
 
 // Import the Slate editor factory.
-import { createEditor, Editor, Node } from 'slate';
+import { createEditor, Editor, Node, Transforms } from 'slate';
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
@@ -102,7 +102,6 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes }) => {
   // Keep track of state for the value of the editor.
   // const [value, setValue] = useState(node);
   const [value, setValue] = useState(nodes);
-  console.log('xx ', value);
 
   const renderElementMemoized = renderElement(editor);
 
@@ -110,6 +109,19 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes }) => {
   const renderLeaf = useCallback((props) => {
     return <Leaf {...props} />;
   }, []);
+
+  const addDefaultAtTheEndAndFocus = (editor: Editor & ReactEditor) => {
+    console.log('addDefaultAtTheEndAndFocus', editor);
+
+    const node: Node = {
+      type: 'paragraph',
+      children: [{ type: 'paragraph', text: '' }],
+    };
+    Transforms.insertNodes(editor, nodes, {
+      at: [editor.children.length],
+    });
+    ReactEditor.focus(editor);
+  };
 
   return (
     <Slate
@@ -122,10 +134,22 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes }) => {
       }}
     >
       <HoveringToolbar />
+      <button
+        onClick={() => {
+          addDefaultAtTheEndAndFocus(editor);
+        }}
+      >
+        Add default row
+      </button>
       <Editable
         renderElement={renderElementMemoized}
         renderLeaf={renderLeaf}
-        className="text-black dark:text-white"
+        className="h-full text-black dark:text-white"
+        onClick={(event) => {
+          console.log('onClick', event, event.currentTarget, event.currentTarget.closest('[data-slate-node="element"]'));
+          // addDefaultAtTheEndAndFocus(editor);
+          // e.currentTarget.contains(e.relatedTarget)
+        }}
         onKeyDown={(event) => {
           console.log('on key down');
           if (!event.ctrlKey) {

@@ -7,7 +7,7 @@ export const Options = ({editor}) => {
   return (
     <>
       <div
-        className="icon absolute -left-8 -top-1 flex rounded-full hover:bg-indigo-500 p-1 opacity-0 transition-all duration-500"
+        className="icon absolute -left-8 -top-0 flex rounded-full hover:bg-indigo-500 p-1 opacity-0 transition-all duration-500"
         contentEditable={false}
         onMouseDown={(e) => {
           console.log('mousedown');
@@ -21,7 +21,7 @@ export const Options = ({editor}) => {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          className="text-white w-4 h-4"
+          className="dark:text-white w-4 h-4"
         >
           <path
             strokeLinecap="round"

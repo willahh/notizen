@@ -9,7 +9,7 @@ body {
   font-style: normal;
 }
 
-.fill-current-color  svg {
+.fill-current-color svg {
   fill: currentColor;
 }
 
@@ -318,4 +318,53 @@ button {
 /* editor */
 .editor-block:hover > .icon {
   opacity: 1;
+}
+
+/* style-dropdown */
+@keyframes bounceIn{
+  0%{
+    opacity: 0;
+    transform: scale(0.3) translate3d(0,0,0);
+  }
+  50%{
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  80%{
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1) translate3d(0,0,0);
+  }
+}
+
+.style-dropdown {
+  filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.1));
+}
+
+.style-dropdown-enter {
+  /* transform-origin: 30% right; */
+  animation-name: bounceIn;
+  animation-duration: 300ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-direction: normal;
+}
+.style-dropdown-enter-active {
+  /* transform-origin: 30% right; */
+  opacity: 1;
+}
+.style-dropdown-exit {
+  /* transform-origin: 30% right; */
+  animation-name: bounceIn;
+  animation-duration: 300ms;
+  animation-timing-function: linear;
+  animation-fill-mode: backwards;
+  animation-direction: reverse;
+}
+.style-dropdown-exit-active {
+  /* transform-origin: 60% right; */
+  opacity: 0;
 }

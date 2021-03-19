@@ -58,4 +58,24 @@ export const Commands = {
       { match: (n) => Editor.isBlock(editor, n) }
     );
   },
+
+
+  /**
+   * Image
+   */
+  isImageBlockActive(editor) {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === BlockType.Image,
+    });
+
+    return !!match;
+  },
+  toggleImageBlock(editor) {
+    const isActive = Commands.isImageBlockActive(editor);
+    Transforms.setNodes(
+      editor,
+      { type: isActive ? null : BlockType.Image },
+      { match: (n) => Editor.isBlock(editor, n) }
+    );
+  },
 };
