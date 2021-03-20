@@ -2,8 +2,8 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "frontend/*",
-    "backend/*"
+    "frontend/**/*",
+    "backend/**/*"
   ],
   "scripts": {
     "start": "yarn workspace @notizen/frontend-web run start",
