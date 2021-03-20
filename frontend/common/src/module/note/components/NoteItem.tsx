@@ -55,8 +55,9 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
 
   return (
     <li
+      key={`NoteItem-${id}`}
       className="relative overflow-hidden"
-      style={{ zIndex: Number(id) }}
+      style={{ zIndex: 'auto' }}
       note-id={id}
       onClick={() => {
         console.log('click');
@@ -83,9 +84,10 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
                 <div>
                   {tags.map((tag) => {
                     if (tag) {
-                      const { color, icon, name } = tag;
+                      const { color, icon, name, id } = tag;
                       return (
                         <span
+                          key={`tag-${id}`}
                           // title={name}
                           data-tip={name}
                           data-delay-show={10}

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { RootState } from '../../../../common/rootReducer';
 import { dispatchCommand, dispatchQuery } from '../../../../common/utils';
 import {
@@ -10,10 +10,10 @@ import {
 } from '../../note.actions';
 import { UpdateNoteDTO } from '../../../../common/interfaces';
 import { NoteTags } from './NoteTags';
-import NotizenEditor from '../../../editor/Editor';
-import { createEditor, Node } from 'slate';
+import NotizenEditor from '../../../editor/components/Editor';
+import { createEditor, Editor, Node } from 'slate';
 import { NoteToolbar } from './NoteToolbar';
-import { withReact } from 'slate-react';
+import { ReactEditor, withReact } from 'slate-react';
 import { SideToolbar } from './SideToolbar';
 import { CSSTransition } from 'react-transition-group';
 
@@ -23,7 +23,11 @@ const illustration = require('./../../../../../assets/undraw/undraw_Appreciation
   .default;
 
 interface INoteDetailProps {}
-
+declare global {
+  interface Window {
+    editor: Editor & ReactEditor;
+  }
+}
 const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   console.log('NoteDetailEditNew');
 
@@ -33,14 +37,18 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
     (state: RootState) => state.notes.selectedNoteId
   );
 
-  const contentRef = useRef<HTMLDivElement>(null);
+  // const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
-
-
   // Create a Slate editor object that won't change across renders.
   const editor = useMemo(() => withReact(createEditor()), []);
+  // dispatch(setCurrentEditorAction({ editor: editor }));
+
+  // TODO: Where to put a reference to this editor ????
+  // Can't be in Redux store, because complex object can't transit inside actions
+  window.editor = editor; 
+
   useEffect(() => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
 
@@ -73,7 +81,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
       </div>
     );
   }
-
+  const noteId = note.id;
   let nodes = note.content;
 
   if (Array.isArray(nodes) && nodes.length === 0) {
@@ -168,7 +176,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
               </div>
             </div>
             <div className="">
-              <SideToolbar />
+              <SideToolbar editor={editor} noteId={noteId} />
             </div>
           </div>
         </CSSTransition>

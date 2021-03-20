@@ -1,5 +1,22 @@
-import { Editor, Transforms, Text } from 'slate';
+import { Editor, Transforms, Text, Node, RangeRef } from 'slate';
+import { ReactEditor } from 'slate-react';
 import { BlockType } from './elements/elements';
+
+// TODO: Debug
+declare global {
+  interface Window {
+    Editor: any;
+    Transforms: any;
+    Text: any;
+    RangeRef: any;
+    ReactEditor: any;
+  }
+}
+window.Editor = Editor;
+window.Transforms = Transforms;
+window.Text = Text;
+window.RangeRef = RangeRef;
+window.ReactEditor = ReactEditor;
 
 export const Commands = {
   isBoldMarkActive(editor) {
@@ -18,7 +35,6 @@ export const Commands = {
       { match: (n) => Text.isText(n), split: true }
     );
   },
-
 
   /**
    * Code
@@ -39,7 +55,6 @@ export const Commands = {
     );
   },
 
-
   /**
    * Heading1
    */
@@ -52,13 +67,24 @@ export const Commands = {
   },
   toggleHeading1Block(editor) {
     const isActive = Commands.isHeading1BlockActive(editor);
-    Transforms.setNodes(
-      editor,
-      { type: isActive ? null : BlockType.Heading1 },
-      { match: (n) => Editor.isBlock(editor, n) }
-    );
-  },
 
+    // const path = ReactEditor.findPath(editor, element);
+    // const node: Node = { type: BlockType.Heading1, text: 'bla bla' };
+    // Transforms.setNodes(editor, node, { at: path });
+
+    // Transforms.setNodes(
+    //   editor,
+    //   { type: isActive ? null : BlockType.Heading1 },
+
+    //   {
+    //     match: (n) => {
+    //       console.log('match', n);
+
+    //       return Editor.isBlock(editor, n);
+    //     },
+    //   }, {at?: [0, 1]}
+    // );
+  },
 
   /**
    * Image
@@ -75,7 +101,13 @@ export const Commands = {
     Transforms.setNodes(
       editor,
       { type: isActive ? null : BlockType.Image },
-      { match: (n) => Editor.isBlock(editor, n) }
+      {
+        match: (n) => {
+          console.log('match', n);
+
+          return Editor.isBlock(editor, n);
+        },
+      }
     );
   },
 };

@@ -147,6 +147,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
                     if (index === 0) {
                       el = (
                         <button
+                          key={`NoteTag-${index}`}
                           ref={firstDropDownColorItemRef}
                           className={`flex w-4 h-4 mr-2
               rounded-full bg-${tagIconColorMap[tagIconColor]}-400
@@ -260,8 +261,6 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
           {/* <TransitionGroup className="inline-flex"> */}
           {noteTags &&
             noteTags.map(({ id, name, color, icon }, index) => {
-              console.log('icon', color, icon);
-
               // <CSSTransition key={id} timeout={400} classNames="note-tag-tiny">
               return (
                 <div

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { dispatchCommand } from '../../../../common/utils';
 import { NavLink } from 'react-router-dom';
 import { HOST_URL } from '../../../../common/constants';
@@ -25,14 +25,26 @@ import {
   ICON_UNDO,
 } from '../../../../common/components/Icons';
 import { CSSTransition } from 'react-transition-group';
+import {
+  toggleHeading1Action,
+  ToggleHeading1ActionPayload,
+} from './../../../editor/editor.actions';
+import { Editor } from 'slate';
+import { ReactEditor, useFocused } from 'slate-react';
+import { RootState } from './../../../../common/rootReducer';
 
-const StyleButton: React.FC = () => {
-  console.log('StyleButton');
+interface StyleButton {
+  noteId: string;
+  editor: Editor & ReactEditor;
+}
+const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
+  console.log('StyleButton', noteId);
 
   const iconFillCls = `flex w-5 h-5 fill-current-color text-gray-500`;
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -181,6 +193,28 @@ const StyleButton: React.FC = () => {
                 <button
                   className="outline-none cursor-default text-xl font-semibold text-left"
                   role="menuitem"
+                  onClick={() => {
+                    console.log('click');
+
+                    const range = ReactEditor.findEventRange(editor, window._event);
+                    const payload: ToggleHeading1ActionPayload = {
+                      noteId: noteId,
+                      range: range
+                    };
+                    dispatchCommand({
+                      name: toggleHeading1Action.name,
+                      action: toggleHeading1Action(payload),
+                      dispatch,
+                      payload,
+                    });
+
+                    // dispatchCommand({
+                    //   name: updateNoteActionAction.typePrefix,
+                    //   action: updateNoteActionAction(payload),
+                    //   dispatch: dispatch,
+                    //   payload: payload,
+                    // });
+                  }}
                 >
                   Heading 1
                 </button>
@@ -245,10 +279,13 @@ const StyleButton: React.FC = () => {
   );
 };
 
-export type IToolbarProps = {};
+export type IToolbarProps = {
+  editor: Editor & ReactEditor;
+  noteId: string;
+};
 
-const SideToolbar: React.FC<IToolbarProps> = ({}) => {
-  const dispatch = useDispatch();
+const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
+  // const dispatch = useDispatch();
   const iconCls = `flex w-5 h-5 svg-color text-gray-500`;
   const iconFillCls = `flex w-5 h-5 fill-current-color text-gray-500`;
 
@@ -258,7 +295,7 @@ const SideToolbar: React.FC<IToolbarProps> = ({}) => {
       style={{ paddingTop: 100 }}
     >
       {/* <!-- TODO: Dropdown font like Notes app --> */}
-      <StyleButton></StyleButton>
+      <StyleButton editor={editor} noteId={noteId}></StyleButton>
 
       <button
         type="button"

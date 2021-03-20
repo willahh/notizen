@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../common/rootReducer';
 
-import {
-  INote,
-  NoteColor,
-} from '../../common/interfaces';
+import { INote, NoteColor } from '../../common/interfaces';
+import { Commands } from '../editor/components/Commands';
+import { toggleHeading1Action } from '../editor/editor.actions';
 import {
   addTagToNoteAction,
   createNoteAction,
@@ -16,6 +17,10 @@ import {
   updateNoteActionAction,
 } from './note.actions';
 import { initialNotesState } from './note.state';
+import { ReactEditor } from 'slate-react';
+import { BlockType } from '../editor/components/elements/elements';
+import { Editor, Transforms } from 'slate';
+import { isHeading1BlockActive } from '../editor/editor.utils';
 
 const NOTE_ACTION = 'NOTES/ACTION';
 
@@ -27,10 +32,7 @@ const actionPendingAfterHook = (state: any, actionNameConst: string): void => {
   }
   state.pendingRequests[actionNameConst]++;
 };
-const isRequestPending = (
-  state: any,
-  actionNameConst: string
-): boolean => {
+const isRequestPending = (state: any, actionNameConst: string): boolean => {
   console.log('[x] actionFulfilledBeforeHook', actionNameConst);
   state.pendingRequests[actionNameConst]--;
   console.log('[x] cnt', state.pendingRequests[actionNameConst]);
@@ -41,17 +43,44 @@ const isRequestPending = (
   }
 };
 
-declare global {
-  interface Window {
-    store: any;
-    requestPending: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     store: any; // TODO: Debug
+//     requestPending: any; // TODO: Debug
+//     _event: any; // TODO: Debug
+//   }
+// }
 const notes = createSlice({
   name: 'notes',
   initialState: initialNotesState,
   extraReducers: (builder) => {
     builder
+
+      /**
+       * EDITOR_TOGGLE_HEADING1
+       * TODO: Move this into a custom Editor reducer
+       */
+      // .addCase(toggleHeading1Action, (state, action) => {
+      //   console.log('toggleHeading1Action', action);
+
+      //   const noteId = action.payload.noteId;
+      //   // TODO: Move to editor.state file ?
+      //   // TODO: Get editor from noteId ?
+      //   const editor = window.editor; 
+      //   const range = action.payload.range;
+      //   const path = range.anchor.path;
+      //   const isActive = isHeading1BlockActive(editor);
+      //   Transforms.setNodes(
+      //     editor,
+      //     { type: isActive ? null : BlockType.Heading1 },
+      //     {
+      //       match: (n) => Editor.isBlock(editor, n),
+      //       at: path,
+      //     }
+      //   );
+        
+      // })
+
       /**
        * NOTES_SET_SELECTED_NOTE_ID
        */
@@ -193,7 +222,6 @@ const notes = createSlice({
       .addCase(updateNoteActionAction.fulfilled, (state, action) => {
         console.log('updateNoteThunk.fulfilled', state, action);
 
-        
         const note = action.payload.note;
         const noteId = note.id;
         const notes = { ...state.notes, [noteId]: note };
@@ -232,7 +260,7 @@ const notes = createSlice({
       })
       .addCase(deleteNoteAction.fulfilled, (state, action) => {
         console.log('deleteNoteThunk.fulfilled', action);
-        
+
         const noteId = action.meta.arg.noteId;
         const notes = { ...state.notes };
         if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
@@ -270,7 +298,6 @@ const notes = createSlice({
       .addCase(createTagAndAddToNoteAction.fulfilled, (state, action) => {
         console.log('createTagAndAddToNoteAction.fulfilled', action);
 
-        
         const note: INote = action.payload.note;
         const noteId = note.id;
         if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
@@ -306,7 +333,6 @@ const notes = createSlice({
       .addCase(addTagToNoteAction.fulfilled, (state, action) => {
         console.log('addTagToNoteAction.fulfilled', action);
 
-        
         const note = action.payload.note;
         const noteId = note.id;
         if (isRequestPending(state, String(NOTE_ACTION + noteId))) {
@@ -347,7 +373,6 @@ const notes = createSlice({
       .addCase(removeTagToNoteAction.fulfilled, (state, action) => {
         console.log('removeTagToNoteAction.fulfilled', action);
 
-        
         const note = action.payload.note;
         const tagId = action.meta.arg.noteActionDTO.tagId;
         const noteId = note.id;

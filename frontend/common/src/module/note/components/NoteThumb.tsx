@@ -99,7 +99,7 @@ const NoteThumb: React.FC<INoteProps> = () => {
     <MainTemplate>
       <div className="flex w-full flex-col">
         <div>
-          <SideToolbar />
+          {/* <SideToolbar editor={editor} noteId="xxxx" /> */}
           <NoteFilter />
         </div>
         <div className="flex h-full">{noteListHtml}</div>

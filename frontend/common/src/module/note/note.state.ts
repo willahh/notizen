@@ -1,4 +1,7 @@
 // import { LOCAL_STORAGE_NOTES_KEY } from '../../constants';
+import { useMemo } from 'react';
+import { createEditor, Editor } from 'slate';
+import { ReactEditor, withReact } from 'slate-react';
 import { Notes } from '../../common/interfaces';
 
 // TODO: Use cached state from YJS
@@ -36,7 +39,9 @@ interface NoteListState {
   sortKey: SortKey;
   sortOrder: SortOrder;
   pendingRequests: any;
+  editor?: Editor & ReactEditor;
 }
+
 
 export const initialNotesState: NoteListState = {
   isLoading: false,

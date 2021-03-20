@@ -68,7 +68,7 @@ const NoteList: React.FC<INoteProps> = () => {
         <div className="pointer-events-none absolute h-8 left-1 inset-x-0 z-10 bg-gradient-to-b from-white dark:from-black"></div>
         <div className="pointer-events-none absolute h-16 left-0 bottom-0 inset-x-0 z-10 bg-gradient-to-t from-white dark:from-black"></div>
         <div className="overflow-auto">
-          <TransitionGroup component="ul" className="divide-y-1 divide-gray-200 dark:divide-gray-800 " type="ul" style={{border: "2px solid orange;"}}>
+          <TransitionGroup component="ul" className="divide-y-1 divide-gray-200 dark:divide-gray-800 " type="ul">
             {notesList.map(
               ({
                 id,

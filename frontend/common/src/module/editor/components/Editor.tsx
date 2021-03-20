@@ -70,17 +70,17 @@ import React, { useMemo, useState, useCallback } from 'react';
  */
 
 // Import the Slate editor factory.
-import { createEditor, Editor, Node, Transforms } from 'slate';
+import { createEditor, Editor, Node, Transforms, RangeRef } from 'slate';
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { Commands } from './Commands';
 import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
 import { renderElement } from './elements/elements';
-import { UpdateNoteDTO } from '../../common/interfaces';
-import { noteIconColorMap } from '../../common/components/TagIcon';
-import { updateNoteActionAction, UpdateNoteActionPayload } from '../note/note.actions';
-import { dispatchCommand } from '../../common/utils';
+import { UpdateNoteDTO } from '../../../common/interfaces';
+import { noteIconColorMap } from '../../../common/components/TagIcon';
+import { updateNoteActionAction, UpdateNoteActionPayload } from '../../note/note.actions';
+import { dispatchCommand } from '../../../common/utils';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -139,7 +139,6 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
   const handleEditorBlur = (event) => {
     console.log('handleEditorBlur', event, editor);
 
-    // const content: string = JSON.stringify(editor.children);
     const content = editor.children;
     const updateNoteDTO: UpdateNoteDTO = {
       id: noteId,
@@ -181,6 +180,10 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
         onBlur={handleEditorBlur}
         onClick={(event) => {
           console.log('onClick', event, event.currentTarget, event.currentTarget.closest('[data-slate-node="element"]'));
+
+          window._event = event;
+          // const path = ReactEditor.findPath(editor, event.target);
+
           // addDefaultAtTheEndAndFocus(editor);
           // e.currentTarget.contains(e.relatedTarget)
         }}

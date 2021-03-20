@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Editor, Range } from 'slate';
 import { CSSTransition } from 'react-transition-group';
-import { NoteToolbarInline } from '../../../note/components/noteDetail/NoteToolbarInline';
+import { NoteToolbarInline } from '../../../../note/components/noteDetail/NoteToolbarInline';
 
 export const HoveringToolbar = () => {
   const ref = useRef<HTMLDivElement | null>();
