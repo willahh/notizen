@@ -1,11 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { dispatchCommand } from '../../../../common/utils';
 import { NavLink } from 'react-router-dom';
 import { HOST_URL } from '../../../../common/constants';
-import { createNoteAction, CreateNoteActionPayload } from '../../note.actions';
-import { CreateNoteDTO } from '../../../../common/interfaces';
 import {
   ICON_BGCOLOR,
   ICON_BOLD,
@@ -26,12 +23,14 @@ import {
 } from '../../../../common/components/Icons';
 import { CSSTransition } from 'react-transition-group';
 import {
-  toggleHeading1Action,
-  ToggleHeading1ActionPayload,
+  setHeading1Action,
+  SetHeading1ActionPayload,
+  unsetHeading1Action,
+  UnsetHeading1ActionPayload,
 } from './../../../editor/editor.actions';
 import { Editor } from 'slate';
-import { ReactEditor, useFocused } from 'slate-react';
-import { RootState } from './../../../../common/rootReducer';
+import { ReactEditor } from 'slate-react';
+import { toggleDefault, toggleHeading1, toggleHeading2, toggleHeading3 } from './../../../editor/editor.utils';
 
 interface StyleButton {
   noteId: string;
@@ -194,26 +193,8 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-xl font-semibold text-left"
                   role="menuitem"
                   onClick={() => {
-                    console.log('click');
-
                     const range = ReactEditor.findEventRange(editor, window._event);
-                    const payload: ToggleHeading1ActionPayload = {
-                      noteId: noteId,
-                      range: range
-                    };
-                    dispatchCommand({
-                      name: toggleHeading1Action.name,
-                      action: toggleHeading1Action(payload),
-                      dispatch,
-                      payload,
-                    });
-
-                    // dispatchCommand({
-                    //   name: updateNoteActionAction.typePrefix,
-                    //   action: updateNoteActionAction(payload),
-                    //   dispatch: dispatch,
-                    //   payload: payload,
-                    // });
+                    toggleHeading1(editor, noteId, range, dispatch);
                   }}
                 >
                   Heading 1
@@ -221,18 +202,30 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                 <button
                   className="outline-none cursor-default text-lg font-medium text-left"
                   role="menuitem"
+                  onClick={() => {
+                    const range = ReactEditor.findEventRange(editor, window._event);
+                    toggleHeading2(editor, noteId, range, dispatch);
+                  }}
                 >
                   Heading 2
                 </button>
                 <button
                   className="outline-none cursor-default text-base font-medium text-left"
                   role="menuitem"
+                  onClick={() => {
+                    const range = ReactEditor.findEventRange(editor, window._event);
+                    toggleHeading3(editor, noteId, range, dispatch);
+                  }}
                 >
                   Heading 3
                 </button>
                 <button
                   className="outline-none cursor-default text-base text-left"
                   role="menuitem"
+                  onClick={() => {
+                    const range = ReactEditor.findEventRange(editor, window._event);
+                    toggleDefault(editor, noteId, range, dispatch);
+                  }}
                 >
                   Text
                 </button>

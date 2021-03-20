@@ -1,4 +1,5 @@
-import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { addAction, createAction } from '../../common/actions';
 import {
   createNote,
   deleteNote,
@@ -18,7 +19,6 @@ import {
   NotesResult,
   CreateTagAndAddToNoteResult,
 } from '../../common/interfaces';
-import { addAction } from '../../common/actions';
 
 
 /**
@@ -39,7 +39,6 @@ export const setSelectedNoteIdAction = createAction(
     };
   }
 );
-addAction(NOTES_SET_SELECTED_NOTE_ID, setSelectedNoteIdAction);
 
 /**
  * NOTES_FETCH_NOTE

@@ -40,6 +40,7 @@ export const arrayOfMapToMapOfKeyValue = (arr: any) => {
   return map;
 };
 
+
 /**
  * Dispatch a Query.
  * Encapsulate a Redux Action.

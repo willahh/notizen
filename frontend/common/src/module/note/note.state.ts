@@ -30,7 +30,7 @@ const defaultSortOrder = SortOrder.Asc;
 // type PendingRequest = Map<ActionName, PendingRequestCount>;
 
 
-interface NoteListState {
+export interface NoteListState {
   isLoading: boolean;
   error: string | null;
   notes: Notes;

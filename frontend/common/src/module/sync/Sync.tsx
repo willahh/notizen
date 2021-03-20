@@ -65,7 +65,7 @@ export const yCommandsArray = ydoc.getArray('commands');
 // ----------------------------------
 // Queue of Commands
 export const addCommandToCommandsQueue = async (command: Command) => {
-  console.log('[addCommandToCommandsQueue]', command);
+  console.log('[addCommandToCommandsQueue]');
 
   const { action, dispatch } = command;
 

@@ -66,7 +66,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
           noteId: id,
         };
         dispatchQuery({
-          name: setSelectedNoteIdAction.name,
+          name: setSelectedNoteIdAction.type,
           payload: payload,
           action: setSelectedNoteIdAction(payload),
           dispatch: dispatch,

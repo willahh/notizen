@@ -1,13 +1,11 @@
-/**
- * Editor reducer.
- * This reducer is stateless, it only mutates the `Editor` instance.
- * TODO: This is maybe wrong, we can't use Redux time travel without a clean state reducer.
- */
-import { createSlice } from '@reduxjs/toolkit';
-import { toggleHeading1Action } from '../editor/editor.actions';
-import { BlockType } from '../editor/components/elements/elements';
-import { Editor, Transforms } from 'slate';
-import { isHeading1BlockActive } from '../editor/editor.utils';
+import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import { NoteListState } from '../note/note.state';
+import {
+  setHeading1Action,
+  unsetHeading1Action,
+  updateContentAction,
+} from './editor.actions';
+import { initialEditorState } from './editor.state';
 
 declare global {
   interface Window {
@@ -16,36 +14,65 @@ declare global {
     _event: any; // TODO: Debug
   }
 }
+
+const updateNoteContent = (state, action) => {
+  console.log('updateNoteContent', action);
+
+  const noteId = action.payload.noteId;
+  const nodes = action.payload.nodes;
+  const note = state.notes[noteId];
+  const updatedNote = { ...note, content: nodes };
+  return updatedNote;
+};
+
+/**
+ * Returns an actionReducerMapBuilder that can be merged from another reducer.
+ * This is the way i found to have separate reducers who share the same state (note.state).
+ */
+export const withEditorActionReducerMapBuilder = (
+  builder: ActionReducerMapBuilder<NoteListState>
+) => {
+  builder
+    /**
+     * EDITOR_UPDATE_CONTENT
+     */
+    .addCase(updateContentAction, (state, action) => {
+      console.log('updateContentAction', action);
+
+      const noteId = action.payload.noteId;
+      const updatedNote = updateNoteContent(state, action);
+      state.notes[noteId] = updatedNote;
+    })
+
+    /**
+     * EDITOR_SET_HEADING1
+     */
+    .addCase(setHeading1Action, (state, action) => {
+      console.log('setHeading1Action', action);
+
+      const noteId = action.payload.noteId;
+      const updatedNote = updateNoteContent(state, action);
+      state.notes[noteId] = updatedNote;
+    })
+
+    /**
+     * EDITOR_UNSET_HEADING1
+     */
+    .addCase(unsetHeading1Action, (state, action) => {
+      console.log('unsetHeading1Action', action);
+
+      const noteId = action.payload.noteId;
+      const updatedNote = updateNoteContent(state, action);
+      state.notes[noteId] = updatedNote;
+    });
+
+  return builder;
+};
+
 const editor = createSlice({
   name: 'editor',
-  initialState: [],
-  extraReducers: (builder) => {
-    builder
+  initialState: initialEditorState,
 
-      /**
-       * EDITOR_TOGGLE_HEADING1
-       * TODO: Move this into a custom Editor reducer
-       */
-      .addCase(toggleHeading1Action, (state, action) => {
-        console.log('toggleHeading1Action', action);
-
-        const noteId = action.payload.noteId;
-        // TODO: Move to editor.state file ?
-        // TODO: Get editor from noteId ?
-        const editor = window.editor;
-        const range = action.payload.range;
-        const path = range.anchor.path;
-        const isActive = isHeading1BlockActive(editor);
-        Transforms.setNodes(
-          editor,
-          { type: isActive ? null : BlockType.Heading1 },
-          {
-            match: (n) => Editor.isBlock(editor, n),
-            at: path,
-          }
-        );
-      });
-  },
   reducers: {},
 });
 

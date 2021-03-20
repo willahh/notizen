@@ -79,10 +79,17 @@ import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
 import { renderElement } from './elements/elements';
 import { UpdateNoteDTO } from '../../../common/interfaces';
 import { noteIconColorMap } from '../../../common/components/TagIcon';
-import { updateNoteActionAction, UpdateNoteActionPayload } from '../../note/note.actions';
+import {
+  updateNoteActionAction,
+  UpdateNoteActionPayload,
+} from '../../note/note.actions';
 import { dispatchCommand } from '../../../common/utils';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import {
+  updateContentAction,
+  UpdateContentActionPayload,
+} from '../editor.actions';
 
 // Define a React component to render leaves with bold text.
 const Leaf = (props) => {
@@ -114,7 +121,7 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
   useEffect(() => {
     console.log('[x] useEffect nodes');
     setValue(nodes);
-  }, [nodes])
+  }, [nodes]);
 
   const renderElementMemoized = renderElement(editor);
 
@@ -138,30 +145,42 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
 
   const handleEditorBlur = (event) => {
     console.log('handleEditorBlur', event, editor);
-
+    // return false;
     const content = editor.children;
     const updateNoteDTO: UpdateNoteDTO = {
       id: noteId,
-      content: content
-    }
+      content: content,
+    };
     const payload: UpdateNoteActionPayload = {
-      updateNoteDTO: updateNoteDTO
-    }
+      updateNoteDTO: updateNoteDTO,
+    };
     dispatchCommand({
       name: updateNoteActionAction.typePrefix,
       action: updateNoteActionAction(payload),
       dispatch: dispatch,
-      payload: payload
-    })
-  }
+      payload: payload,
+    });
+  };
 
   return (
     <Slate
       editor={editor}
       value={value}
-      onChange={(value: any) => {
-        console.log('onChange', value);
+      onChange={(value) => {
+        console.log('onChange');
 
+        // const payload: UpdateContentActionPayload = {
+        //   noteId: noteId,
+        //   nodes: value,
+        // };
+        // dispatchCommand({
+        //   name: updateContentAction.type,
+        //   action: updateContentAction(payload),
+        //   dispatch,
+        //   payload,
+        // });
+
+        // This is required to keep editor state synchronized
         setValue(value);
       }}
     >
@@ -179,13 +198,9 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
         className="h-full text-black dark:text-white"
         onBlur={handleEditorBlur}
         onClick={(event) => {
-          console.log('onClick', event, event.currentTarget, event.currentTarget.closest('[data-slate-node="element"]'));
+          console.log('onClick');
 
-          window._event = event;
-          // const path = ReactEditor.findPath(editor, event.target);
-
-          // addDefaultAtTheEndAndFocus(editor);
-          // e.currentTarget.contains(e.relatedTarget)
+          window._event = event; // TODO
         }}
         onKeyDown={(event) => {
           console.log('on key down');

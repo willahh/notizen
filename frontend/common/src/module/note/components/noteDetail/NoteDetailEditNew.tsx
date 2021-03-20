@@ -36,6 +36,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
+  // let editorNodes = useSelector((state: RootState) => state.editor.nodes);
 
   // const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
@@ -47,7 +48,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
 
   // TODO: Where to put a reference to this editor ????
   // Can't be in Redux store, because complex object can't transit inside actions
-  window.editor = editor; 
+  window.editor = editor;
 
   useEffect(() => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
@@ -82,12 +83,11 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
     );
   }
   const noteId = note.id;
-  let nodes = note.content;
 
-  if (Array.isArray(nodes) && nodes.length === 0) {
-    console.log('[x] nodes empty array');
+  let editorNodes = note.content;
 
-    nodes = [
+  if (Array.isArray(editorNodes) && editorNodes.length === 0) {
+    editorNodes = [
       {
         type: 'paragraph',
         children: [{ type: 'paragraph', text: 'empty' }],
@@ -167,7 +167,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
 
                     <NotizenEditor
                       editor={editor}
-                      nodes={nodes}
+                      nodes={editorNodes}
                       noteId={selectedNoteId}
                     />
                     {/* </CSSTransition> */}
