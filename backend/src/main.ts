@@ -9,6 +9,7 @@ async function bootstrap() {
     origin: [
       // Local run dev
       'http://localhost:3006',
+      'http://192.168.0.14:3006',
 
       // Local serve build
       'http://localhost:5000',
