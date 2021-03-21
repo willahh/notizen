@@ -8,10 +8,10 @@
       "dom.iterable",
       "esnext"
     ],
-    "downlevelIteration": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -24,7 +24,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src", "./../common/src"
+    "src"
   ],
   "exclude": [
     "node_modules"

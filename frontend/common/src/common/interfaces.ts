@@ -9,7 +9,7 @@ import { Node } from 'slate';
 export interface INote {
   id: string;
   name?: string;
-  content?: Node[];
+  content: Node[];
   createDate: string;
   updateDate: string;
   tags: Tag[];
@@ -47,7 +47,7 @@ export interface UpdateNoteDTO {
 export interface CreateNoteDTO {
   id: string;
   name?: string;
-  content?: Node[];
+  content: Node[];
 }
 
 // TODO: Share with the backend

@@ -66,7 +66,7 @@ const notes = createSlice({
         actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(fetchNoteAction.fulfilled, (state, action) => {
-        console.log('fetchNote.fulfilled', state, action);
+        console.log('fetchNote.fulfilled', action);
 
         const noteId = action.meta.arg.noteId;
         const note = action.payload.note;
@@ -79,7 +79,7 @@ const notes = createSlice({
         state.notesCache = newNotes;
       })
       .addCase(fetchNoteAction.rejected, (state, action) => {
-        console.log('# fetchNote.rejected', action);
+        console.log('fetchNote.rejected', action);
 
         if (!navigator.onLine) {
           return;
@@ -93,7 +93,7 @@ const notes = createSlice({
        * NOTES_FETCH_NOTES
        */
       .addCase(fetchNotesAction.pending, (state, action) => {
-        console.log('# fetchNotes.pending', action);
+        console.log('fetchNotes.pending', action);
 
         if (Object.keys(state.notes).length === 0) {
           state.isLoading = true;
@@ -101,7 +101,7 @@ const notes = createSlice({
         state.error = null;
       })
       .addCase(fetchNotesAction.fulfilled, (state, action) => {
-        console.log('# fetchNotes.fulfilled', action);
+        console.log('fetchNotes.fulfilled', action);
 
         state.isLoading = false;
         state.error = null;
@@ -110,7 +110,7 @@ const notes = createSlice({
         state.notesCache = notes;
       })
       .addCase(fetchNotesAction.rejected, (state, action) => {
-        console.log('# fetchNotes.rejected', state, action);
+        console.log('fetchNotes.rejected', state, action);
 
         if (!navigator.onLine) {
           return;

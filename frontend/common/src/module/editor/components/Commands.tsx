@@ -1,6 +1,10 @@
+/**
+ * TODO: Remove this namespace, use the new organisation
+ */
 import { Editor, Transforms, Text, Node, RangeRef } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { BlockType } from './elements/elements';
+import { ElementType } from './elements/elements';
+import { LeafType } from './leafs/Leaf';
 
 // TODO: Debug
 declare global {
@@ -19,19 +23,21 @@ window.RangeRef = RangeRef;
 window.ReactEditor = ReactEditor;
 
 export const Commands = {
-  isBoldMarkActive(editor) {
+  isBoldMarkActive(editor: Editor) {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.bold === true,
+      match: (n) => n.type === LeafType.Bold,
       universal: true,
     });
 
     return !!match;
   },
-  toggleBoldMark(editor) {
+  toggleBoldMark(editor: Editor) {
+    console.log('toggleBoldMark');
+    
     const isActive = Commands.isBoldMarkActive(editor);
     Transforms.setNodes(
       editor,
-      { bold: isActive ? null : true },
+      { type: isActive ? null : LeafType.Bold },
       { match: (n) => Text.isText(n), split: true }
     );
   },
@@ -39,18 +45,18 @@ export const Commands = {
   /**
    * Code
    */
-  isCodeBlockActive(editor) {
+  isCodeBlockActive(editor: Editor) {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === BlockType.Code,
+      match: (n) => n.type === ElementType.Code,
     });
 
     return !!match;
   },
-  toggleCodeBlock(editor) {
+  toggleCodeBlock(editor: Editor) {
     const isActive = Commands.isCodeBlockActive(editor);
     Transforms.setNodes(
       editor,
-      { type: isActive ? null : BlockType.Code },
+      { type: isActive ? null : ElementType.Code },
       { match: (n) => Editor.isBlock(editor, n) }
     );
   },
@@ -58,14 +64,14 @@ export const Commands = {
   /**
    * Heading1
    */
-  isHeading1BlockActive(editor) {
+  isHeading1BlockActive(editor: Editor) {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === BlockType.Heading1,
+      match: (n) => n.type === ElementType.Heading1,
     });
 
     return !!match;
   },
-  toggleHeading1Block(editor) {
+  toggleHeading1Block(editor: Editor) {
     const isActive = Commands.isHeading1BlockActive(editor);
 
     // const path = ReactEditor.findPath(editor, element);
@@ -89,18 +95,18 @@ export const Commands = {
   /**
    * Image
    */
-  isImageBlockActive(editor) {
+  isImageBlockActive(editor: Editor) {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === BlockType.Image,
+      match: (n) => n.type === ElementType.Image,
     });
 
     return !!match;
   },
-  toggleImageBlock(editor) {
+  toggleImageBlock(editor: Editor) {
     const isActive = Commands.isImageBlockActive(editor);
     Transforms.setNodes(
       editor,
-      { type: isActive ? null : BlockType.Image },
+      { type: isActive ? null : ElementType.Image },
       {
         match: (n) => {
           console.log('match', n);

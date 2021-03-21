@@ -6,7 +6,7 @@ import { Options } from './../../plugins/options/Options';
 export type IDefaultElementProps = {};
 
 function getSelectionStart() {
-  var node = document.getSelection().anchorNode;
+  var node = document.getSelection()?.anchorNode;
   return node ? (node.nodeType == 3 ? node.parentNode : node) : null;
 }
 
@@ -38,9 +38,13 @@ export const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
         {props.children}
       </div>
       {isEmpty && hasFocus && (
-        <span className="absolute top-0 left-0 text-gray-200 dark:text-gray-700">
+        <strong
+          className="absolute top-0 left-0 text-gray-200 dark:text-gray-700"
+          style={{ userSelect: 'none' }}
+          contentEditable={false}
+        >
           <div className="flex">
-            <span className="pointer-events-none">Add a new action</span>
+            <strong className="pointer-events-none">Add a new action</strong>
             <button
               onMouseDown={(e) => {
                 e.preventDefault();
@@ -130,7 +134,7 @@ export const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
               [draw]
             </button>
           </div>
-        </span>
+        </strong>
       )}
       {/* <div
         contentEditable={false}

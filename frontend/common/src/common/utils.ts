@@ -1,4 +1,4 @@
-import { Dispatch } from 'node_modules/@types/react';
+import { Dispatch } from 'react';
 import {
   addCommandToCommandsQueue as addCommandToCommandsQueue,
 } from './../module/sync/Sync';

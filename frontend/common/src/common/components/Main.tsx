@@ -8,7 +8,7 @@ interface IMainProps {
 const Main: React.FC<IMainProps> = ({ children }) => {
   return (
     <>
-      <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
+      <div className="flex flex-col min-w-0 flex-1 overflow-hidden app-region-drag">
         <SidebarOpen></SidebarOpen>
         <div className="flex-1 relative z-0 flex overflow-hidden">
           {children}

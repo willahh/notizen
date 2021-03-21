@@ -3,14 +3,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import ReactTooltip from 'react-tooltip';
 import { RootState } from '../../../../common/rootReducer';
-import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../../../../common/utils';
+import {
+  dispatchCommand,
+  mapOfKeyValueToArrayOfMap,
+} from '../../../../common/utils';
 import {
   updateNoteActionAction,
   UpdateNoteActionPayload,
 } from '../../note.actions';
-import { INote, NoteColor, TagEntity, UpdateNoteDTO } from '../../../../common/interfaces';
+import {
+  INote,
+  NoteColor,
+  TagEntity,
+  UpdateNoteDTO,
+} from '../../../../common/interfaces';
 import { NewTag } from './NewTag';
-import { tagIconColorMap, tagIconIconMap, noteIconColorMap } from '../../../../common/components/TagIcon';
+import {
+  tagIconColorMap,
+  tagIconIconMap,
+  noteIconColorMap,
+} from '../../../../common/components/TagIcon';
 
 interface INoteTagsProps {}
 
@@ -27,8 +39,8 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
   const noteTags = note?.tags;
   const noteId = note?.id;
   const [isColorDropDownOpen, setIsColorDropDownOpen] = useState(false);
-  const dropdownColorRef = useRef(null);
-  const firstDropDownColorItemRef = useRef(null);
+  const dropdownColorRef = useRef<HTMLDivElement>(null);
+  const firstDropDownColorItemRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (
@@ -103,7 +115,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
   }
 
   return (
-    <div key={`NoteTags`} className="relative flex justify-end p-2 z-10">
+    <div key={`NoteTags`} className="sticky top-0 flex justify-end p-2 z-10">
       <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row select-none">
         <div className="inline-flex mr-2">
           <div className="relative inline-flex items-center">

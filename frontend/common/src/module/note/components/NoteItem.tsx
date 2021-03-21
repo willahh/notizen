@@ -63,7 +63,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
       className="relative overflow-hidden"
       style={{ zIndex: 'auto' }}
       note-id={id}
-      onClick={() => {
+      onMouseDown={() => {
         console.log('click');
 
         const payload: SetSelectedNoteIdActionPayload = {

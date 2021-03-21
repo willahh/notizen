@@ -1,15 +1,21 @@
+/**
+ * Redux editor actions.
+ *
+ */
 import { Node, Range } from 'slate';
 import { createAction } from './../../common/actions';
 import {
+  setBold,
   setDefault,
   setHeading1,
   setHeading2,
   setHeading3,
+  unsetBold,
   unsetDefault,
   unsetHeading1,
   unsetHeading2,
   unsetHeading3,
-} from './editor.utils';
+} from './editor.service';
 
 /**
  * TODO: Try to not use this action as possible, use very specific actions like :
@@ -79,7 +85,6 @@ export const unsetDefaultAction = createAction(
     };
   }
 );
-
 
 /**
  * EDITOR_SET_HEADING1
@@ -210,6 +215,52 @@ export const unsetHeading3Action = createAction(
     const { noteId, range } = payload;
     const editor = window.editor; // TODO
     const nodes = unsetHeading3(editor, range);
+    return {
+      payload: {
+        noteId: noteId,
+        nodes: nodes,
+      },
+    };
+  }
+);
+
+/**
+ * EDITOR_SET_BOLD
+ */
+export const EDITOR_SET_BOLD = 'EDITOR/EDITOR_SET_BOLD';
+export interface SetBoldActionPayload {
+  noteId: string;
+  range: Range;
+}
+export const setBoldAction = createAction(
+  EDITOR_SET_BOLD,
+  (payload: SetBoldActionPayload) => {
+    const { noteId, range } = payload;
+    const editor = window.editor; // TODO
+    const nodes = setBold(editor, range);
+    return {
+      payload: {
+        noteId: noteId,
+        nodes: nodes,
+      },
+    };
+  }
+);
+
+/**
+ * EDITOR_UNSET_BOLD
+ */
+export const EDITOR_UNSET_BOLD = 'EDITOR/EDITOR_UNSET_BOLD';
+export interface UnsetBoldActionPayload {
+  noteId: string;
+  range: Range;
+}
+export const unsetBoldAction = createAction(
+  EDITOR_UNSET_BOLD,
+  (payload: UnsetBoldActionPayload) => {
+    const { noteId, range } = payload;
+    const editor = window.editor; // TODO
+    const nodes = unsetBold(editor, range);
     return {
       payload: {
         noteId: noteId,

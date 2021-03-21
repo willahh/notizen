@@ -372,7 +372,7 @@ button {
 }
 
 /* note-page */
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   .note-page {
     background-color: #f9f9f9;
   }
@@ -382,7 +382,7 @@ button {
   .note-page {
     background-color: #090909;
   }
-}
+} */
 
 /* selection */
 @media (prefers-color-scheme: light) {
@@ -401,4 +401,50 @@ button {
   ::-moz-selection {
     background: #261358; /* Gecko Browsers */
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* anim fade */
+.fade-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0%);
+  transition: opacity 300ms, transform 300ms;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0%);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 300ms, transform 300ms;
+}
+
+
+
+
+/* Electron */
+.app-region-drag {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+
+.app-region-drag-off {
+  -webkit-user-select: initial;
+  -webkit-app-region: none;
 }

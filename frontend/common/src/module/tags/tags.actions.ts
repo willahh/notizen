@@ -1,4 +1,4 @@
-import { Dispatch } from 'node_modules/@types/react';
+import { Dispatch } from 'react';
 import { createTag, deleteTag, getTags } from '../../common/notizenAPI';
 import {
   Mode,

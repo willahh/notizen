@@ -37,9 +37,11 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
   return (
     <div className="transition-all duration-300 ease-out delay-700 w-0 lg:w-44 flex flex-shrink-0 border-r-1 border-white dark:border-black">
       <div className="flex flex-col w-44">
-        <div className="flex flex-col h-0 flex-1 bg-gray-50 dark:bg-gray-900 ">
-          <div className="flex-1 h-16 flex flex-col pb-4 overflow-y-auto">
-            <div className="flex items-center h-16 justify-center">
+        <div className="flex flex-col h-0 flex-1 pt-6
+        bg-white bg-gradient-to-l from-gray-100 
+        dark:bg-black dark:from-gray-900">
+          <div className="flex-1 flex flex-col pb-4 overflow-y-auto">
+            <div className="flex items-center h-16 justify-center app-region-drag">
               <img src={logoSrc} alt="logo" style={{ width: 120 }} />
             </div>
             <nav className="mt-2 flex-1" aria-label="Sidebar">

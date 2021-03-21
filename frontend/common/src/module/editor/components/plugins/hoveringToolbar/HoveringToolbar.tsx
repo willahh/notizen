@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { NoteToolbarInline } from '../../../../note/components/noteDetail/NoteToolbarInline';
 
 export const HoveringToolbar = () => {
-  const ref = useRef<HTMLDivElement | null>();
+  const ref = useRef<HTMLSpanElement>();
   const editor = useSlate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -24,13 +24,13 @@ export const HoveringToolbar = () => {
     }
 
     const domSelection = window.getSelection();
-    const domRange = domSelection.getRangeAt(0);
-    const rect = domRange.getBoundingClientRect();
+    const domRange = domSelection?.getRangeAt(0);
+    const rect = domRange?.getBoundingClientRect();
     
-    console.log('#rect ', rect);
-    console.log('#el ', el);
+    //console.log('#rect ', rect);
+    //console.log('#el ', el);
     
-    if (el) {
+    if (el && rect) {
       const rect2 = el.getBoundingClientRect();
       el.style.top = rect.y - rect2.y + 'px';
       el.style.left = rect.x - rect2.x + 'px';

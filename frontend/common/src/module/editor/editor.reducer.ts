@@ -1,7 +1,10 @@
 import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import { WritableDraft } from 'immer/dist/internal';
 import { NoteListState } from '../note/note.state';
 import {
+  setBoldAction,
   setHeading1Action,
+  unsetBoldAction,
   unsetHeading1Action,
   updateContentAction,
 } from './editor.actions';
@@ -15,9 +18,14 @@ declare global {
   }
 }
 
-const updateNoteContent = (state, action) => {
-  console.log('updateNoteContent', action);
-
+type UpdateNoteContentAction = {
+  payload: any;
+  type?: string
+};
+const updateNoteContent = (
+  state: WritableDraft<NoteListState>,
+  action: UpdateNoteContentAction
+) => {
   const noteId = action.payload.noteId;
   const nodes = action.payload.nodes;
   const note = state.notes[noteId];
@@ -64,7 +72,29 @@ export const withEditorActionReducerMapBuilder = (
       const noteId = action.payload.noteId;
       const updatedNote = updateNoteContent(state, action);
       state.notes[noteId] = updatedNote;
-    });
+    })
+
+    /**
+     * EDITOR_SET_BOLD
+     */
+    .addCase(setBoldAction, (state, action) => {
+      console.log('setBoldAction', action);
+
+      const noteId = action.payload.noteId;
+      const updatedNote = updateNoteContent(state, action);
+      state.notes[noteId] = updatedNote;
+    })
+
+    /**
+     * EDITOR_UNSET_BOLD
+     */
+    .addCase(unsetBoldAction, (state, action) => {
+      console.log('unsetBoldAction', action);
+
+      const noteId = action.payload.noteId;
+      const updatedNote = updateNoteContent(state, action);
+      state.notes[noteId] = updatedNote;
+    })
 
   return builder;
 };
@@ -72,7 +102,6 @@ export const withEditorActionReducerMapBuilder = (
 const editor = createSlice({
   name: 'editor',
   initialState: initialEditorState,
-
   reducers: {},
 });
 

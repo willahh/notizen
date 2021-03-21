@@ -39,13 +39,19 @@ const withDebug = (
 ) => {
   if (debug) {
     const a = url.includes('?') ? '&' : '?';
-    url += a + 'debug=true' + (debugThrowError ? '&debugThrowError=true' : '') + (sleepDelay ? `&sleepDelay=${sleepDelay}` : '');
+    url +=
+      a +
+      'debug=true' +
+      (debugThrowError ? '&debugThrowError=true' : '') +
+      (sleepDelay ? `&sleepDelay=${sleepDelay}` : '');
   }
   return url;
 };
-const withUrl = (url: string, debugThrowError: boolean = false, sleepDelay: number = undefined) => {
-  console.log('withUrl', debugThrowError);
-
+const withUrl = (
+  url: string,
+  debugThrowError: boolean = false,
+  sleepDelay: number | undefined = undefined
+) => {
   return withDebug(url, DEBUG, debugThrowError, sleepDelay);
 };
 
@@ -147,7 +153,6 @@ export async function updateNote(
 export async function createTagAndAddToNote(
   noteActionDTO: NoteActionDTO
 ): Promise<CreateTagAndAddToNoteResult> {
-  console.log('createTagAndAddToNote', noteActionDTO);
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -171,7 +176,6 @@ export async function createTagAndAddToNote(
 export async function addTagToNote(
   noteActionDTO: NoteActionDTO
 ): Promise<NoteDetailResult> {
-  console.log('addTagToNote', noteActionDTO);
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -192,7 +196,6 @@ export async function addTagToNote(
 export async function removeTagToNote(
   noteActionDTO: NoteActionDTO
 ): Promise<NoteDetailResult> {
-  console.log('removeTagToNote', noteActionDTO);
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -212,8 +215,6 @@ export async function removeTagToNote(
 
 /* ----------------- tags ------------------------- */
 export async function getTags(): Promise<TagsResult> {
-  console.log('getTags');
-
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -239,8 +240,6 @@ export async function getTags(): Promise<TagsResult> {
 export async function createTag(
   createTagDTO: CreateTagDTO
 ): Promise<TagResult> {
-  console.log('createTag', createTagDTO);
-
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -260,8 +259,6 @@ export async function updateTag(
   tagId: string,
   updateTagDto: UpdateTagDTO
 ): Promise<TagResult> {
-  console.log('updateTag', tagId);
-
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -278,8 +275,6 @@ export async function updateTag(
 }
 
 export async function deleteTag(tagId: string): Promise<TagResult> {
-  console.log('deleteTag', tagId);
-
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }

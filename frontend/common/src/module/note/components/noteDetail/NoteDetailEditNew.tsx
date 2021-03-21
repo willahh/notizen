@@ -15,7 +15,11 @@ import { createEditor, Editor, Node } from 'slate';
 import { NoteToolbar } from './NoteToolbar';
 import { ReactEditor, withReact } from 'slate-react';
 import { SideToolbar } from './SideToolbar';
-import { CSSTransition } from 'react-transition-group';
+import {
+  CSSTransition,
+  SwitchTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 
 // import {} from './../../../../../assets/undraw/undraw_Appreciation_re_p6rl.svg'
 
@@ -26,6 +30,7 @@ interface INoteDetailProps {}
 declare global {
   interface Window {
     editor: Editor & ReactEditor;
+    previousNoteId: string;
   }
 }
 const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
@@ -49,11 +54,14 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   // TODO: Where to put a reference to this editor ????
   // Can't be in Redux store, because complex object can't transit inside actions
   window.editor = editor;
+  const [mode, setMode] = React.useState('out-in');
+  const [state, setState] = React.useState(true);
 
   useEffect(() => {
     console.log('#notedetail effect selectedNoteId', selectedNoteId);
 
     if (selectedNoteId) {
+      window.previousNoteId = selectedNoteId;
       const payload: FetchNoteActionPayload = {
         noteId: selectedNoteId,
       };
@@ -83,6 +91,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
     );
   }
   const noteId = note.id;
+  const anim = window.previousNoteId !== noteId;
 
   let editorNodes = note.content;
 
@@ -116,8 +125,6 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
     }
   };
 
-  const anim = false;
-
   return (
     <>
       {/* <CSSTransition in={selectedNoteId} timeout={400} classNames="noteDetail"> */}
@@ -125,38 +132,59 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
       {/* <Suspense fallback={<div>Chargement</div>}> */}
       {/* <ScrollBar damping={0.5} thumbMinSize={20}> */}
 
-      <div className="h-full overflow-auto base-style   ">
-        <div className="pointer-events-none absolute h-24 inset-x-0 z-10 bg-gradient-to-b from-white dark:from-gray-900"></div>
-        <div className="pointer-events-none absolute bottom-0 h-24 inset-x-0 z-10 bg-gradient-to-t from-white dark:from-gray-900"></div>
-        <CSSTransition
-          in={anim}
-          timeout={300}
-          classNames="style-dropdown"
-          // unmountOnExit
+      <div className="pointer-events-none absolute h-24 inset-x-0 z-10 bg-gradient-to-b from-white dark:from-gray-900"></div>
+      <div className="pointer-events-none absolute bottom-0 h-24 inset-x-0 z-10 bg-gradient-to-t from-white dark:from-gray-900"></div>
+      <div className="relative h-full overflow-auto base-style   ">
+        {/* <SwitchTransition mode="out-in"> */}
+        {/* TODO: Need to use a specific route for note detail */}
+        <TransitionGroup
+        // childFactory={(child) => {
+        //   console.log('[x] childFactory', child);
+        //   // debugger;
+        //   return React.cloneElement(child);
+        // }}
         >
-          <div className="flex justify-center h-full p-8 pt-0">
-            <div className="relative w-full" style={{ maxWidth: 800 }}>
-              <NoteTags />
+          <CSSTransition
+            onExit={() => {
+              console.log('on exit', this);
+            }}
+            key={anim ? 'a' : 'b'}
+            timeout={300}
+            // classNames="style-dropdown"
+            classNames="fade"
+            unmountOnExit
+          >
+            <div className="absolute flex justify-center w-full h-full p-14 pt-0">
               <div
-                className="note-page flex
-               shadow-2xl
-               dark:border-black
-               dark:ring-1 dark:ring-offset-black"
-                style={{ minHeight: 600 }}
+                className="relative w-full app-region-drag-off"
+                style={{ maxWidth: 800 }}
               >
-                {/* <NoteToolbar editor={editor} /> */}
+                <NoteTags />
+                <div
+                  className="note-page flex
+                  xl:bg-white xl:dark:bg-black
+                  transform ease-out duration-300 transition
+                  xl:shadow-2xl
+                 
+                  "
+                  style={{ minHeight: 600 }}
+                >
+                  {/* <NoteToolbar editor={editor} /> */}
 
-                <div className="relative flex flex-col w-full p-10">
-                  {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
-                  <h1
-                    className="outline-none cursor-default text-4xl font-semibold"
-                    onBlur={handleTitleBlur}
-                    placeholder="Titre"
-                    ref={titleRef}
-                    contentEditable={true}
-                    dangerouslySetInnerHTML={{ __html: note?.name || '' }}
-                  ></h1>
-                  {/* <div
+                  <div
+                    className="relative flex flex-col w-full p-0 xl:p-14
+                  transform ease-out duration-300 transition-all"
+                  >
+                    {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
+                    <h1
+                      className="outline-none cursor-default text-4xl font-semibold dark:text-white"
+                      onBlur={handleTitleBlur}
+                      placeholder="Titre"
+                      ref={titleRef}
+                      contentEditable={true}
+                      dangerouslySetInnerHTML={{ __html: note?.name || '' }}
+                    ></h1>
+                    {/* <div
                     className="text-justify outline-none cursor-default font-thin"
                     onBlur={handleContentBlur}
                     // onKeyUp={handleContentKeyUp}
@@ -166,20 +194,22 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
                     dangerouslySetInnerHTML={{ __html: note?.content || '' }}
                   ></div> */}
 
-                  <NotizenEditor
-                    editor={editor}
-                    nodes={editorNodes}
-                    noteId={selectedNoteId}
-                  />
-                  {/* </CSSTransition> */}
+                    <NotizenEditor
+                      editor={editor}
+                      nodes={editorNodes}
+                      noteId={note.id}
+                    />
+                    {/* </CSSTransition> */}
+                  </div>
                 </div>
               </div>
+              <div className="">
+                <SideToolbar editor={editor} noteId={noteId} />
+              </div>
             </div>
-            <div className="">
-              <SideToolbar editor={editor} noteId={noteId} />
-            </div>
-          </div>
-        </CSSTransition>
+          </CSSTransition>
+          {/* </SwitchTransition> */}
+        </TransitionGroup>
       </div>
       {/* </ScrollBar> */}
       {/* </Suspense> */}

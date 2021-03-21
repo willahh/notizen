@@ -14,8 +14,14 @@ import {
   TagEntity,
   TagIcon,
 } from '../../../../common/interfaces';
-import { tagIconColorMap, tagIconIconMap } from './../../../../common/components/TagIcon';
-import { dispatchCommand, mapOfKeyValueToArrayOfMap } from '../../../../common/utils';
+import {
+  tagIconColorMap,
+  tagIconIconMap,
+} from './../../../../common/components/TagIcon';
+import {
+  dispatchCommand,
+  mapOfKeyValueToArrayOfMap,
+} from '../../../../common/utils';
 import {
   addTagToNoteAction,
   removeTagToNoteAction,
@@ -200,6 +206,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
           return (
             tagIcon && (
               <button
+                key={`tagicon-${tagIcon}`}
                 data-tag-icon={tagIcon}
                 className={`flex py-2 mr-2 items-center
               w-6 h-6 rounded-full
@@ -217,7 +224,9 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
             `}
                 onClick={(e) => {
                   const tagIcon = e.currentTarget.getAttribute('data-tag-icon');
-                  setFormIcon(TagIcon[tagIcon]);
+                  if (tagIcon) {
+                    setFormIcon(TagIcon[tagIcon]);
+                  }
                 }}
               >
                 <span className="w-4 h-4">{tagIconIconMap[tagIcon]}</span>
@@ -378,20 +387,20 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                       color: TagColor.GRAY,
                       icon: TagIcon.TAG,
                       isActive: true,
-                      mode: Mode.Default
-                    }
+                      mode: Mode.Default,
+                    };
                     const payload: CreateTagAndAddToNoteActionPayload = {
                       tag: tag,
                       noteActionDTO: noteActionDTO,
                     };
-                    
+
                     await dispatchCommand({
                       name: createTagAndAddToNoteAction.typePrefix,
                       action: createTagAndAddToNoteAction(payload),
                       payload,
                       dispatch,
                     });
-                    
+
                     const addTagLocalPayload: AddTagLocalPayload = {
                       tag: tag,
                     };

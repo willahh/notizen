@@ -14,7 +14,7 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex-shrink-0 border-b-1 border-gray-200 dark:border-black">
+    <div className="flex-shrink-0 border-b-1 border-gray-200 dark:border-black app-region-drag">
       <div className="flex flex-col justify-center p-2">
         <div className="flex align-middle">
           <div className="flex-none self-center">

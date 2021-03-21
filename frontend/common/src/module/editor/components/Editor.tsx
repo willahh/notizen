@@ -90,19 +90,21 @@ import {
   updateContentAction,
   UpdateContentActionPayload,
 } from '../editor.actions';
+import { ErrorBoundary } from '../../../common/components/ErrorBoundary';
+import { renderLeaf } from './leafs/Leaf';
 
 // Define a React component to render leaves with bold text.
-const Leaf = (props) => {
-  return (
-    <span
-      {...props.attributes}
-      className={`${props.leaf.bold ? `font-bold` : ``}`}
-      // style={{ fontWeight: props.leaf.bold ? 'bold' : 'normal' }}
-    >
-      {props.children}
-    </span>
-  );
-};
+// const Leaf = (props:any) => {
+//   return (
+//     <span
+//       {...props.attributes}
+//       className={`${props.leaf.bold ? `font-bold` : ``}`}
+//       // style={{ fontWeight: props.leaf.bold ? 'bold' : 'normal' }}
+//     >
+//       {props.children}
+//     </span>
+//   );
+// };
 
 interface IEditor {
   editor: Editor & ReactEditor;
@@ -124,11 +126,13 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
   }, [nodes]);
 
   const renderElementMemoized = renderElement(editor);
+  const renderLeafMemoized = renderLeaf(editor);
 
   // Define a leaf rendering function that is memoized with `useCallback`.
-  const renderLeaf = useCallback((props) => {
-    return <Leaf {...props} />;
-  }, []);
+  // const renderLeaf = useCallback((props) => {
+  //   return <Leaf {...props} />;
+  // }, []);
+
 
   const addDefaultAtTheEndAndFocus = (editor: Editor & ReactEditor) => {
     console.log('addDefaultAtTheEndAndFocus', editor);
@@ -143,7 +147,7 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
     ReactEditor.focus(editor);
   };
 
-  const handleEditorBlur = (event) => {
+  const handleEditorBlur = (event: any) => {
     console.log('handleEditorBlur', event, editor);
     // return false;
     const content = editor.children;
@@ -163,74 +167,76 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
   };
 
   return (
-    <Slate
-      editor={editor}
-      value={value}
-      onChange={(value) => {
-        console.log('onChange');
+    <ErrorBoundary>
+      <Slate
+        editor={editor}
+        value={value}
+        onChange={(value) => {
+          console.log('onChange');
 
-        // const payload: UpdateContentActionPayload = {
-        //   noteId: noteId,
-        //   nodes: value,
-        // };
-        // dispatchCommand({
-        //   name: updateContentAction.type,
-        //   action: updateContentAction(payload),
-        //   dispatch,
-        //   payload,
-        // });
+          // const payload: UpdateContentActionPayload = {
+          //   noteId: noteId,
+          //   nodes: value,
+          // };
+          // dispatchCommand({
+          //   name: updateContentAction.type,
+          //   action: updateContentAction(payload),
+          //   dispatch,
+          //   payload,
+          // });
 
-        // This is required to keep editor state synchronized
-        setValue(value);
-      }}
-    >
-      <HoveringToolbar />
-      {/* <button
+          // This is required to keep editor state synchronized
+          setValue(value);
+        }}
+      >
+        <HoveringToolbar />
+        {/* <button
         onClick={() => {
           addDefaultAtTheEndAndFocus(editor);
         }}
       >
         Add default row
       </button> */}
-      <Editable
-        renderElement={renderElementMemoized}
-        renderLeaf={renderLeaf}
-        className="h-full font-normal text-sm text-gray-700 dark:text-gray-300"
-        onBlur={handleEditorBlur}
-        onClick={(event) => {
-          console.log('onClick');
+        <Editable
+          renderElement={renderElementMemoized}
+          renderLeaf={renderLeafMemoized}
+          className="h-full font-normal text-sm text-gray-700 dark:text-gray-300"
+          onBlur={handleEditorBlur}
+          onClick={(event) => {
+            console.log('onClick');
 
-          window._event = event; // TODO
-        }}
-        onKeyDown={(event) => {
-          console.log('on key down');
-          if (!event.ctrlKey) {
-            return;
-          }
-
-          // Replace the `onKeyDown` logic with our new commands.
-          switch (event.key) {
-            case 'p': {
-              event.preventDefault();
-              Commands.toggleCodeBlock(editor);
-              break;
+            window._event = event; // TODO
+          }}
+          onKeyDown={(event) => {
+            console.log('on key down');
+            if (!event.ctrlKey) {
+              return;
             }
 
-            case 'b': {
-              event.preventDefault();
-              Commands.toggleBoldMark(editor);
-              break;
-            }
+            // Replace the `onKeyDown` logic with our new commands.
+            switch (event.key) {
+              case 'p': {
+                event.preventDefault();
+                Commands.toggleCodeBlock(editor);
+                break;
+              }
 
-            case 'h': {
-              event.preventDefault();
-              Commands.toggleHeading1Block(editor);
-              break;
+              case 'b': {
+                event.preventDefault();
+                Commands.toggleBoldMark(editor);
+                break;
+              }
+
+              case 'h': {
+                event.preventDefault();
+                Commands.toggleHeading1Block(editor);
+                break;
+              }
             }
-          }
-        }}
-      />
-    </Slate>
+          }}
+        />
+      </Slate>
+    </ErrorBoundary>
   );
 };
 

@@ -1,15 +1,18 @@
 /**
- * editor.utils.ts
+ * editor.service.ts
  * This is where all the logical part of the editor is present.
  * Actions should be kept simple.
  * Reducers should only update internal state with little to no actions. If a Reducer needs complex processing, it should
  * refer to this namespace.
  */
 import { Dispatch } from 'react';
-import { Editor, Node, Transforms, Range } from 'slate';
-import { dispatchCommand } from './../../common/utils';
-import { BlockType } from './components/elements/elements';
+import { Editor, Node, Transforms, Range, Text } from 'slate';
+import { dispatchCommand } from '../../common/utils';
+import { ElementType } from './components/elements/elements';
+import { LeafType } from './components/leafs/Leaf';
 import {
+  setBoldAction,
+  SetBoldActionPayload,
   setDefaultAction,
   SetDefaultActionPayload,
   setHeading1Action,
@@ -18,6 +21,8 @@ import {
   SetHeading2ActionPayload,
   setHeading3Action,
   SetHeading3ActionPayload,
+  unsetBoldAction,
+  UnsetBoldActionPayload,
   unsetDefaultAction,
   UnsetDefaultActionPayload,
   unsetHeading1Action,
@@ -28,9 +33,11 @@ import {
   UnsetHeading3ActionPayload,
 } from './editor.actions';
 
+type NodeType = ElementType | LeafType;
+
 interface DispatchToggleAction {
   editor: Editor;
-  blockType: BlockType;
+  nodeType: NodeType;
   noteId: string;
   range: Range;
   dispatch: Dispatch<any>;
@@ -40,7 +47,7 @@ interface DispatchToggleAction {
   unsetActionPayload: any;
 }
 const dispatchToggleAction = ({
-  blockType,
+  nodeType,
   dispatch,
   editor,
   setAction,
@@ -48,7 +55,8 @@ const dispatchToggleAction = ({
   unsetAction,
   unsetActionPayload,
 }: DispatchToggleAction) => {
-  const isActive = isBlockActive(editor, blockType);
+  const isActive = isNodeActive(editor, nodeType);
+  
   if (isActive) {
     dispatchCommand({
       name: unsetAction.type,
@@ -66,9 +74,11 @@ const dispatchToggleAction = ({
   }
 };
 
-const isBlockActive = (editor, blockType: BlockType) => {
+const isNodeActive = (editor: Editor, nodeType: NodeType) => {
   const [match] = Editor.nodes(editor, {
-    match: (n) => n.type === blockType,
+    match: (n) => n.type === nodeType,
+    // universal: true,
+    mode: 'all'
   });
   return !!match;
 };
@@ -76,16 +86,18 @@ const isBlockActive = (editor, blockType: BlockType) => {
 const setNodes = (
   editor: Editor,
   range: Range,
-  blockType: BlockType,
-  matchingFn: (node: Node) => boolean
+  nodeType: ElementType | LeafType,
+  matchingFn: (node: Node) => boolean,
+  split: boolean
 ): Node[] => {
   const path = range.anchor.path;
   Transforms.setNodes(
     editor,
-    { type: blockType },
+    { type: nodeType },
     {
       match: matchingFn,
       at: path,
+      split: split
     }
   );
 
@@ -97,13 +109,14 @@ const setNodes = (
  */
 export const setDefault = (editor: Editor, range: Range): Node[] => {
   console.log('setDefault');
-  setNodes(editor, range, BlockType.Default, (n) => Editor.isBlock(editor, n));
+  // TODO: Should be ElementType.Text
+  setNodes(editor, range, ElementType.Default, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
 export const unsetDefault = (editor: Editor, range: Range): Node[] => {
   console.log('unsetDefault');
-  setNodes(editor, range, null, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Default, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
@@ -123,7 +136,7 @@ export const toggleDefault = (
     range: range,
   };
   dispatchToggleAction({
-    blockType: BlockType.Default,
+    nodeType: ElementType.Default,
     dispatch: dispatch,
     editor: editor,
     noteId: noteId,
@@ -140,13 +153,13 @@ export const toggleDefault = (
  */
 export const setHeading1 = (editor: Editor, range: Range): Node[] => {
   console.log('setHeading1');
-  setNodes(editor, range, BlockType.Heading1, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Heading1, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
 export const unsetHeading1 = (editor: Editor, range: Range): Node[] => {
   console.log('unsetHeading1');
-  setNodes(editor, range, null, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Default, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
@@ -166,7 +179,7 @@ export const toggleHeading1 = (
     range: range,
   };
   dispatchToggleAction({
-    blockType: BlockType.Heading1,
+    nodeType: ElementType.Heading1,
     dispatch: dispatch,
     editor: editor,
     noteId: noteId,
@@ -183,13 +196,13 @@ export const toggleHeading1 = (
  */
 export const setHeading2 = (editor: Editor, range: Range): Node[] => {
   console.log('setHeading2');
-  setNodes(editor, range, BlockType.Heading2, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Heading2, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
 export const unsetHeading2 = (editor: Editor, range: Range): Node[] => {
   console.log('unsetHeading2');
-  setNodes(editor, range, null, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Default, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
@@ -209,7 +222,7 @@ export const toggleHeading2 = (
     range: range,
   };
   dispatchToggleAction({
-    blockType: BlockType.Heading2,
+    nodeType: ElementType.Heading2,
     dispatch: dispatch,
     editor: editor,
     noteId: noteId,
@@ -226,13 +239,13 @@ export const toggleHeading2 = (
  */
 export const setHeading3 = (editor: Editor, range: Range): Node[] => {
   console.log('setHeading3');
-  setNodes(editor, range, BlockType.Heading3, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Heading3, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
 export const unsetHeading3 = (editor: Editor, range: Range): Node[] => {
   console.log('unsetHeading3');
-  setNodes(editor, range, null, (n) => Editor.isBlock(editor, n));
+  setNodes(editor, range, ElementType.Default, (n) => Editor.isBlock(editor, n), false);
   return editor.children;
 };
 
@@ -252,7 +265,7 @@ export const toggleHeading3 = (
     range: range,
   };
   dispatchToggleAction({
-    blockType: BlockType.Heading3,
+    nodeType: ElementType.Heading3,
     dispatch: dispatch,
     editor: editor,
     noteId: noteId,
@@ -261,5 +274,48 @@ export const toggleHeading3 = (
     setActionPayload: setHeading3ActionPayload,
     unsetAction: unsetHeading3Action,
     unsetActionPayload: unsetHeading3ActionPayload,
+  });
+};
+
+/**
+ * BOLD
+ */
+ export const setBold = (editor: Editor, range: Range): Node[] => {
+  console.log('setBold');
+  setNodes(editor, range, LeafType.Bold, (n) => Text.isText(n), true);
+  return editor.children;
+};
+
+export const unsetBold = (editor: Editor, range: Range): Node[] => {
+  console.log('unsetBold');
+  setNodes(editor, range, LeafType.Default, (n) => Text.isText(n), true);
+  return editor.children;
+};
+
+export const toggleBold = (
+  editor: Editor,
+  noteId: string,
+  range: Range,
+  dispatch: Dispatch<any>
+) => {
+  console.log('toggleBold');
+  const setBoldActionPayload: SetBoldActionPayload = {
+    noteId: noteId,
+    range: range,
+  };
+  const unsetBoldActionPayload: UnsetBoldActionPayload = {
+    noteId: noteId,
+    range: range,
+  };
+  dispatchToggleAction({
+    nodeType: LeafType.Bold,
+    dispatch: dispatch,
+    editor: editor,
+    noteId: noteId,
+    range: range,
+    setAction: setBoldAction,
+    setActionPayload: setBoldActionPayload,
+    unsetAction: unsetBoldAction,
+    unsetActionPayload: unsetBoldActionPayload,
   });
 };

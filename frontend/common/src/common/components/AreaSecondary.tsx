@@ -14,7 +14,8 @@ const AreaSecondary: React.FC<IAreaSecondaryProps> = ({ children }) => {
 
   return (
     <CSSTransition in={inProp} timeout={500} classNames="areaSecondary">
-      <aside className="relative flex flex-col flex-shrink-0 w-56 
+      <aside className="transition-all duration-300 ease-out delay-700 w-20 sm:w-56 pt-2
+      relative flex flex-col flex-shrink-0
       border-r-1 border-gray-200 dark:border-black shadow-md z-10
       bg-gray-50 dark:bg-gray-900">
         {children}

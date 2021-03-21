@@ -30,7 +30,13 @@ import {
 } from './../../../editor/editor.actions';
 import { Editor } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { toggleDefault, toggleHeading1, toggleHeading2, toggleHeading3 } from './../../../editor/editor.utils';
+import {
+  toggleBold,
+  toggleDefault,
+  toggleHeading1,
+  toggleHeading2,
+  toggleHeading3,
+} from '../../../editor/editor.service';
 
 interface StyleButton {
   noteId: string;
@@ -41,8 +47,8 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
 
   const iconFillCls = `flex w-5 h-5 fill-current-color text-gray-500`;
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const buttonRef = useRef(null);
-  const dropdownRef = useRef(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,7 +56,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
-        !buttonRef.current.contains(event.target)
+        !buttonRef.current?.contains(event.target)
       ) {
         if (isDropDownOpen) {
           // Close the dropdown if opened
@@ -124,6 +130,13 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                 <button
                   type="button"
                   data-tip="Bold"
+                  onClick={() => {
+                    const range = ReactEditor.findEventRange(
+                      editor,
+                      window._event // TODO
+                    );
+                    toggleBold(editor, noteId, range, dispatch);
+                  }}
                   // onMouseDown={(event) => {
                   //   event.preventDefault();
                   //   Commands.toggleCodeBlock(editor);
@@ -193,7 +206,10 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-xl font-semibold text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(editor, window._event);
+                    const range = ReactEditor.findEventRange(
+                      editor,
+                      window._event // TODO
+                    );
                     toggleHeading1(editor, noteId, range, dispatch);
                   }}
                 >
@@ -203,7 +219,10 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-lg font-medium text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(editor, window._event);
+                    const range = ReactEditor.findEventRange(
+                      editor,
+                      window._event // TODO
+                    );
                     toggleHeading2(editor, noteId, range, dispatch);
                   }}
                 >
@@ -213,7 +232,10 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-base font-medium text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(editor, window._event);
+                    const range = ReactEditor.findEventRange(
+                      editor,
+                      window._event // TODO
+                    );
                     toggleHeading3(editor, noteId, range, dispatch);
                   }}
                 >
@@ -223,7 +245,10 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-base text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(editor, window._event);
+                    const range = ReactEditor.findEventRange(
+                      editor,
+                      window._event // TODO
+                    );
                     toggleDefault(editor, noteId, range, dispatch);
                   }}
                 >
@@ -284,7 +309,7 @@ const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
 
   return (
     <div
-      className="flex flex-col items-start shadow-sm rounded-md h-full justify-items-center p-2"
+      className="sticky top-0 flex flex-col items-start shadow-sm rounded-md h-full justify-items-center p-2"
       style={{ paddingTop: 100 }}
     >
       {/* <!-- TODO: Dropdown font like Notes app --> */}
