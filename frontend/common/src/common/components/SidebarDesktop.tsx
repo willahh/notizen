@@ -35,9 +35,9 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
     : require('./../../../assets/notizen.svg').default;
 
   return (
-    <div className="hidden lg:flex lg:flex-shrink-0 border-r-1 dark:border-gray-800">
+    <div className="transition-all duration-300 ease-out delay-700 w-0 lg:w-44 flex flex-shrink-0 border-r-1 border-white dark:border-black">
       <div className="flex flex-col w-44">
-        <div className="flex flex-col h-0 flex-1 bg-white dark:bg-black ">
+        <div className="flex flex-col h-0 flex-1 bg-gray-50 dark:bg-gray-900 ">
           <div className="flex-1 h-16 flex flex-col pb-4 overflow-y-auto">
             <div className="flex items-center h-16 justify-center">
               <img src={logoSrc} alt="logo" style={{ width: 120 }} />

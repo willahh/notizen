@@ -125,7 +125,9 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
       {/* <Suspense fallback={<div>Chargement</div>}> */}
       {/* <ScrollBar damping={0.5} thumbMinSize={20}> */}
 
-      <div className="h-full overflow-auto base-style bg-gray-50 dark:text-gray-300 dark:bg-gray-900 ">
+      <div className="h-full overflow-auto base-style   ">
+        <div className="pointer-events-none absolute h-24 inset-x-0 z-10 bg-gradient-to-b from-white dark:from-gray-900"></div>
+        <div className="pointer-events-none absolute bottom-0 h-24 inset-x-0 z-10 bg-gradient-to-t from-white dark:from-gray-900"></div>
         <CSSTransition
           in={anim}
           timeout={300}
@@ -133,29 +135,28 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
           // unmountOnExit
         >
           <div className="flex justify-center h-full p-8 pt-0">
-            <div className="">
-              <div className="relative self-auto" style={{ width: 800 }}>
-                <NoteTags />
-                <div
-                  className="flex bg-white dark:bg-black
+            <div className="relative w-full" style={{ maxWidth: 800 }}>
+              <NoteTags />
+              <div
+                className="note-page flex
                shadow-2xl
                dark:border-black
                dark:ring-1 dark:ring-offset-black"
-                  style={{ minHeight: 600 }}
-                >
-                  {/* <NoteToolbar editor={editor} /> */}
+                style={{ minHeight: 600 }}
+              >
+                {/* <NoteToolbar editor={editor} /> */}
 
-                  <div className="flex flex-col w-full p-10">
-                    {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
-                    <h1
-                      className="outline-none cursor-default text-4xl font-semibold"
-                      onBlur={handleTitleBlur}
-                      placeholder="Titre"
-                      ref={titleRef}
-                      contentEditable={true}
-                      dangerouslySetInnerHTML={{ __html: note?.name || '' }}
-                    ></h1>
-                    {/* <div
+                <div className="relative flex flex-col w-full p-10">
+                  {/* <CSSTransition in={note.isFav} timeout={400} classNames="item"> */}
+                  <h1
+                    className="outline-none cursor-default text-4xl font-semibold"
+                    onBlur={handleTitleBlur}
+                    placeholder="Titre"
+                    ref={titleRef}
+                    contentEditable={true}
+                    dangerouslySetInnerHTML={{ __html: note?.name || '' }}
+                  ></h1>
+                  {/* <div
                     className="text-justify outline-none cursor-default font-thin"
                     onBlur={handleContentBlur}
                     // onKeyUp={handleContentKeyUp}
@@ -165,13 +166,12 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
                     dangerouslySetInnerHTML={{ __html: note?.content || '' }}
                   ></div> */}
 
-                    <NotizenEditor
-                      editor={editor}
-                      nodes={editorNodes}
-                      noteId={selectedNoteId}
-                    />
-                    {/* </CSSTransition> */}
-                  </div>
+                  <NotizenEditor
+                    editor={editor}
+                    nodes={editorNodes}
+                    noteId={selectedNoteId}
+                  />
+                  {/* </CSSTransition> */}
                 </div>
               </div>
             </div>

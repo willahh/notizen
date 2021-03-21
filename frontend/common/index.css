@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 body {
+  /* TODO: Find fonts, Fira is ok */
   font-family: 'Fira Sans';
   /* font-family: 'Source Sans Pro'; */
   font-weight: 200;
   font-style: normal;
+  user-select: none; /* Disable the selection by default */
 }
 
 .fill-current-color svg {
@@ -321,22 +323,22 @@ button {
 }
 
 /* style-dropdown */
-@keyframes bounceIn{
-  0%{
+@keyframes bounceIn {
+  0% {
     opacity: 0;
-    transform: scale(0.3) translate3d(0,0,0);
+    transform: scale(0.3) translate3d(0, 0, 0);
   }
-  50%{
+  50% {
     opacity: 0.9;
     transform: scale(1.05);
   }
-  80%{
+  80% {
     opacity: 1;
     transform: scale(0.95);
   }
-  100%{
+  100% {
     opacity: 1;
-    transform: scale(1) translate3d(0,0,0);
+    transform: scale(1) translate3d(0, 0, 0);
   }
 }
 
@@ -367,4 +369,36 @@ button {
 .style-dropdown-exit-active {
   /* transform-origin: 60% right; */
   opacity: 0;
+}
+
+/* note-page */
+@media (prefers-color-scheme: light) {
+  .note-page {
+    background-color: #f9f9f9;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .note-page {
+    background-color: #090909;
+  }
+}
+
+/* selection */
+@media (prefers-color-scheme: light) {
+  ::selection {
+    background: #d0bbff; /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: #d0bbff; /* Gecko Browsers */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background: #261358; /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: #261358; /* Gecko Browsers */
+  }
 }

@@ -14,7 +14,7 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex-shrink-0 border-b-1 border-gray-200 bg-white dark:bg-black dark:border-gray-800">
+    <div className="flex-shrink-0 border-b-1 border-gray-200 dark:border-black">
       <div className="flex flex-col justify-center p-2">
         <div className="flex align-middle">
           <div className="flex-none self-center">
@@ -38,8 +38,8 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
               id="search"
               type="search"
               placeholder="Search in notes"
-              className="block w-full p-0 pl-2 border-transparent placeholder-gray-500 focus:border-transparent sm:text-sm 
-              focus:ring-0 dark:bg-black"
+              className="block bg-transparent w-full p-0 pl-2 border-transparent placeholder-gray-500 focus:border-transparent sm:text-sm 
+              focus:ring-0"
             />
           </div>
           <div className="flex-none self-center">
@@ -48,12 +48,12 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
               className="relative inline-flex items-center p-2 rounded-md border-1 border-gray-300 
               text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 
               focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 
-              bg-white dark:bg-black dark:border-gray-800"
+               dark:border-gray-800"
               onClick={() => {
                 const createNoteDTO: CreateNoteDTO = {
                   id: uuidv4(),
-                  // content: '',
-                  // name: '',
+                  name: 'Ma super note',
+                  content: []
                 };
                 const payload: CreateNoteActionPayload = {
                   createNoteDTO: createNoteDTO,

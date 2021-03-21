@@ -34,7 +34,7 @@ export const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
   return (
     <div {...props.attributes} className="editor-block relative flex">
       <Options editor={editor}></Options>
-      <div className="w-full" style={{ minHeight: 24 }}>
+      <div className="w-full mb-2" style={{ minHeight: 24 }}>
         {props.children}
       </div>
       {isEmpty && hasFocus && (

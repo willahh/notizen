@@ -103,7 +103,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
   }
 
   return (
-    <div key={`NoteTags`} className="flex justify-end p-2">
+    <div key={`NoteTags`} className="relative flex justify-end p-2 z-10">
       <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row select-none">
         <div className="inline-flex mr-2">
           <div className="relative inline-flex items-center">

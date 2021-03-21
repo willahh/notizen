@@ -37,16 +37,20 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   let itemCls =
     'relative overflow-hidden select-none border-l-4 duration-300 ease-in-out';
   let itemInnerCls =
-    'relative py-5 px-4 bg-white dark:bg-black duration-300 ease-in-out transition-all';
+    'relative py-5 px-4  duration-300 ease-in-out transition-all';
   if (isSelected) {
     itemCls += ` border-${color.toLowerCase()}-700`;
     itemInnerCls += ' transform left-2';
   } else {
-    itemCls += ' border-white dark:border-black';
+    itemCls += ' border-transparent';
     itemInnerCls += ' left-0';
   }
   const btnClassName =
-    'relative inline-flex items-center p-2 border-1 border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md bg-white dark:bg-black dark:border-gray-800';
+    `relative inline-flex items-center p-2 
+    border-1 border-gray-300 dark:border-gray-800
+    
+    text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 focus:z-10 
+    focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md `;
 
   useEffect(() => {
     ReactTooltip.rebuild();
@@ -78,7 +82,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
           <div className="flex justify-between space-x-3">
             <div className="min-w-0 flex-1">
               <a href="#" className="block focus:outline-none">
-                <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-200">
+                <p className="text-sm font-normal truncate text-gray-600 dark:text-gray-300">
                   {name}
                 </p>
                 <div>

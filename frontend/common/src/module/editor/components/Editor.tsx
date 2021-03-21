@@ -185,17 +185,17 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
       }}
     >
       <HoveringToolbar />
-      <button
+      {/* <button
         onClick={() => {
           addDefaultAtTheEndAndFocus(editor);
         }}
       >
         Add default row
-      </button>
+      </button> */}
       <Editable
         renderElement={renderElementMemoized}
         renderLeaf={renderLeaf}
-        className="h-full text-black dark:text-white"
+        className="h-full font-normal text-sm text-gray-700 dark:text-gray-300"
         onBlur={handleEditorBlur}
         onClick={(event) => {
           console.log('onClick');
