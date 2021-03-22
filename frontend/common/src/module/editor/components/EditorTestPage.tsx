@@ -15,7 +15,7 @@ const EditorTestPage: React.FC<IEditorTestPageProps> = ({}) => {
   const editor = useMemo(() => withReact(createEditor()), []);
   return (
     <div className="bg-white dark:bg-black p-20 h-screen">
-      <h2 className="dark:text-white text-xl">Editor test</h2>
+      <h3 className="dark:text-white text-xl">Editor test</h3>
       <NotizenEditor editor={editor} nodes={nodes} noteId={"xxxxxx"}></NotizenEditor>
     </div>
   );

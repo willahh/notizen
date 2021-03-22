@@ -20,6 +20,7 @@ import {
   SwitchTransition,
   TransitionGroup,
 } from 'react-transition-group';
+import { withShortcuts } from '../../../editor/components/plugins/withShortcuts';
 
 // import {} from './../../../../../assets/undraw/undraw_Appreciation_re_p6rl.svg'
 
@@ -48,7 +49,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   // Create a Slate editor object that won't change across renders.
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withShortcuts(withReact(createEditor())), [])
   // dispatch(setCurrentEditorAction({ editor: editor }));
 
   // TODO: Where to put a reference to this editor ????

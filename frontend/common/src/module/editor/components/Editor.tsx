@@ -1,76 +1,12 @@
 import React, { useMemo, useState, useCallback } from 'react';
+import Prism from 'prismjs';
 
-/***
- *
- *
- *
- * - Montre une page (représentation d'un page)
- *   Fond sombre + page en blanc
- * - Mettre le coeur en rouge / rose - trop petit
- *
- * Notion de page dans des notes
- *
- * Personne qui note des cours
- *  - Chapitre / page
- *
- *  - Marges latérales
- *  - Entête
- *  - Bas de page
- *  - Numéro de page en bas à droite
- *  - COmmentaire
- *  - Surlignage  en toggle :
- *    []
- *    - Toggle surlignage ON : tous les textes sélectionés sont surlignés
- *
- *   Bold / Italic / Strike en toggle
- *
- *  - [ ] Représenter des pages et des petites pages
- *
- * Une page commence à la taille d'un post-it et si trop taille max page a4 sio n écrit plus ajoute des pages
- *
- *   - [ ] Notion de portrait ou paysage
- *   - [ ]
- *
- * - Une section peut etre de type post-it ou page
- *  (une section est un item 2 eme colonne
- *
- *  - Postit mode :
- *    (n postits et un + pour ajouter) en grille
- *    [ ] [ ] +
- *    [ ] [ ]
- *    [ ] [ ]
- *
- *
- *  - Sections
- *    - Pages
- *    - Stick (Post-it)
- *
- *  - Laisser les bandes de couleur visible sur les sections
- *
- *  - Section
- *  somaire :
- * Partie I.
- * Section I.
- * Chapitre I.
- * I.
- * A.
- * 1.
- * 2.
- * B.
- * 1.
- * 2.
- * II..
- * Chapitre II.
- * Section II.
- * Partie II.
- *
- *
- * Mode Light / Dark / Dark + page blanche
- *
- */
-
-// Import the Slate editor factory.
-import { createEditor, Editor, Node, Transforms, RangeRef } from 'slate';
+import {
+  Editor,
+  Node,
+  Transforms,
+  Text,
+} from 'slate';
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
@@ -93,6 +29,9 @@ import {
 import { ErrorBoundary } from '../../../common/components/ErrorBoundary';
 import { renderLeaf } from './leafs/Leaf';
 
+// eslint-disable-next-line
+Prism.languages.markdown=Prism.languages.extend("markup",{}),Prism.languages.insertBefore("markdown","prolog",{blockquote:{pattern:/^>(?:[\t ]*>)*/m,alias:"punctuation"},code:[{pattern:/^(?: {4}|\t).+/m,alias:"keyword"},{pattern:/``.+?``|`[^`\n]+`/,alias:"keyword"}],title:[{pattern:/\w+.*(?:\r?\n|\r)(?:==+|--+)/,alias:"important",inside:{punctuation:/==+$|--+$/}},{pattern:/(^\s*)#+.+/m,lookbehind:!0,alias:"important",inside:{punctuation:/^#+|#+$/}}],hr:{pattern:/(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,lookbehind:!0,alias:"punctuation"},list:{pattern:/(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,lookbehind:!0,alias:"punctuation"},"url-reference":{pattern:/!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,inside:{variable:{pattern:/^(!?\[)[^\]]+/,lookbehind:!0},string:/(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,punctuation:/^[\[\]!:]|[<>]/},alias:"url"},bold:{pattern:/(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^\*\*|^__|\*\*$|__$/}},italic:{pattern:/(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^[*_]|[*_]$/}},url:{pattern:/!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,inside:{variable:{pattern:/(!?\[)[^\]]+(?=\]$)/,lookbehind:!0},string:{pattern:/"(?:\\.|[^"\\])*"(?=\)$)/}}}}),Prism.languages.markdown.bold.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.italic.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.bold.inside.italic=Prism.util.clone(Prism.languages.markdown.italic),Prism.languages.markdown.italic.inside.bold=Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
+
 // Define a React component to render leaves with bold text.
 // const Leaf = (props:any) => {
 //   return (
@@ -111,6 +50,7 @@ interface IEditor {
   nodes: Node[];
   noteId: string;
 }
+
 
 export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
   console.log('NotizenEditor', noteId);
@@ -132,7 +72,6 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
   // const renderLeaf = useCallback((props) => {
   //   return <Leaf {...props} />;
   // }, []);
-
 
   const addDefaultAtTheEndAndFocus = (editor: Editor & ReactEditor) => {
     console.log('addDefaultAtTheEndAndFocus', editor);
@@ -165,6 +104,48 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
       payload: payload,
     });
   };
+
+  // const decorate = useCallback(([node, path]) => {
+  //   const ranges: any[] = [];
+
+  //   if (!Text.isText(node)) {
+  //     return ranges;
+  //   }
+
+  //   const getLength = (token: any) => {
+  //     if (typeof token === 'string') {
+  //       return token.length;
+  //     } else if (typeof token.content === 'string') {
+  //       return token.content.length;
+  //     } else {
+  //       return token.content.reduce((l: any, t: any) => l + getLength(t), 0);
+  //     }
+  //   };
+
+  //   const tokens = Prism.tokenize(node.text, Prism.languages.markdown);
+
+  //   let start = 0;
+
+  //   for (const token of tokens) {
+  //     const length = getLength(token);
+  //     const end = start + length;
+
+  //     if (typeof token !== 'string') {
+  //       ranges.push({
+  //         markdown: true,
+  //         markdownType: token.type,
+  //         anchor: { path, offset: start },
+  //         focus: { path, offset: end },
+  //       });
+  //     }
+
+  //     start = end;
+  //   }
+
+  //   return ranges;
+  // }, []);
+
+  // // https://github.com/ianstormtaylor/slate/blob/master/site/examples/markdown-shortcuts.tsx
 
   return (
     <ErrorBoundary>
@@ -200,6 +181,7 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId }) => {
         <Editable
           renderElement={renderElementMemoized}
           renderLeaf={renderLeafMemoized}
+          // decorate={decorate}
           className="h-full font-normal text-sm text-gray-700 dark:text-gray-300"
           onBlur={handleEditorBlur}
           onClick={(event) => {

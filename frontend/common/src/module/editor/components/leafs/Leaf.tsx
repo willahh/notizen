@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import { DefaultLeaf } from './leaf/Default';
 import { BoldLeaf } from './leaf/Bold';
 import { Editor } from 'slate';
+import { MarkdownHeading1 } from './leaf/Markdown';
 
 export enum LeafType {
   Default = 'DEFAULT',
@@ -12,6 +13,13 @@ export enum LeafType {
 
 export const renderLeaf = (editor: Editor) =>
   useCallback((props) => {
+    if (props.leaf.markdown) {
+      switch (props.leaf.markdownType) {
+        case 'title':
+          return <MarkdownHeading1 {...props} />;
+      }
+    }
+
     switch (props.leaf.type) {
       case LeafType.Default:
         return <DefaultLeaf {...props} />;

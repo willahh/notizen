@@ -21,6 +21,8 @@ export enum ElementType {
 
 export const renderElement = (editor: Editor & ReactEditor) =>
   useCallback((props) => {
+    console.log('props.element.type', props.element.type);
+    
     switch (props.element.type) {
       case ElementType.Default:
         return <DefaultElement {...props} />;
@@ -30,11 +32,32 @@ export const renderElement = (editor: Editor & ReactEditor) =>
         return <Heading2Element {...props} />;
       case ElementType.Heading3:
         return <Heading3Element {...props} />;
-        case ElementType.Code:
-          return <CodeElement {...props} />;
+      case ElementType.Code:
+        return <CodeElement {...props} />;
       case ElementType.Image:
         return <ImageElement {...props} />;
+
+      case 'block-quote':
+        return <blockquote {...props.attributes}>{props.children}</blockquote>;
+      case 'bulleted-list':
+        return <ul {...props.attributes}>{props.children}</ul>;
+      case 'heading-one':
+        return <Heading1Element {...props}/>;
+      case 'heading-two':
+        return <Heading2Element {...props}/>;
+      case 'heading-three':
+        return <Heading3Element {...props}/>;
+      case 'heading-four':
+        return <h4 {...props.attributes}>{props.children}</h4>;
+      case 'heading-five':
+        return <h5 {...props.attributes}>{props.children}</h5>;
+      case 'heading-six':
+        return <h6 {...props.attributes}>{props.children}</h6>;
+      case 'list-item':
+        return <li {...props.attributes}>{props.children}</li>;
+
       default:
-        return <DefaultElement {...props} editor={editor} />;
+        // return <DefaultElement {...props} editor={editor} />;
+        return <p {...props.attributes}>{props.children}</p>;
     }
   }, []);

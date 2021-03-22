@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Dropdown } from './Dropdown';
 
-export const Options = ({editor}) => {
+export const Options = ({ editor }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <>
       <div
         className="icon absolute -left-8 -top-0 flex rounded-full hover:bg-indigo-500 p-1 opacity-0 transition-all duration-500"
+        style={{ userSelect: 'none' }}
         contentEditable={false}
         onMouseDown={(e) => {
           console.log('mousedown');
