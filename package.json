@@ -2,9 +2,9 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "frontend/**/*",
-    "backend/**/*"
+    "frontend/**/*"
   ],
+
   "scripts": {
     "start": "yarn workspace @notizen/frontend-web run start",
     "build": "yarn workspace @notizen/frontend-web run build"
