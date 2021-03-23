@@ -3,7 +3,7 @@ import { NoteItemThumb } from './NoteItemThumb';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../common/rootReducer';
 import { fetchNotesAction, FetchNotesActionPayload } from '../note.actions';
-import { NoteFilter } from './NoteFilter';
+import { NoteFilter, NoteFilterMemo } from './NoteFilter';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import {
   BrowserRouter as Router,
@@ -20,6 +20,8 @@ const ScrollBar = scrollbar.default;
 interface INoteProps {}
 
 const NoteThumb: React.FC<INoteProps> = () => {
+  console.log('NoteThumb');
+
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
@@ -53,7 +55,7 @@ const NoteThumb: React.FC<INoteProps> = () => {
   }, [dispatch]);
 
   let noteListHtml = null;
-  let match = useRouteMatch();
+  // let match = useRouteMatch();
 
   if (error) {
     noteListHtml = (
@@ -100,7 +102,7 @@ const NoteThumb: React.FC<INoteProps> = () => {
       <div className="flex w-full flex-col">
         <div>
           {/* <SideToolbar editor={editor} noteId="xxxx" /> */}
-          <NoteFilter />
+          <NoteFilterMemo />
         </div>
         <div className="flex h-full">{noteListHtml}</div>
       </div>

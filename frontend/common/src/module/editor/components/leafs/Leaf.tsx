@@ -13,13 +13,6 @@ export enum LeafType {
 
 export const renderLeaf = (editor: Editor) =>
   useCallback((props) => {
-    if (props.leaf.markdown) {
-      switch (props.leaf.markdownType) {
-        case 'title':
-          return <MarkdownHeading1 {...props} />;
-      }
-    }
-
     switch (props.leaf.type) {
       case LeafType.Default:
         return <DefaultLeaf {...props} />;

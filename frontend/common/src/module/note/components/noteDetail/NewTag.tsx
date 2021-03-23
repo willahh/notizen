@@ -483,4 +483,4 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
   );
 };
 
-export { NewTag };
+export default React.memo(NewTag);

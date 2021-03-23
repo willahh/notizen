@@ -23,10 +23,12 @@ import {
   SetModeActionPayload,
   createTagAndEdit,
 } from '../tags.actions';
-import { TagComponent } from './Tag';
+import { TagComponentMemoized } from './Tag';
 interface ITagsProps {}
 
 const Tags: React.FC<ITagsProps> = ({}) => {
+  console.log('Tags');
+  
   const dispatch = useDispatch();
   const { error, isLoading, tags } = useSelector(
     (state: RootState) => state.tags
@@ -174,7 +176,7 @@ const Tags: React.FC<ITagsProps> = ({}) => {
         <TransitionGroup component="ul" className="overflow-auto " type="ul">
           {tagsList.map((tag) => (
             <CSSTransition key={tag.id} timeout={400} classNames="tag-item">
-              <TagComponent
+              <TagComponentMemoized
                 tag={tag}
                 mode={mode}
                 deleteModeActive={deleteModeActive}

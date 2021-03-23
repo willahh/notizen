@@ -1,5 +1,6 @@
-import { Options } from '../../plugins/options/Options';
-export const Heading3Element = (props: any) => {
+import React from 'react';
+import { OptionsMemo } from '../../plugins/options/Options';
+const Heading3Element = (props: any) => {
   const firstChildren = props.element.children[0];
   const isEmpty = firstChildren.text.length === 0;
   const hasFocus = true; // TODO
@@ -23,7 +24,7 @@ export const Heading3Element = (props: any) => {
 
   return (
     <div {...props.attributes} className="editor-block relative flex">
-      {/* <Options editor={props.editor}></Options> */}
+      {/* <OptionsMemo editor={props.editor}></OptionsMemo> */}
       <div className="relative w-full font-semibold text-xl">
         <h3>{props.children}</h3>
         {isEmpty && hasFocus && (
@@ -35,3 +36,5 @@ export const Heading3Element = (props: any) => {
     </div>
   );
 };
+
+export default React.memo(Heading3Element);

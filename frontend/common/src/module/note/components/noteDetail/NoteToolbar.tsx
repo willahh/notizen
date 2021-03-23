@@ -20,6 +20,8 @@ interface NoteToolbar {
   editor: object;
 }
 export const NoteToolbar: React.FC<NoteToolbar> = ({ editor }) => {
+  console.log('NoteToolbar');
+  
   const ref = useRef<HTMLDivElement | null>();
   const btnCls = `relative inline-flex items-center px-4 py-2
   fill-current-color

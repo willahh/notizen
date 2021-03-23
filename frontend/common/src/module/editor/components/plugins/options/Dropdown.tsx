@@ -2,7 +2,9 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Commands } from '../../Commands';
 
-export const Dropdown = ({ editor, isDropdownOpen }) => {
+const Dropdown = ({ editor, isDropdownOpen }) => {
+  console.log('Dropdown');
+  
   return (
     <CSSTransition
       in={isDropdownOpen}
@@ -58,3 +60,7 @@ export const Dropdown = ({ editor, isDropdownOpen }) => {
     </CSSTransition>
   );
 };
+
+
+export const DropdownMemo = React.memo(Dropdown);
+export default Dropdown;

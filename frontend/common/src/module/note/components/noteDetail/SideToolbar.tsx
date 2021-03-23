@@ -296,6 +296,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
     </div>
   );
 };
+const StyleButtonMemo = React.memo(StyleButton);
 
 export type IToolbarProps = {
   editor: Editor & ReactEditor;
@@ -313,7 +314,7 @@ const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
       style={{ paddingTop: 100 }}
     >
       {/* <!-- TODO: Dropdown font like Notes app --> */}
-      <StyleButton editor={editor} noteId={noteId}></StyleButton>
+      <StyleButtonMemo editor={editor} noteId={noteId}></StyleButtonMemo>
 
       <button
         type="button"

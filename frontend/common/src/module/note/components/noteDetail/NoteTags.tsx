@@ -17,7 +17,7 @@ import {
   TagEntity,
   UpdateNoteDTO,
 } from '../../../../common/interfaces';
-import { NewTag } from './NewTag';
+import NewTag from './NewTag';
 import {
   tagIconColorMap,
   tagIconIconMap,
@@ -296,4 +296,4 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
   );
 };
 
-export { NoteTags };
+export default React.memo(NoteTags);

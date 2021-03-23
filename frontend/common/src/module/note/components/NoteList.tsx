@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { NoteItem } from '@notizen/frontend-common/src/module/note/components/NoteItem';
+import NoteItem from '@notizen/frontend-common/src/module/note/components/NoteItem';
 import { RootState } from '@notizen/frontend-common/src/common/rootReducer';
 import { AreaSecondary } from '@notizen/frontend-common/src/common/components/AreaSecondary';
-import { NoteFilter } from './NoteFilter';
+import { NoteFilter, NoteFilterMemo } from './NoteFilter';
 import { MainArea } from '@notizen/frontend-common/src/common/components/MainArea';
 // import { Toolbar } from './noteDetail/Toolbar';
 import MainTemplate from '@notizen/frontend-common/src/common/components/MainTemplate';
@@ -14,16 +14,18 @@ import {
   mapOfKeyValueToArrayOfMap,
 } from '@notizen/frontend-common/src/common/utils';
 import { fetchNotesAction, FetchNotesActionPayload } from './../note.actions';
-import { NoteDetailEditNew } from './noteDetail/NoteDetailEditNew';
+import NoteDetailEditNew from './noteDetail/NoteDetailEditNew';
 
 interface INoteProps {}
 
 const NoteList: React.FC<INoteProps> = () => {
+  console.log('NoteList');
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
   );
 
+  // TODO: Put inside useSomething ?
   const notesList: INote[] = mapOfKeyValueToArrayOfMap(notes).sort(
     (a: INote, b: INote) => {
       return Number(b.id) - Number(a.id);
@@ -110,7 +112,7 @@ const NoteList: React.FC<INoteProps> = () => {
       <div className="flex w-full flex-col">
         <div className="flex h-full">
           <AreaSecondary>
-            <NoteFilter />
+            <NoteFilterMemo />
             {noteListHtml}
           </AreaSecondary>
           <MainArea>
@@ -122,4 +124,4 @@ const NoteList: React.FC<INoteProps> = () => {
   );
 };
 
-export { NoteList };
+export default React.memo(NoteList);

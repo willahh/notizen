@@ -1,7 +1,8 @@
+import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Commands } from '../../Commands';
-import { Options } from './../../plugins/options/Options';
+import { OptionsMemo } from './../../plugins/options/Options';
 
 export type IDefaultElementProps = {};
 
@@ -10,7 +11,7 @@ function getSelectionStart() {
   return node ? (node.nodeType == 3 ? node.parentNode : node) : null;
 }
 
-export const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
+const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
   console.log('DefaultElement');
 
   const editor = props.editor;
@@ -33,7 +34,7 @@ export const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
 
   return (
     <div {...props.attributes} className="editor-block relative flex">
-      <Options editor={editor}></Options>
+      <OptionsMemo editor={editor}></OptionsMemo>
       <div className="w-full mb-2" style={{ minHeight: 24 }}>
         {props.children}
       </div>
@@ -146,3 +147,5 @@ export const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
     </div>
   );
 };
+
+export default React.memo(DefaultElement);

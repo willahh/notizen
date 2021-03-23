@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { BrowserRouter as Router, useRouteMatch } from 'react-router-dom';
-import { NoteItem } from '@notizen/frontend-common/src/module/note/components/NoteItem';
+import NoteItem from '@notizen/frontend-common/src/module/note/components/NoteItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@notizen/frontend-common/src/common/rootReducer';
 import { AreaSecondary } from '@notizen/frontend-common/src/common/components/AreaSecondary';
-import { NoteFilter } from '@notizen/frontend-common/src/module/note/components/NoteFilter';
+import {
+  NoteFilter,
+  NoteFilterMemo,
+} from '@notizen/frontend-common/src/module/note/components/NoteFilter';
 import { MainArea } from '@notizen/frontend-common/src/common/components/MainArea';
 // import { Toolbar } from '@notizen/frontend-common/src/common/components/Toolbar';
-import { NoteDetailEditNew } from '@notizen/frontend-common/src/module/note/components/noteDetail/NoteDetailEditNew';
+import NoteDetailEditNew from '@notizen/frontend-common/src/module/note/components/noteDetail/NoteDetailEditNew';
 import LitTemplate from '@notizen/frontend-common/src/common/components/LitTemplate';
 import { dispatchQuery } from '@notizen/frontend-common/src/common/utils';
 import { NoteColor } from '@notizen/frontend-common/src/common/interfaces';
@@ -20,6 +23,7 @@ import { fetchNotesAction, FetchNotesActionPayload } from '../note.actions';
 interface INoteProps {}
 
 const NoteLit: React.FC<INoteProps> = () => {
+  console.log('NoteLit');
   const dispatch = useDispatch();
   const { error, isLoading, notes } = useSelector(
     (state: RootState) => state.notes
@@ -93,7 +97,7 @@ const NoteLit: React.FC<INoteProps> = () => {
   return (
     <LitTemplate>
       <AreaSecondary>
-        <NoteFilter />
+        <NoteFilterMemo />
         {noteListHtml}
       </AreaSecondary>
       <MainArea>

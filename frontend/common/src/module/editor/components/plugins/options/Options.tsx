@@ -1,7 +1,13 @@
+import React from 'react';
 import { useState } from 'react';
-import { Dropdown } from './Dropdown';
+import { DropdownMemo } from './Dropdown';
 
-export const Options = ({ editor }) => {
+const Options = ({ editor }) => {
+
+  // TODO: Do something this SLOW DOWN REALLY BAD
+  return <span></span>
+  console.log('Options');
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -32,7 +38,10 @@ export const Options = ({ editor }) => {
           />
         </svg>
       </div>
-      <Dropdown isDropdownOpen={isDropdownOpen} editor={editor}></Dropdown>
+      <DropdownMemo isDropdownOpen={isDropdownOpen} editor={editor}></DropdownMemo>
     </>
   );
 };
+
+export const OptionsMemo = React.memo(Options);
+export default Options;

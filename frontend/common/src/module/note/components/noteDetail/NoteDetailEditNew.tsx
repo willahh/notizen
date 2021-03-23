@@ -9,7 +9,7 @@ import {
   UpdateNoteActionPayload,
 } from '../../note.actions';
 import { UpdateNoteDTO } from '../../../../common/interfaces';
-import { NoteTags } from './NoteTags';
+import NoteTags from './NoteTags';
 import NotizenEditor from '../../../editor/components/Editor';
 import { createEditor, Editor, Node } from 'slate';
 import { NoteToolbar } from './NoteToolbar';
@@ -42,14 +42,13 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const selectedNoteId = useSelector(
     (state: RootState) => state.notes.selectedNoteId
   );
-  // let editorNodes = useSelector((state: RootState) => state.editor.nodes);
-
-  // const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   // Create a Slate editor object that won't change across renders.
   const editor = useMemo(() => withShortcuts(withReact(createEditor())), [])
+
+  const NoteTagsMemo = useMemo(() => <NoteTags/>, []); // TODO: Double memo, no need
   // dispatch(setCurrentEditorAction({ editor: editor }));
 
   // TODO: Where to put a reference to this editor ????
@@ -160,7 +159,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
                 className="relative w-full app-region-drag-off"
                 style={{ maxWidth: 800 }}
               >
-                <NoteTags />
+                {NoteTagsMemo}
                 <div
                   className="note-page flex
                   xl:bg-white xl:dark:bg-black
@@ -198,6 +197,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
                     <NotizenEditor
                       editor={editor}
                       nodes={editorNodes}
+                      note={note}
                       noteId={note.id}
                     />
                     {/* </CSSTransition> */}
@@ -220,4 +220,4 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   );
 };
 
-export { NoteDetailEditNew };
+export default React.memo(NoteDetailEditNew);

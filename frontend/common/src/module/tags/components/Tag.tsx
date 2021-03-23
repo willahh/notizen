@@ -361,4 +361,5 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
   return <li className="relative overflow-hidden h-10 p-2">{tagComponent}</li>;
 };
 
+export const TagComponentMemoized = React.memo(TagComponent);
 export { TagComponent };

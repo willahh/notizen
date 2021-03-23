@@ -11,6 +11,8 @@ import { dispatchCommand } from '../../../common/utils';
 export type INoteFilterProps = {};
 
 const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
+  console.log('NoteFilter');
+  
   const dispatch = useDispatch();
 
   return (
@@ -88,4 +90,5 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
   );
 };
 
+export const NoteFilterMemo = React.memo(NoteFilter);
 export { NoteFilter };

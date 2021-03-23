@@ -1,14 +1,16 @@
 import React from 'react';
-import { Options } from '../../plugins/options/Options';
+import { OptionsMemo } from '../../plugins/options/Options';
 
 export type ICodeElementProps = {};
 
-export const CodeElement: React.FC<ICodeElementProps> = (props:any) => {
+const CodeElement: React.FC<ICodeElementProps> = (props: any) => {
   const editor = props.editor;
   return (
     <pre {...props.attributes} className="editor-block relative bg-gray-50">
-      <Options editor={editor}></Options>
+      <OptionsMemo editor={editor}></OptionsMemo>
       <code>{props.children}</code>
     </pre>
   );
 };
+
+export default React.memo(CodeElement);

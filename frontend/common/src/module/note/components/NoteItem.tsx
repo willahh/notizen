@@ -26,7 +26,7 @@ function truncateString(str: string, num: number) {
 }
 
 const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
-  //console.log('NoteItem', color);
+  console.log('NoteItem');
 
   const dispatch = useDispatch();
   const selectedNoteId = useSelector(
@@ -166,4 +166,4 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   );
 };
 
-export { NoteItem };
+export default React.memo(NoteItem);

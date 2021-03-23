@@ -3,8 +3,11 @@ import { ReactEditor, useSlate } from 'slate-react';
 import { Editor, Range } from 'slate';
 import { CSSTransition } from 'react-transition-group';
 import { NoteToolbarInline } from '../../../../note/components/noteDetail/NoteToolbarInline';
+import React from 'react';
 
-export const HoveringToolbar = () => {
+export const HoveringToolbar = React.memo(() => {
+  console.log('HoveringToolbar');
+  
   const ref = useRef<HTMLSpanElement>();
   const editor = useSlate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -43,7 +46,7 @@ export const HoveringToolbar = () => {
     }
 
     setIsDropdownOpen(true);
-  });
+  }, [ref]);
 
   return (
     <CSSTransition
@@ -62,4 +65,4 @@ export const HoveringToolbar = () => {
       </span>
     </CSSTransition>
   );
-};
+});

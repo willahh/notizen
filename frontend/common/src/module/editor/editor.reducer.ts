@@ -1,5 +1,5 @@
-import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { WritableDraft } from 'immer/dist/internal';
+import { createSlice, ActionReducerMapBuilder,  } from '@reduxjs/toolkit';
+// import { WritableDraft } from 'immer/dist/internal';
 import { NoteListState } from '../note/note.state';
 import {
   setBoldAction,
@@ -23,7 +23,8 @@ type UpdateNoteContentAction = {
   type?: string
 };
 const updateNoteContent = (
-  state: WritableDraft<NoteListState>,
+  // state: WritableDraft<NoteListState>,
+  state: NoteListState,
   action: UpdateNoteContentAction
 ) => {
   const noteId = action.payload.noteId;
