@@ -28,7 +28,9 @@ const NoteList: React.FC<INoteProps> = () => {
   // TODO: Put inside useSomething ?
   const notesList: INote[] = mapOfKeyValueToArrayOfMap(notes).sort(
     (a: INote, b: INote) => {
-      return Number(b.id) - Number(a.id);
+      let aa = new Date(a.updateDate).getTime();
+      let bb = new Date(b.updateDate).getTime();
+      return bb - aa;
     }
   ); // TODO: refactor sorting
 
