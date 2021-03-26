@@ -98,7 +98,9 @@ npm run start:dev
 # - Add a new migration file
 npx typeorm migration:generate -n CreateUserTable
 
-# 6. Run the new migration script
+## Restart the server
+
+# Run the new migration script
 # This will, in this case, create the new user table
 npx typeorm migration:run # Runs all pending migrations
 

@@ -1,14 +1,29 @@
 import {
   IsBoolean,
+  IsDate,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { TagIcon } from 'src/notes/note-enum';
 import { TagColor } from './tag-enum';
 
 export class CreateTagDto {
+  @IsUUID()
+  @IsOptional()
+  id?: string;
+
+  @IsDate()
+  @IsOptional()
+  createDate?: Date;
+
+  @IsDate()
+  @IsOptional()
+  updateDate?: Date;
+
   @IsString()
   name: string;
 

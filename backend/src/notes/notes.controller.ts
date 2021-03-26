@@ -11,7 +11,7 @@ import {
 import { IsOptional } from 'class-validator';
 import { TagsService } from 'src/tags/tags.service';
 import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
-import { CreateNoteDto } from './create-note.dto';
+import { CreateNoteDTO } from './create-note.dto';
 import { NoteActionDto, NoteAction } from './note-action.dto';
 import { NotesService } from './notes.service';
 import { UpdateNoteDto } from './update-note.dto';
@@ -47,7 +47,7 @@ export class NotesController {
 
   @Get(':id')
   findOne(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
   ) {
@@ -60,7 +60,7 @@ export class NotesController {
   
   @Post()
   create(
-    @Body() createNoteDto: CreateNoteDto,
+    @Body() createNoteDto: CreateNoteDTO,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
   ) {
@@ -73,7 +73,7 @@ export class NotesController {
 
   @Patch(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateNoteDto: UpdateNoteDto,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
@@ -88,7 +88,7 @@ export class NotesController {
 
   @Delete(':id')
   delete(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
   ) {
@@ -101,7 +101,7 @@ export class NotesController {
 
   @Post('/:id/actions')
   addTag(
-    @Param('id') noteId: number,
+    @Param('id') noteId: string,
     @Query('debug') debug,
     @Query('debugThrowError') debugThrowError,
     @Body() noteActionDto: NoteActionDto,

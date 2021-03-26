@@ -1,10 +1,21 @@
-import { IsString, IsDateString, IsDate } from "class-validator";
-import { CreateDateColumn } from "typeorm";
+import { IsString, IsDate, IsUUID, IsOptional, IsJSON, IsArray } from "class-validator";
 
-export class CreateNoteDto {
+export class CreateNoteDTO {
+  @IsUUID()
+  @IsOptional()
+  id?: string;
+
+  @IsDate()
+  @IsOptional()
+  createDate?: Date;
+
+  @IsDate()
+  @IsOptional()
+  updateDate?: Date;
+  
   @IsString()
   readonly name: string;
 
-  @IsString()
-  readonly content: string;
+  @IsArray()
+  readonly content: Array<Object>;
 }

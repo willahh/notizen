@@ -12,8 +12,8 @@ import { TagColor } from './tag-enum';
 
 @Entity()
 export class Tag {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   name: string;

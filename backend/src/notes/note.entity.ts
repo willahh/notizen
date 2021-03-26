@@ -1,34 +1,40 @@
-import { IsEnum } from "class-validator";
-import { Tag } from "src/tags/tag.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { NoteColor } from "./note-enum";
-
+import { IsEnum } from 'class-validator';
+import { Tag } from 'src/tags/tag.entity';
+import {
+  Column,
+  Entity,
+  Generated,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { NoteColor } from './note-enum';
 
 @Entity()
 export class Note {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   name: string;
 
-  @Column({nullable: true})
-  content: string;
+  @Column({ type: 'jsonb', nullable: true, default: [] })
+  content: Array<Object>;
 
-  @Column({type: 'timestamp'})
+  @Column({ type: 'timestamp' })
   createDate: Date;
 
-  @Column({type: 'timestamp'})
+  @Column({ type: 'timestamp' })
   updateDate: Date;
 
-  @Column({default: false})
+  @Column({ default: false })
   isFav: boolean;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: NoteColor,
-    default: NoteColor.GRAY
-})
+    default: NoteColor.GRAY,
+  })
   color: NoteColor;
 
   // Many to many relation with note
