@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Commands } from '../../Commands';
-import { OptionsMemo } from './../../plugins/options/Options';
+import { Commands } from '../Commands';
+import { OptionsMemo } from '../plugins/options/Options';
 
 export type IDefaultElementProps = {};
 

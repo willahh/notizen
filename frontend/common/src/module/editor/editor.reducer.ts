@@ -1,4 +1,4 @@
-import { createSlice, ActionReducerMapBuilder,  } from '@reduxjs/toolkit';
+import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 // import { WritableDraft } from 'immer/dist/internal';
 import { NoteListState } from '../note/note.state';
 import {
@@ -8,6 +8,7 @@ import {
   unsetHeading1Action,
   updateContentAction,
 } from './editor.actions';
+import { setBold, setHeading1, unsetBold, unsetHeading1 } from './editor.service';
 import { initialEditorState } from './editor.state';
 
 declare global {
@@ -20,7 +21,7 @@ declare global {
 
 type UpdateNoteContentAction = {
   payload: any;
-  type?: string
+  type?: string;
 };
 const updateNoteContent = (
   // state: WritableDraft<NoteListState>,
@@ -59,8 +60,11 @@ export const withEditorActionReducerMapBuilder = (
     .addCase(setHeading1Action, (state, action) => {
       console.log('setHeading1Action', action);
 
+      const editor = window.editor; // TODO
+      const nodes = setHeading1(editor, action.payload.range);
       const noteId = action.payload.noteId;
-      const updatedNote = updateNoteContent(state, action);
+      const note = state.notes[noteId];
+      const updatedNote = { ...note, content: nodes };
       state.notes[noteId] = updatedNote;
     })
 
@@ -70,8 +74,11 @@ export const withEditorActionReducerMapBuilder = (
     .addCase(unsetHeading1Action, (state, action) => {
       console.log('unsetHeading1Action', action);
 
+      const editor = window.editor; // TODO
+      const nodes = unsetHeading1(editor, action.payload.range);
       const noteId = action.payload.noteId;
-      const updatedNote = updateNoteContent(state, action);
+      const note = state.notes[noteId];
+      const updatedNote = { ...note, content: nodes };
       state.notes[noteId] = updatedNote;
     })
 
@@ -81,8 +88,11 @@ export const withEditorActionReducerMapBuilder = (
     .addCase(setBoldAction, (state, action) => {
       console.log('setBoldAction', action);
 
+      const editor = window.editor; // TODO
+      const nodes = setBold(editor, action.payload.range);
       const noteId = action.payload.noteId;
-      const updatedNote = updateNoteContent(state, action);
+      const note = state.notes[noteId];
+      const updatedNote = { ...note, content: nodes };
       state.notes[noteId] = updatedNote;
     })
 
@@ -92,10 +102,13 @@ export const withEditorActionReducerMapBuilder = (
     .addCase(unsetBoldAction, (state, action) => {
       console.log('unsetBoldAction', action);
 
+      const editor = window.editor; // TODO
+      const nodes = unsetBold(editor, action.payload.range);
       const noteId = action.payload.noteId;
-      const updatedNote = updateNoteContent(state, action);
+      const note = state.notes[noteId];
+      const updatedNote = { ...note, content: nodes };
       state.notes[noteId] = updatedNote;
-    })
+    });
 
   return builder;
 };

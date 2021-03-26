@@ -1,5 +1,5 @@
 import React from 'react';
-import { OptionsMemo } from '../../plugins/options/Options';
+import { OptionsMemo } from '../plugins/options/Options';
 
 export type ICodeElementProps = {};
 

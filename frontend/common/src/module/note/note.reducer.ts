@@ -122,7 +122,7 @@ const notes = createSlice({
        * NOTES_CREATE
        */
       .addCase(createNoteAction.pending, (state, action) => {
-        console.log('createNoteThunk.pending', state, action);
+        console.log('createNoteAction.pending', state, action);
 
         const note: INote = {
           ...action.meta.arg.createNoteDTO,
@@ -137,7 +137,7 @@ const notes = createSlice({
         actionPendingAfterHook(state, String(NOTE_ACTION + noteId));
       })
       .addCase(createNoteAction.fulfilled, (state, action) => {
-        console.log('createNoteThunk.fulfilled', state, action);
+        console.log('createNoteAction.fulfilled', state, action);
 
         const note: INote = action.payload.note;
         const noteId = note.id;
@@ -149,7 +149,7 @@ const notes = createSlice({
         state.notesCache[noteId] = note;
       })
       .addCase(createNoteAction.rejected, (state, action) => {
-        console.log('createNoteThunk.rejected', state, action);
+        console.log('createNoteAction.rejected', state, action);
 
         if (!navigator.onLine) {
           return;

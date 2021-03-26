@@ -110,24 +110,24 @@ button {
   transform: none;
 } */
 
-/* noteItem */
+/* note-item */
 .item-enter {
   height: 0;
   left: -200px;
 }
 .item-enter-active {
   left: 0;
-  height: 104px;
+  height: 96px;
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .item-exit {
   z-index: -1;
-  height: 104px;
+  height: 96px;
   transform: translateY(0);
 }
 .item-exit-active {
   height: 0;
-  transform: translateY(-104px);
+  transform: translateY(-96px);
   transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 

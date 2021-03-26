@@ -7,6 +7,7 @@ import {
   CreateNoteActionPayload,
 } from '../note.actions';
 import { dispatchCommand } from '../../../common/utils';
+import { addNoteAndSelect } from '../note.service';
 
 export type INoteFilterProps = {};
 
@@ -52,20 +53,21 @@ const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
               focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 
                dark:border-gray-800"
               onClick={() => {
-                const createNoteDTO: CreateNoteDTO = {
-                  id: uuidv4(),
-                  name: 'Ma super note',
-                  content: []
-                };
-                const payload: CreateNoteActionPayload = {
-                  createNoteDTO: createNoteDTO,
-                };
-                dispatchCommand({
-                  name: createNoteAction.typePrefix,
-                  action: createNoteAction(payload),
-                  payload,
-                  dispatch,
-                });
+                addNoteAndSelect(dispatch);
+                // const createNoteDTO: CreateNoteDTO = {
+                //   id: uuidv4(),
+                //   name: 'Ma super note',
+                //   content: []
+                // };
+                // const payload: CreateNoteActionPayload = {
+                //   createNoteDTO: createNoteDTO,
+                // };
+                // dispatchCommand({
+                //   name: createNoteAction.typePrefix,
+                //   action: createNoteAction(payload),
+                //   payload,
+                //   dispatch,
+                // });
               }}
             >
               <svg

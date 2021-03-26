@@ -8,10 +8,11 @@ declare global {
   }
 }
 window.isEqual = isEqual;
-import { Editor, Node, Transforms, Text } from 'slate';
+import { Editor, Node, Transforms, Text, } from 'slate';
+// import { findRange } from 'slate-react';
 
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
+import { Slate, Editable, withReact, ReactEditor, } from 'slate-react';
 import { Commands } from './Commands';
 import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
 import { renderElement } from './elements/elements';
@@ -31,9 +32,19 @@ import {
 import { ErrorBoundary } from '../../../common/components/ErrorBoundary';
 import { renderLeaf } from './leafs/Leaf';
 import { RootState } from './../../../common/rootReducer';
+import { setBold, toggleBold } from '../editor.service';
 
 // eslint-disable-next-line
 Prism.languages.markdown=Prism.languages.extend("markup",{}),Prism.languages.insertBefore("markdown","prolog",{blockquote:{pattern:/^>(?:[\t ]*>)*/m,alias:"punctuation"},code:[{pattern:/^(?: {4}|\t).+/m,alias:"keyword"},{pattern:/``.+?``|`[^`\n]+`/,alias:"keyword"}],title:[{pattern:/\w+.*(?:\r?\n|\r)(?:==+|--+)/,alias:"important",inside:{punctuation:/==+$|--+$/}},{pattern:/(^\s*)#+.+/m,lookbehind:!0,alias:"important",inside:{punctuation:/^#+|#+$/}}],hr:{pattern:/(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,lookbehind:!0,alias:"punctuation"},list:{pattern:/(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,lookbehind:!0,alias:"punctuation"},"url-reference":{pattern:/!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,inside:{variable:{pattern:/^(!?\[)[^\]]+/,lookbehind:!0},string:/(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,punctuation:/^[\[\]!:]|[<>]/},alias:"url"},bold:{pattern:/(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^\*\*|^__|\*\*$|__$/}},italic:{pattern:/(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^[*_]|[*_]$/}},url:{pattern:/!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,inside:{variable:{pattern:/(!?\[)[^\]]+(?=\]$)/,lookbehind:!0},string:{pattern:/"(?:\\.|[^"\\])*"(?=\)$)/}}}}),Prism.languages.markdown.bold.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.italic.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.bold.inside.italic=Prism.util.clone(Prism.languages.markdown.italic),Prism.languages.markdown.italic.inside.bold=Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
+// this is where you customize. If you omit this, it will revert to a default.
+declare module "slate" {
+  export interface CustomTypes {
+    Element:
+      | { type: "heading"; level: number }
+      | { type: "list-item"; depth: number }
+    Text: { bold?: boolean; italic?: boolean }
+  }
+}
 
 interface IEditor {
   editor: Editor & ReactEditor;
@@ -42,7 +53,21 @@ interface IEditor {
   note: INote;
 }
 
-export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId, note }) => {
+// this is where you customize. If you omit this, it will revert to a default.
+export interface CustomTypes {
+  Element:
+    | { type: "heading"; level: number }
+    | { type: "paragraph2"; level: number }
+    | { type: "list-item"; depth: number }
+  Text: { bold?: boolean; italic?: boolean }
+}
+
+export const NotizenEditor: React.FC<IEditor> = ({
+  editor,
+  nodes,
+  noteId,
+  note,
+}) => {
   console.log('NotizenEditor', noteId);
 
   const dispatch = useDispatch();
@@ -57,6 +82,8 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId, note }
 
   const renderElementMemoized = renderElement(editor);
   const renderLeafMemoized = renderLeaf(editor);
+
+
 
   const addDefaultAtTheEndAndFocus = (editor: Editor & ReactEditor) => {
     console.log('addDefaultAtTheEndAndFocus', editor);
@@ -75,14 +102,16 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId, note }
     console.log('handleEditorBlur');
     let canUpdate = false;
     if (note) {
-      if (!isEqual(note.content, editor.children)) {
+      // TODO: This test does not works with bold action
+      // if (!isEqual(note.content, editor.children)) {
+      if (true) {
         canUpdate = true;
       }
     } else {
-      console.log('xx !note')
+      console.log('xx !note');
     }
     console.log('xx canUpdate', canUpdate);
-    
+
     if (canUpdate) {
       const content = editor.children;
       const updateNoteDTO: UpdateNoteDTO = {
@@ -127,6 +156,7 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId, note }
           }}
           onKeyDown={(event) => {
             console.log('on key down');
+            //debugger;
             if (!event.ctrlKey) {
               return;
             }
@@ -140,8 +170,16 @@ export const NotizenEditor: React.FC<IEditor> = ({ editor, nodes, noteId, note }
               }
 
               case 'b': {
+                console.log('ctrl + b');
                 event.preventDefault();
-                Commands.toggleBoldMark(editor);
+                const nativeSelection = window.getSelection();
+                // const range = findRange(nativeSelection, editor);
+                const range = ReactEditor.findEventRange(editor, {
+                  ...event,
+                  clientX: 0,
+                  clientY: 0,
+                });
+                toggleBold(editor, noteId, range, dispatch);
                 break;
               }
 

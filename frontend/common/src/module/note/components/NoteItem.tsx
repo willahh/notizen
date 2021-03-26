@@ -10,7 +10,10 @@ import {
   SetSelectedNoteIdActionPayload,
 } from '../note.actions';
 import { INote } from '../../../common/interfaces';
-import { tagIconColorMap, tagIconIconMap } from './../../../common/components/TagIcon';
+import {
+  tagIconColorMap,
+  tagIconIconMap,
+} from './../../../common/components/TagIcon';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
@@ -34,10 +37,17 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   );
   const isSelected = id === selectedNoteId;
 
+  // TODO: Warning: is performance ok ?
+  const textPreview: string = content
+    .reduce((acc, v) => {
+      return acc.concat(v.children[0].text);
+    }, '')
+    .slice(0, 100);
+
   let itemCls =
     'relative overflow-hidden select-none border-l-4 duration-300 ease-in-out';
   let itemInnerCls =
-    'relative py-5 px-4  duration-300 ease-in-out transition-all';
+    'relative py-5 px-4 h-24 duration-300 ease-in-out transition-all';
   if (isSelected) {
     itemCls += ` border-${color.toLowerCase()}-700`;
     itemInnerCls += ' transform left-2';
@@ -45,8 +55,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
     itemCls += ' border-transparent';
     itemInnerCls += ' left-0';
   }
-  const btnClassName =
-    `relative inline-flex items-center p-2 
+  const btnClassName = `relative inline-flex items-center p-2 
     border-1 border-gray-300 dark:border-gray-800
     
     text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 focus:z-10 
@@ -85,6 +94,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
                 <p className="text-sm font-normal truncate text-gray-600 dark:text-gray-300">
                   {name}
                 </p>
+                <div className="text-sm font-thin truncate text-gray-600 dark:text-gray-300">{textPreview}</div>
                 <div>
                   {tags.map((tag) => {
                     if (tag) {
@@ -125,6 +135,9 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
             </time>
             <button
               className={btnClassName}
+              onMouseDown={(e) => {
+                e.preventDefault();
+              }}
               onClick={(e) => {
                 console.log('onClick', id);
                 e.stopPropagation();

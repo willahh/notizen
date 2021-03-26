@@ -1,5 +1,5 @@
 import React from 'react';
-import { OptionsMemo } from './../../plugins/options/Options';
+import { OptionsMemo } from '../plugins/options/Options';
 const Heading1Element = (props: any) => {
   // console.log('Heading1Element', props);
 

@@ -32,6 +32,7 @@ const SHORTCUTS = {
   '####': ElementType.Heading4,
   '#####': ElementType.Heading5,
   '######': ElementType.Heading6,
+  '---': ElementType.Divider,
 };
 
 export const withShortcuts = (editor) => {
