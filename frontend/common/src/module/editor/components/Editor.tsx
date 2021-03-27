@@ -8,14 +8,14 @@ declare global {
   }
 }
 window.isEqual = isEqual;
-import { Editor, Node, Transforms, Text, } from 'slate';
+import { Editor, Node, Transforms, Text } from 'slate';
 // import { findRange } from 'slate-react';
 
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact, ReactEditor, } from 'slate-react';
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { Commands } from './Commands';
 import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
-import { renderElement } from './elements/elements';
+import { ElementType, renderElement } from './elements/elements';
 import { INote, UpdateNoteDTO } from '../../../common/interfaces';
 import { noteIconColorMap } from '../../../common/components/TagIcon';
 import {
@@ -32,17 +32,17 @@ import {
 import { ErrorBoundary } from '../../../common/components/ErrorBoundary';
 import { renderLeaf } from './leafs/Leaf';
 import { RootState } from './../../../common/rootReducer';
-import { setBold, toggleBold } from '../editor.service';
+import { setBold, toggleBlockquote, toggleBold, toggleHeading1 } from '../editor.service';
 
 // eslint-disable-next-line
 Prism.languages.markdown=Prism.languages.extend("markup",{}),Prism.languages.insertBefore("markdown","prolog",{blockquote:{pattern:/^>(?:[\t ]*>)*/m,alias:"punctuation"},code:[{pattern:/^(?: {4}|\t).+/m,alias:"keyword"},{pattern:/``.+?``|`[^`\n]+`/,alias:"keyword"}],title:[{pattern:/\w+.*(?:\r?\n|\r)(?:==+|--+)/,alias:"important",inside:{punctuation:/==+$|--+$/}},{pattern:/(^\s*)#+.+/m,lookbehind:!0,alias:"important",inside:{punctuation:/^#+|#+$/}}],hr:{pattern:/(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,lookbehind:!0,alias:"punctuation"},list:{pattern:/(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,lookbehind:!0,alias:"punctuation"},"url-reference":{pattern:/!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,inside:{variable:{pattern:/^(!?\[)[^\]]+/,lookbehind:!0},string:/(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,punctuation:/^[\[\]!:]|[<>]/},alias:"url"},bold:{pattern:/(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^\*\*|^__|\*\*$|__$/}},italic:{pattern:/(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^[*_]|[*_]$/}},url:{pattern:/!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,inside:{variable:{pattern:/(!?\[)[^\]]+(?=\]$)/,lookbehind:!0},string:{pattern:/"(?:\\.|[^"\\])*"(?=\)$)/}}}}),Prism.languages.markdown.bold.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.italic.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.bold.inside.italic=Prism.util.clone(Prism.languages.markdown.italic),Prism.languages.markdown.italic.inside.bold=Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
 // this is where you customize. If you omit this, it will revert to a default.
-declare module "slate" {
+declare module 'slate' {
   export interface CustomTypes {
     Element:
-      | { type: "heading"; level: number }
-      | { type: "list-item"; depth: number }
-    Text: { bold?: boolean; italic?: boolean }
+      | { type: 'heading'; level: number }
+      | { type: 'list-item'; depth: number };
+    Text: { bold?: boolean; italic?: boolean };
   }
 }
 
@@ -56,10 +56,10 @@ interface IEditor {
 // this is where you customize. If you omit this, it will revert to a default.
 export interface CustomTypes {
   Element:
-    | { type: "heading"; level: number }
-    | { type: "paragraph2"; level: number }
-    | { type: "list-item"; depth: number }
-  Text: { bold?: boolean; italic?: boolean }
+    | { type: 'heading'; level: number }
+    | { type: 'paragraph2'; level: number }
+    | { type: 'list-item'; depth: number };
+  Text: { bold?: boolean; italic?: boolean };
 }
 
 export const NotizenEditor: React.FC<IEditor> = ({
@@ -82,8 +82,6 @@ export const NotizenEditor: React.FC<IEditor> = ({
 
   const renderElementMemoized = renderElement(editor);
   const renderLeafMemoized = renderLeaf(editor);
-
-
 
   const addDefaultAtTheEndAndFocus = (editor: Editor & ReactEditor) => {
     console.log('addDefaultAtTheEndAndFocus', editor);
@@ -156,7 +154,43 @@ export const NotizenEditor: React.FC<IEditor> = ({
           }}
           onKeyDown={(event) => {
             console.log('on key down');
-            //debugger;
+
+            if (event.key === 'Enter') {
+              const match = Editor.above(editor, {
+                match: (n) => Editor.isBlock(editor, n),
+              });
+              if (match) {
+                const [block, path] = match;
+                if (block.type === ElementType.BlockQuote) {
+                  console.log('blockquote');
+                  const currFragment = Editor.fragment(
+                    editor,
+                    editor.selection.anchor.path
+                  );
+                  if (
+                    currFragment.length > 0 &&
+                    currFragment[0].type === ElementType.BlockQuote &&
+                    currFragment[0].children[0].text === ''
+                  ) {
+                    console.log('le noeud courant est un blockquote vide');
+                    event.preventDefault();
+                    Transforms.setNodes(
+                      editor,
+                      { type: ElementType.Paragraph, text: '' },
+                      {
+                        match: (n) => Editor.isBlock(editor, n),
+                        at: editor.selection.anchor.path,
+                        split: true,
+                      }
+                    );
+                  }
+                }
+              }
+            }
+
+            // TODO NEW LINE
+            // debugger;
+
             if (!event.ctrlKey) {
               return;
             }
@@ -165,27 +199,23 @@ export const NotizenEditor: React.FC<IEditor> = ({
             switch (event.key) {
               case 'p': {
                 event.preventDefault();
-                Commands.toggleCodeBlock(editor);
+                const range = editor.selection;
+                toggleBlockquote(editor, noteId, range, dispatch);
                 break;
               }
 
               case 'b': {
                 console.log('ctrl + b');
                 event.preventDefault();
-                const nativeSelection = window.getSelection();
-                // const range = findRange(nativeSelection, editor);
-                const range = ReactEditor.findEventRange(editor, {
-                  ...event,
-                  clientX: 0,
-                  clientY: 0,
-                });
+                const range = editor.selection;
                 toggleBold(editor, noteId, range, dispatch);
                 break;
               }
 
               case 'h': {
                 event.preventDefault();
-                Commands.toggleHeading1Block(editor);
+                const range = editor.selection;
+                toggleHeading1(editor, noteId, range, dispatch);
                 break;
               }
             }

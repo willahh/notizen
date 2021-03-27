@@ -1,9 +1,9 @@
 import React from 'react';
-import { OptionsMemo } from '../plugins/options/Options';
-const Heading3Element = (props: any) => {
+import { OptionsMemo } from '../../plugins/options/Options';
+const Heading2Element = (props:any) => {
   const firstChildren = props.element.children[0];
   const isEmpty = firstChildren.text.length === 0;
-  const hasFocus = true; // TODO
+  const hasFocus = true;// TODO
 
   const icon = (
     <svg
@@ -25,11 +25,11 @@ const Heading3Element = (props: any) => {
   return (
     <div {...props.attributes} className="editor-block relative flex">
       {/* <OptionsMemo editor={props.editor}></OptionsMemo> */}
-      <div className="relative w-full font-semibold text-xl">
-        <h3>{props.children}</h3>
+      <div className="relative w-full font-semibold text-2xl">
+        <h2>{props.children}</h2>
         {isEmpty && hasFocus && (
           <strong className="absolute top-0 left-0 text-gray-200 dark:text-gray-700 pointer-events-none">
-            Heading 3
+            Heading 2
           </strong>
         )}
       </div>
@@ -37,4 +37,4 @@ const Heading3Element = (props: any) => {
   );
 };
 
-export default React.memo(Heading3Element);
+export default React.memo(Heading2Element);

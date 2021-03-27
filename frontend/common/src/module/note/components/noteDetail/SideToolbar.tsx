@@ -31,6 +31,7 @@ import {
 import { Editor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import {
+  toggleBlockquote,
   toggleBold,
   toggleDefault,
   toggleHeading1,
@@ -131,10 +132,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   type="button"
                   data-tip="Bold"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(
-                      editor,
-                      window._event // TODO
-                    );
+                    const range = editor.selection;
                     toggleBold(editor, noteId, range, dispatch);
                   }}
                   // onMouseDown={(event) => {
@@ -206,10 +204,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-xl font-semibold text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(
-                      editor,
-                      window._event // TODO
-                    );
+                    const range = editor.selection;
                     toggleHeading1(editor, noteId, range, dispatch);
                   }}
                 >
@@ -219,10 +214,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-lg font-medium text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(
-                      editor,
-                      window._event // TODO
-                    );
+                    const range = editor.selection;
                     toggleHeading2(editor, noteId, range, dispatch);
                   }}
                 >
@@ -232,10 +224,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-base font-medium text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(
-                      editor,
-                      window._event // TODO
-                    );
+                    const range = editor.selection;
                     toggleHeading3(editor, noteId, range, dispatch);
                   }}
                 >
@@ -245,10 +234,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   className="outline-none cursor-default text-base text-left"
                   role="menuitem"
                   onClick={() => {
-                    const range = ReactEditor.findEventRange(
-                      editor,
-                      window._event // TODO
-                    );
+                    const range = editor.selection;
                     toggleDefault(editor, noteId, range, dispatch);
                   }}
                 >
@@ -304,7 +290,7 @@ export type IToolbarProps = {
 };
 
 const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const iconCls = `flex w-5 h-5 svg-color text-gray-500`;
   const iconFillCls = `flex w-5 h-5 fill-current-color text-gray-500`;
 
@@ -328,7 +314,10 @@ const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
       <button
         type="button"
         data-tip="Quote"
-        onClick={() => {}}
+        onClick={() => {
+          const range = editor.selection;
+          toggleBlockquote(editor, noteId, range, dispatch);
+        }}
         className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
       >
         <span className={iconFillCls}>{ICON_QUOTE}</span>

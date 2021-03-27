@@ -23,43 +23,43 @@ window.RangeRef = RangeRef;
 window.ReactEditor = ReactEditor;
 
 export const Commands = {
-  isBoldMarkActive(editor: Editor) {
-    const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === LeafType.Bold,
-      universal: true,
-    });
+  // isBoldMarkActive(editor: Editor) {
+  //   const [match] = Editor.nodes(editor, {
+  //     match: (n) => n.type === LeafType.Bold,
+  //     universal: true,
+  //   });
 
-    return !!match;
-  },
-  toggleBoldMark(editor: Editor) {
-    console.log('toggleBoldMark');
+  //   return !!match;
+  // },
+  // toggleBoldMark(editor: Editor) {
+  //   console.log('toggleBoldMark');
     
-    const isActive = Commands.isBoldMarkActive(editor);
-    Transforms.setNodes(
-      editor,
-      { type: isActive ? null : LeafType.Bold },
-      { match: (n) => Text.isText(n), split: true }
-    );
-  },
+  //   const isActive = Commands.isBoldMarkActive(editor);
+  //   Transforms.setNodes(
+  //     editor,
+  //     { type: isActive ? null : LeafType.Bold },
+  //     { match: (n) => Text.isText(n), split: true }
+  //   );
+  // },
 
   /**
    * Code
    */
-  isCodeBlockActive(editor: Editor) {
-    const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === ElementType.Code,
-    });
+  // isCodeBlockActive(editor: Editor) {
+  //   const [match] = Editor.nodes(editor, {
+  //     match: (n) => n.type === ElementType.Code,
+  //   });
 
-    return !!match;
-  },
-  toggleCodeBlock(editor: Editor) {
-    const isActive = Commands.isCodeBlockActive(editor);
-    Transforms.setNodes(
-      editor,
-      { type: isActive ? null : ElementType.Code },
-      { match: (n) => Editor.isBlock(editor, n) }
-    );
-  },
+  //   return !!match;
+  // },
+  // toggleCodeBlock(editor: Editor) {
+  //   const isActive = Commands.isCodeBlockActive(editor);
+  //   Transforms.setNodes(
+  //     editor,
+  //     { type: isActive ? null : ElementType.Code },
+  //     { match: (n) => Editor.isBlock(editor, n) }
+  //   );
+  // },
 
   /**
    * Heading1

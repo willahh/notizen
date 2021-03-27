@@ -396,10 +396,10 @@ button {
 
 @media (prefers-color-scheme: dark) {
   ::selection {
-    background: #261358; /* WebKit/Blink Browsers */
+    background: #552ac0; /* WebKit/Blink Browsers */
   }
   ::-moz-selection {
-    background: #261358; /* Gecko Browsers */
+    background: #552ac0; /* Gecko Browsers */
   }
 }
 

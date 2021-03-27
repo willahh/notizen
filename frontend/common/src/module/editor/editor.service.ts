@@ -11,6 +11,8 @@ import { dispatchCommand } from '../../common/utils';
 import { ElementType } from './components/elements/elements';
 import { LeafType } from './components/leafs/Leaf';
 import {
+  setBlockQuoteAction,
+  SetBlockQuoteActionPayload,
   setBoldAction,
   SetBoldActionPayload,
   setDefaultAction,
@@ -21,6 +23,8 @@ import {
   SetHeading2ActionPayload,
   setHeading3Action,
   SetHeading3ActionPayload,
+  unsetBlockQuoteAction,
+  UnsetBlockQuoteActionPayload,
   unsetBoldAction,
   UnsetBoldActionPayload,
   unsetDefaultAction,
@@ -58,8 +62,6 @@ const dispatchToggleAction = ({
   const isActive = isNodeActive(editor, nodeType);
 
   if (isActive) {
-    console.log('isActive true');
-
     dispatchCommand({
       name: unsetAction.type,
       action: unsetAction(unsetActionPayload),
@@ -67,7 +69,6 @@ const dispatchToggleAction = ({
       payload: unsetActionPayload,
     });
   } else {
-    console.log('isActive false');
     dispatchCommand({
       name: setAction.type,
       action: setAction(setActionPayload),
@@ -116,7 +117,7 @@ export const setDefault = (editor: Editor, range: Range): Node[] => {
   setNodes(
     editor,
     range,
-    ElementType.Default,
+    ElementType.Paragraph,
     (n) => Editor.isBlock(editor, n),
     false
   );
@@ -128,7 +129,7 @@ export const unsetDefault = (editor: Editor, range: Range): Node[] => {
   setNodes(
     editor,
     range,
-    ElementType.Default,
+    ElementType.Paragraph,
     (n) => Editor.isBlock(editor, n),
     false
   );
@@ -151,7 +152,7 @@ export const toggleDefault = (
     range: range,
   };
   dispatchToggleAction({
-    nodeType: ElementType.Default,
+    nodeType: ElementType.Paragraph,
     dispatch: dispatch,
     editor: editor,
     noteId: noteId,
@@ -183,7 +184,7 @@ export const unsetHeading1 = (editor: Editor, range: Range): Node[] => {
   setNodes(
     editor,
     range,
-    ElementType.Default,
+    ElementType.Paragraph,
     (n) => Editor.isBlock(editor, n),
     false
   );
@@ -238,7 +239,7 @@ export const unsetHeading2 = (editor: Editor, range: Range): Node[] => {
   setNodes(
     editor,
     range,
-    ElementType.Default,
+    ElementType.Paragraph,
     (n) => Editor.isBlock(editor, n),
     false
   );
@@ -293,7 +294,7 @@ export const unsetHeading3 = (editor: Editor, range: Range): Node[] => {
   setNodes(
     editor,
     range,
-    ElementType.Default,
+    ElementType.Paragraph,
     (n) => Editor.isBlock(editor, n),
     false
   );
@@ -334,6 +335,7 @@ export const toggleHeading3 = (
 export const setBold = (editor: Editor, range: Range): Node[] => {
   console.log('setBold');
   // setNodes(editor, range, LeafType.Bold, (n) => Text.isText(n), true);
+  
   Transforms.setNodes(
     editor,
     { type: LeafType.Bold },
@@ -391,5 +393,76 @@ export const toggleBold = (
     setActionPayload: setBoldActionPayload,
     unsetAction: unsetBoldAction,
     unsetActionPayload: unsetBoldActionPayload,
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * BLOCKQUOTE
+ */
+ export const setBlockQuote = (editor: Editor, range: Range): Node[] => {
+  console.log('setBlockQuote', range);
+  setNodes(
+    editor,
+    range,
+    ElementType.BlockQuote,
+    (n) => Editor.isBlock(editor, n),
+    true
+  );
+  return editor.children;
+};
+
+export const unsetBlockQuote = (editor: Editor, range: Range): Node[] => {
+  console.log('unsetBlockQuote');
+  setNodes(
+    editor,
+    range,
+    ElementType.Paragraph,
+    (n) => Editor.isBlock(editor, n),
+    false
+  );
+  return editor.children;
+};
+
+export const toggleBlockquote = (
+  editor: Editor,
+  noteId: string,
+  range: Range,
+  dispatch: Dispatch<any>
+) => {
+  console.log('toggleBlockQuote');
+  const setBlockQuoteActionPayload: SetBlockQuoteActionPayload = {
+    noteId: noteId,
+    range: range,
+  };
+  const unsetBlockQuoteActionPayload: UnsetBlockQuoteActionPayload = {
+    noteId: noteId,
+    range: range,
+  };
+  dispatchToggleAction({
+    nodeType: ElementType.BlockQuote,
+    dispatch: dispatch,
+    editor: editor,
+    noteId: noteId,
+    range: range,
+    setAction: setBlockQuoteAction,
+    setActionPayload: setBlockQuoteActionPayload,
+    unsetAction: unsetBlockQuoteAction,
+    unsetActionPayload: unsetBlockQuoteActionPayload,
   });
 };

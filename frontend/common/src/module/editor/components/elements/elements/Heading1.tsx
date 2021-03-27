@@ -1,5 +1,5 @@
 import React from 'react';
-import { OptionsMemo } from '../plugins/options/Options';
+import { OptionsMemo } from '../../plugins/options/Options';
 const Heading1Element = (props: any) => {
   // console.log('Heading1Element', props);
 
@@ -30,7 +30,7 @@ const Heading1Element = (props: any) => {
   );
 
   return (
-    <div {...props.attributes} className="editor-block relative flex">
+    <div {...props.attributes} className="editor-block relative flex border border-red-500">
       {/* <OptionsMemo editor={props.editor}></OptionsMemo> */}
       <div className="relative w-full font-semibold text-4xl">
         <h1>{props.children}</h1>

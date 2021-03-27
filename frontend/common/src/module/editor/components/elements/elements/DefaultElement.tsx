@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Commands } from '../Commands';
-import { OptionsMemo } from '../plugins/options/Options';
+import { useDispatch } from 'react-redux';
+import { toggleBlockquote } from './../../../editor.service';
+import { Commands } from '../../Commands';
+import { OptionsMemo } from '../../plugins/options/Options';
 
 export type IDefaultElementProps = {};
 
@@ -12,9 +14,9 @@ function getSelectionStart() {
 const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
   console.log('DefaultElement');
 
+  const dispatch = useDispatch();
   const editor = props.editor;
   const firstChildren = props.element.children[0];
-
   const isEmpty = firstChildren.text.length === 0;
   // const isEmpty = true;
   const [hasFocus, setHashFocus] = useState(false);
@@ -31,7 +33,7 @@ const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
   });
 
   return (
-    <div {...props.attributes} className="editor-block relative flex">
+    <div {...props.attributes} className="editor-block relative flex mb-2">
       <OptionsMemo editor={editor}></OptionsMemo>
       <div className="w-full mb-2" style={{ minHeight: 24 }}>
         {props.children}
@@ -77,7 +79,10 @@ const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
                 e.preventDefault();
                 console.log('click');
 
-                Commands.toggleCodeBlock(editor);
+                const range = editor.selection;
+                const noteId = 'xxx'; // TODO
+                toggleBlockquote(editor, noteId, range, dispatch)
+                // Commands.toggleCodeBlock(editor);
               }}
             >
               [code]
