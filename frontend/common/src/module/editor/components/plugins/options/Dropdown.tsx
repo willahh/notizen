@@ -33,7 +33,7 @@ const Dropdown = ({ editor, isDropdownOpen }) => {
             <button
               onMouseDown={(event) => {
                 event.preventDefault();
-                Commands.toggleBoldMark(editor);
+                // Commands.toggleBoldMark(editor);
               }}
             >
               Bold
@@ -41,7 +41,7 @@ const Dropdown = ({ editor, isDropdownOpen }) => {
             <div
               onClick={(event) => {
                 event.preventDefault();
-                Commands.toggleHeading1Block(editor);
+                // Commands.toggleHeading1Block(editor);
               }}
             >
               Heading 1
@@ -49,7 +49,7 @@ const Dropdown = ({ editor, isDropdownOpen }) => {
             <div
               onClick={(event) => {
                 event.preventDefault();
-                Commands.toggleCodeBlock(editor);
+                // Commands.toggleCodeBlock(editor);
               }}
             >
               Code block

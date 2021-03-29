@@ -1,6 +1,6 @@
 import React from 'react';
-import { OptionsMemo } from '../plugins/options/Options';
-const Heading1Element = (props: any) => {
+import { OptionsMemo } from '../../components/plugins/options/Options';
+const HeadingOneElement = (props: any) => {
   // console.log('Heading1Element', props);
 
   const firstChildren = props.element.children[0];
@@ -35,7 +35,10 @@ const Heading1Element = (props: any) => {
       <div className="relative w-full font-semibold text-4xl">
         <h1>{props.children}</h1>
         {isEmpty && hasFocus && (
-          <strong className="absolute top-0 left-0 text-gray-200 dark:text-gray-700 pointer-events-none">
+          <strong
+            className="absolute top-0 left-0 text-gray-200 dark:text-gray-700 pointer-events-none"
+            contentEditable={false}
+          >
             Heading 1
           </strong>
         )}
@@ -44,4 +47,4 @@ const Heading1Element = (props: any) => {
   );
 };
 
-export default React.memo(Heading1Element);
+export default React.memo(HeadingOneElement);

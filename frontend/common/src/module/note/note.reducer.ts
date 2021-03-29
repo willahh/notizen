@@ -1,9 +1,15 @@
 import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { INote, NoteColor } from '../../common/interfaces';
-import {
-  updateContentAction,
-} from '../editor/editor.actions';
+import { updateContentAction } from '../editor/editor.actions';
 import { withEditorActionReducerMapBuilder } from '../editor/editor.reducer';
+import { blockQuoteActionReducerMapBuilder } from '../editor/plugins/blockquote/blockquote.reducer';
+import { BulletListActionReducerMapBuilder } from '../editor/plugins/bulletlist/bulletlist.reducer';
+import { codeActionReducerMapBuilder } from '../editor/plugins/code/code.reducer';
+import { headingOneActionReducerMapBuilder } from '../editor/plugins/headingone/headingone.reducer';
+import { headingThreeActionReducerMapBuilder } from '../editor/plugins/headingthree/headingthree.reducer';
+import { headingTwoActionReducerMapBuilder } from '../editor/plugins/headingtwo/headingtwo.reducer';
+import { ParagraphActionReducerMapBuilder } from '../editor/plugins/paragraph/paragraph.reducer';
+import { tagActionReducerMapBuilder } from '../editor/plugins/tag/tag.reducer';
 import {
   addTagToNoteAction,
   createNoteAction,
@@ -20,17 +26,15 @@ import { initialNotesState, NoteListState } from './note.state';
 const NOTE_ACTION = 'NOTES/ACTION';
 
 const actionPendingAfterHook = (state: any, actionNameConst: string): void => {
-  console.log('[x] actionPendingAfterHook', actionNameConst);
-
+  // console.log('[x] actionPendingAfterHook', actionNameConst);
   if (state.pendingRequests[actionNameConst] === undefined) {
     state.pendingRequests[actionNameConst] = 0;
   }
   state.pendingRequests[actionNameConst]++;
 };
 const isRequestPending = (state: any, actionNameConst: string): boolean => {
-  console.log('[x] actionFulfilledBeforeHook', actionNameConst);
+  // console.log('[x] actionFulfilledBeforeHook', actionNameConst);
   state.pendingRequests[actionNameConst]--;
-  console.log('[x] cnt', state.pendingRequests[actionNameConst]);
   if (state.pendingRequests[actionNameConst] > 0) {
     return true;
   } else {
@@ -42,7 +46,24 @@ const notes = createSlice({
   name: 'notes',
   initialState: initialNotesState,
   extraReducers: (builder) => {
-    withEditorActionReducerMapBuilder(builder)
+    // TODO
+    tagActionReducerMapBuilder(
+      codeActionReducerMapBuilder(
+        blockQuoteActionReducerMapBuilder(
+          BulletListActionReducerMapBuilder(
+            headingThreeActionReducerMapBuilder(
+              headingTwoActionReducerMapBuilder(
+                headingOneActionReducerMapBuilder(
+                  ParagraphActionReducerMapBuilder(
+                    withEditorActionReducerMapBuilder(builder)
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
       /**
        * NOTES_SET_SELECTED_NOTE_ID
        */

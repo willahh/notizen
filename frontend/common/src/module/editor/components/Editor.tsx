@@ -1,5 +1,22 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import Prism from 'prismjs';
+
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Editor, Element, Node, Text, Transforms } from 'slate';
+import { Editable, ReactEditor, Slate } from 'slate-react';
+import { ErrorBoundary } from '../../../common/components/ErrorBoundary';
+import { INote, UpdateNoteDTO } from '../../../common/interfaces';
+import { dispatchCommand } from '../../../common/utils';
+import {
+  updateNoteActionAction,
+  UpdateNoteActionPayload
+} from '../../note/note.actions';
+import {
+  getDecorateRangeForCode
+} from '../plugins/code/code.service';
+import { onEditorKeydown } from '../service/editor.event.service';
+import { ElementType, renderElement } from './elements/elements';
+import { renderLeaf } from './leafs/Leaf';
+import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
 
 const isEqual = require('lodash.isequal');
 declare global {
@@ -8,41 +25,30 @@ declare global {
   }
 }
 window.isEqual = isEqual;
-import { Editor, Node, Transforms, Text, } from 'slate';
-// import { findRange } from 'slate-react';
 
-// Import the Slate components and React plugin.
-import { Slate, Editable, withReact, ReactEditor, } from 'slate-react';
-import { Commands } from './Commands';
-import { HoveringToolbar } from './plugins/hoveringToolbar/HoveringToolbar';
-import { renderElement } from './elements/elements';
-import { INote, UpdateNoteDTO } from '../../../common/interfaces';
-import { noteIconColorMap } from '../../../common/components/TagIcon';
-import {
-  updateNoteActionAction,
-  UpdateNoteActionPayload,
-} from '../../note/note.actions';
-import { dispatchCommand } from '../../../common/utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import {
-  updateContentAction,
-  UpdateContentActionPayload,
-} from '../editor.actions';
-import { ErrorBoundary } from '../../../common/components/ErrorBoundary';
-import { renderLeaf } from './leafs/Leaf';
-import { RootState } from './../../../common/rootReducer';
-import { setBold, toggleBold } from '../editor.service';
+// TODO: Debug
+declare global {
+  interface Window {
+    Editor: any;
+    Transforms: any;
+    Text: any;
+    Element: any;
+    RangeRef: any;
+    ReactEditor: any;
+    debugCurrentEditorValue: any;
+  }
+}
+window.Editor = Editor;
+window.Transforms = Transforms;
+window.Text = Text;
+window.Element = Element;
 
-// eslint-disable-next-line
-Prism.languages.markdown=Prism.languages.extend("markup",{}),Prism.languages.insertBefore("markdown","prolog",{blockquote:{pattern:/^>(?:[\t ]*>)*/m,alias:"punctuation"},code:[{pattern:/^(?: {4}|\t).+/m,alias:"keyword"},{pattern:/``.+?``|`[^`\n]+`/,alias:"keyword"}],title:[{pattern:/\w+.*(?:\r?\n|\r)(?:==+|--+)/,alias:"important",inside:{punctuation:/==+$|--+$/}},{pattern:/(^\s*)#+.+/m,lookbehind:!0,alias:"important",inside:{punctuation:/^#+|#+$/}}],hr:{pattern:/(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,lookbehind:!0,alias:"punctuation"},list:{pattern:/(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,lookbehind:!0,alias:"punctuation"},"url-reference":{pattern:/!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,inside:{variable:{pattern:/^(!?\[)[^\]]+/,lookbehind:!0},string:/(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,punctuation:/^[\[\]!:]|[<>]/},alias:"url"},bold:{pattern:/(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^\*\*|^__|\*\*$|__$/}},italic:{pattern:/(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^[*_]|[*_]$/}},url:{pattern:/!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,inside:{variable:{pattern:/(!?\[)[^\]]+(?=\]$)/,lookbehind:!0},string:{pattern:/"(?:\\.|[^"\\])*"(?=\)$)/}}}}),Prism.languages.markdown.bold.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.italic.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.bold.inside.italic=Prism.util.clone(Prism.languages.markdown.italic),Prism.languages.markdown.italic.inside.bold=Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
-// this is where you customize. If you omit this, it will revert to a default.
-declare module "slate" {
+declare module 'slate' {
   export interface CustomTypes {
     Element:
-      | { type: "heading"; level: number }
-      | { type: "list-item"; depth: number }
-    Text: { bold?: boolean; italic?: boolean }
+      | { type: 'heading'; level: number }
+      | { type: 'list-item'; depth: number };
+    Text: { bold?: boolean; italic?: boolean };
   }
 }
 
@@ -56,10 +62,10 @@ interface IEditor {
 // this is where you customize. If you omit this, it will revert to a default.
 export interface CustomTypes {
   Element:
-    | { type: "heading"; level: number }
-    | { type: "paragraph2"; level: number }
-    | { type: "list-item"; depth: number }
-  Text: { bold?: boolean; italic?: boolean }
+    | { type: 'heading'; level: number }
+    | { type: 'paragraph2'; level: number }
+    | { type: 'list-item'; depth: number };
+  Text: { bold?: boolean; italic?: boolean };
 }
 
 export const NotizenEditor: React.FC<IEditor> = ({
@@ -80,23 +86,31 @@ export const NotizenEditor: React.FC<IEditor> = ({
     setValue(nodes);
   }, [nodes]);
 
-  const renderElementMemoized = renderElement(editor);
+  const renderElementMemoized = renderElement(editor, noteId);
   const renderLeafMemoized = renderLeaf(editor);
 
+  const [language, setLanguage] = useState('html');
+  // decorate function depends on the language selected
+  const decorate = useCallback(
+    ([node, path]) => {
+      // TODO: Warning this is call in every keydown
+      // console.log('decorate');
+      let ranges = [];
+      const match = Editor.above(editor, {
+        match: (n) => Editor.isBlock(editor, n),
+      });
 
+      if (match) {
+        const [block, path] = match;
+        if (block.type === ElementType.Code) {
+          ranges = getDecorateRangeForCode(node, path, language);
+        }
+      }
 
-  const addDefaultAtTheEndAndFocus = (editor: Editor & ReactEditor) => {
-    console.log('addDefaultAtTheEndAndFocus', editor);
-
-    const node: Node = {
-      type: 'paragraph',
-      children: [{ type: 'paragraph', text: '' }],
-    };
-    Transforms.insertNodes(editor, nodes, {
-      at: [editor.children.length],
-    });
-    ReactEditor.focus(editor);
-  };
+      return ranges;
+    },
+    [language]
+  );
 
   const handleEditorBlur = (event: any) => {
     console.log('handleEditorBlur');
@@ -137,6 +151,7 @@ export const NotizenEditor: React.FC<IEditor> = ({
         value={value}
         onChange={(value) => {
           console.log('xx onChange');
+          window.debugCurrentEditorValue = value;
 
           // This is required to keep editor state synchronized
           setValue(value);
@@ -146,49 +161,16 @@ export const NotizenEditor: React.FC<IEditor> = ({
         <Editable
           renderElement={renderElementMemoized}
           renderLeaf={renderLeafMemoized}
-          // decorate={decorate}
+          decorate={decorate}
           className="h-full font-normal text-sm text-gray-700 dark:text-gray-300"
           onBlur={handleEditorBlur}
           onClick={(event) => {
             console.log('onClick');
-
-            window._event = event; // TODO
           }}
           onKeyDown={(event) => {
             console.log('on key down');
-            //debugger;
-            if (!event.ctrlKey) {
-              return;
-            }
 
-            // Replace the `onKeyDown` logic with our new commands.
-            switch (event.key) {
-              case 'p': {
-                event.preventDefault();
-                Commands.toggleCodeBlock(editor);
-                break;
-              }
-
-              case 'b': {
-                console.log('ctrl + b');
-                event.preventDefault();
-                const nativeSelection = window.getSelection();
-                // const range = findRange(nativeSelection, editor);
-                const range = ReactEditor.findEventRange(editor, {
-                  ...event,
-                  clientX: 0,
-                  clientY: 0,
-                });
-                toggleBold(editor, noteId, range, dispatch);
-                break;
-              }
-
-              case 'h': {
-                event.preventDefault();
-                Commands.toggleHeading1Block(editor);
-                break;
-              }
-            }
+            onEditorKeydown(event, editor, noteId, dispatch);
           }}
         />
       </Slate>

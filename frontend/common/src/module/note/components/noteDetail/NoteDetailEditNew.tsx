@@ -46,13 +46,17 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   // Create a Slate editor object that won't change across renders.
-  const editor = useMemo(() => withShortcuts(withReact(createEditor())), [])
+  const editor = useMemo(
+    () => withShortcuts(withReact(createEditor()), dispatch, selectedNoteId),
+    []
+  );
 
-  const NoteTagsMemo = useMemo(() => <NoteTags/>, []); // TODO: Double memo, no need
+  const NoteTagsMemo = useMemo(() => <NoteTags />, []); // TODO: Double memo, no need
   // dispatch(setCurrentEditorAction({ editor: editor }));
 
   // TODO: Where to put a reference to this editor ????
-  // Can't be in Redux store, because complex object can't transit inside actions
+  // Can't be in Redux store, because complex object can't transit inside actions payload
+  // => Something like EditorService.getCurrentEditor() or NoteService.getCurrentNote().getEditor()
   window.editor = editor;
   const [mode, setMode] = React.useState('out-in');
   const [state, setState] = React.useState(true);

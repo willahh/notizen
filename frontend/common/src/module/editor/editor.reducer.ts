@@ -3,12 +3,13 @@ import { createSlice, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import { NoteListState } from '../note/note.state';
 import {
   setBoldAction,
-  setHeading1Action,
   unsetBoldAction,
-  unsetHeading1Action,
   updateContentAction,
 } from './editor.actions';
-import { setBold, setHeading1, unsetBold, unsetHeading1 } from './editor.service';
+import {
+  setBold,
+  unsetBold,
+} from './service/editor.action.service';
 import { initialEditorState } from './editor.state';
 
 declare global {
@@ -55,34 +56,6 @@ export const withEditorActionReducerMapBuilder = (
     })
 
     /**
-     * EDITOR_SET_HEADING1
-     */
-    .addCase(setHeading1Action, (state, action) => {
-      console.log('setHeading1Action', action);
-
-      const editor = window.editor; // TODO
-      const nodes = setHeading1(editor, action.payload.range);
-      const noteId = action.payload.noteId;
-      const note = state.notes[noteId];
-      const updatedNote = { ...note, content: nodes };
-      state.notes[noteId] = updatedNote;
-    })
-
-    /**
-     * EDITOR_UNSET_HEADING1
-     */
-    .addCase(unsetHeading1Action, (state, action) => {
-      console.log('unsetHeading1Action', action);
-
-      const editor = window.editor; // TODO
-      const nodes = unsetHeading1(editor, action.payload.range);
-      const noteId = action.payload.noteId;
-      const note = state.notes[noteId];
-      const updatedNote = { ...note, content: nodes };
-      state.notes[noteId] = updatedNote;
-    })
-
-    /**
      * EDITOR_SET_BOLD
      */
     .addCase(setBoldAction, (state, action) => {
@@ -108,7 +81,8 @@ export const withEditorActionReducerMapBuilder = (
       const note = state.notes[noteId];
       const updatedNote = { ...note, content: nodes };
       state.notes[noteId] = updatedNote;
-    });
+    })
+
 
   return builder;
 };
