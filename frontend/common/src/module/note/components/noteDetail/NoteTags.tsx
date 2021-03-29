@@ -267,7 +267,8 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
           </button>
         </div>
         {noteTags && noteId && (
-          <NewTag noteId={noteId} tags={tagsList} noteTags={noteTags} />
+          // <NewTag noteId={noteId} tags={tagsList} noteTags={noteTags} />
+          <NewTag noteId={noteId} />
         )}
         <div className="inline-flex ml-2">
           {/* <TransitionGroup className="inline-flex"> */}

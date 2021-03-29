@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { toggleBlockquote } from './../../../editor.service';
 import { Commands } from '../../Commands';
 import { OptionsMemo } from '../../plugins/options/Options';
 
@@ -81,7 +80,7 @@ const DefaultElement: React.FC<IDefaultElementProps> = (props: any) => {
 
                 const range = editor.selection;
                 const noteId = 'xxx'; // TODO
-                toggleBlockquote(editor, noteId, range, dispatch)
+                // toggleBlockquote(editor, noteId, range, dispatch)
                 // Commands.toggleCodeBlock(editor);
               }}
             >

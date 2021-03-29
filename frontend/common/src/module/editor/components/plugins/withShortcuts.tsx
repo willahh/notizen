@@ -2,18 +2,20 @@
 
 // Import the Slate editor factory.
 import {
-  createEditor,
-  Editor,
-  Node,
-  Transforms,
-  RangeRef,
-  Text,
-  Range,
-  Point,
-  Element as SlateElement,
   Descendant,
+  Editor,
+  Element as SlateElement,
+  Point,
+  Range,
+  Transforms,
 } from 'slate';
+import { ReactEditor } from 'slate-react';
+import {
+  setBulletListAction,
+  SetBulletListActionPayload,
+} from '../../plugins/bulletlist/bulletlist.action';
 import { ElementType } from '../elements/elements';
+import { dispatchCommand } from './../../../../common/utils';
 // import { BulletedListElement } from './custom-types'
 
 export type BulletedListElement = {
@@ -26,16 +28,23 @@ const SHORTCUTS = {
   '-': ElementType.ListItem,
   '+': ElementType.ListItem,
   '>': ElementType.BlockQuote,
-  '#': ElementType.Heading1,
-  '##': ElementType.Heading2,
-  '###': ElementType.Heading3,
+  '#': ElementType.HeadingOne,
+  '##': ElementType.HeadingTwo,
+  '###': ElementType.HeadingThree,
   '####': ElementType.Heading4,
   '#####': ElementType.Heading5,
   '######': ElementType.Heading6,
   '---': ElementType.Divider,
+  '```': ElementType.Code,
+  '```sh': ElementType.Code,
+  '```javascript': ElementType.Code,
 };
 
-export const withShortcuts = (editor) => {
+export const withShortcuts = (
+  editor: Editor & ReactEditor,
+  dispatch,
+  noteId: string
+) => {
   const { deleteBackward, insertText } = editor;
 
   editor.insertText = (text) => {
@@ -56,6 +65,7 @@ export const withShortcuts = (editor) => {
       // console.log('[x] type', type);
 
       if (type) {
+        // TODO: All transformations should be made via a dispatchCommand
         Transforms.select(editor, range);
         Transforms.delete(editor);
         const newProperties: Partial<SlateElement> = {
@@ -66,15 +76,16 @@ export const withShortcuts = (editor) => {
         });
 
         if (type === ElementType.ListItem) {
-          const list: BulletedListElement = {
-            type: ElementType.BulletedList,
-            children: [],
+          const range = editor.selection;
+          const setBulletListActionPayload: SetBulletListActionPayload = {
+            noteId: noteId,
+            range: range,
           };
-          Transforms.wrapNodes(editor, list, {
-            match: (n) =>
-              !Editor.isEditor(n) &&
-              SlateElement.isElement(n) &&
-              n.type === ElementType.ListItem,
+          dispatchCommand({
+            name: setBulletListAction.type,
+            action: setBulletListAction(setBulletListActionPayload),
+            dispatch,
+            payload: setBulletListActionPayload,
           });
         }
 

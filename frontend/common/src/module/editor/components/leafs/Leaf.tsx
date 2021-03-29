@@ -9,6 +9,7 @@ export enum LeafType {
   Italic = 'ITALIC',
   Underline = 'UNDERLINE',
   LineThrough = 'LINETHROUGH',
+  BlockquoteNewLine = 'BLOCKQUOTE_NEW_LINE'
 }
 
 const DefaultLeaf = (props: any) => {
@@ -47,8 +48,20 @@ const LineThrouhLeaf = (props: any) => {
   );
 };
 
+const BlockquoteNewLine = (props: any) => {
+  console.log('BlockquoteNewLine', props);
+  
+  return (
+    <p {...props.attributes} className="border border-red-500">
+      {props.children}
+    </p>
+  );
+};
+
 export const renderLeaf = (editor: Editor) =>
   useCallback((props) => {
+    console.log('props.leaf.type', props.leaf.type);
+    
     switch (props.leaf.type) {
       case LeafType.Default:
         return <DefaultLeaf {...props} />;
@@ -60,6 +73,8 @@ export const renderLeaf = (editor: Editor) =>
         return <UnderlineLeaf {...props} />;
       case LeafType.LineThrough:
         return <LineThrouhLeaf {...props} />;
+      case LeafType.BlockquoteNewLine:
+        return <BlockquoteNewLine {...props}/>
       default:
         return <DefaultLeaf {...props} />;
     }

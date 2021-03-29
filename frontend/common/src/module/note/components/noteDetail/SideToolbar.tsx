@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { dispatchCommand } from '../../../../common/utils';
 import { NavLink } from 'react-router-dom';
-import { HOST_URL } from '../../../../common/constants';
+import { CSSTransition } from 'react-transition-group';
+import { Editor } from 'slate';
+import { ReactEditor } from 'slate-react';
+import { toggleParagraph } from './../../../editor/plugins/paragraph/paragraph.service';
 import {
   ICON_BGCOLOR,
   ICON_BOLD,
@@ -19,25 +21,18 @@ import {
   ICON_STRIKE,
   ICON_TEXTCOLOR,
   ICON_UNDERLINE,
-  ICON_UNDO,
+  ICON_UNDO
 } from '../../../../common/components/Icons';
-import { CSSTransition } from 'react-transition-group';
+import { HOST_URL } from '../../../../common/constants';
 import {
-  setHeading1Action,
-  SetHeading1ActionPayload,
-  unsetHeading1Action,
-  UnsetHeading1ActionPayload,
-} from './../../../editor/editor.actions';
-import { Editor } from 'slate';
-import { ReactEditor } from 'slate-react';
-import {
-  toggleBlockquote,
   toggleBold,
-  toggleDefault,
-  toggleHeading1,
-  toggleHeading2,
-  toggleHeading3,
-} from '../../../editor/editor.service';
+} from '../../../editor/service/editor.action.service';
+import { toggleBlockQuote } from './../../../editor/plugins/blockquote/blockquote.service';
+import { toggleCode } from './../../../editor/plugins/code/code.service';
+import { toggleHeadingOne } from './../../../editor/plugins/headingone/headingone.service';
+import { toggleHeadingThree } from './../../../editor/plugins/headingthree/headingthree.service';
+import { toggleHeadingTwo } from './../../../editor/plugins/headingtwo/headingtwo.service';
+import { toggleBulletList } from './../../../editor/plugins/bulletlist/bulletlist.service';
 
 interface StyleButton {
   noteId: string;
@@ -205,7 +200,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   role="menuitem"
                   onClick={() => {
                     const range = editor.selection;
-                    toggleHeading1(editor, noteId, range, dispatch);
+                    toggleHeadingOne(editor, noteId, range, dispatch);
                   }}
                 >
                   Heading 1
@@ -215,7 +210,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   role="menuitem"
                   onClick={() => {
                     const range = editor.selection;
-                    toggleHeading2(editor, noteId, range, dispatch);
+                    toggleHeadingTwo(editor, noteId, range, dispatch);
                   }}
                 >
                   Heading 2
@@ -225,7 +220,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   role="menuitem"
                   onClick={() => {
                     const range = editor.selection;
-                    toggleHeading3(editor, noteId, range, dispatch);
+                    toggleHeadingThree(editor, noteId, range, dispatch);
                   }}
                 >
                   Heading 3
@@ -235,7 +230,7 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                   role="menuitem"
                   onClick={() => {
                     const range = editor.selection;
-                    toggleDefault(editor, noteId, range, dispatch);
+                    toggleParagraph(editor, noteId, range, dispatch);
                   }}
                 >
                   Text
@@ -243,6 +238,10 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                 <button
                   className="outline-none cursor-default text-base text-left"
                   role="menuitem"
+                  onClick={() => {
+                    const range = editor.selection;
+                    toggleBulletList(editor, noteId, range, dispatch);
+                  }}
                 >
                   Bullet list
                 </button>
@@ -316,7 +315,7 @@ const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
         data-tip="Quote"
         onClick={() => {
           const range = editor.selection;
-          toggleBlockquote(editor, noteId, range, dispatch);
+          toggleBlockQuote(editor, noteId, range, dispatch);
         }}
         className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
       >
@@ -326,7 +325,10 @@ const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
       <button
         type="button"
         data-tip="Code"
-        onClick={() => {}}
+        onClick={() => {
+          const range = editor.selection;
+          toggleCode(editor, noteId, range, dispatch);
+        }}
         className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
       >
         <span className={iconFillCls}>{ICON_CODE}</span>

@@ -37,8 +37,8 @@ import { addTagLocal, AddTagLocalPayload } from '../../../tags/tags.actions';
 
 interface INewTagProps {
   noteId: string;
-  tags: TagEntity[];
-  noteTags: Tag[];
+  // tags: TagEntity[];
+  // noteTags: Tag[];
 }
 const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
   console.log('NewTag Component');
@@ -282,7 +282,11 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
             border border-indigo-300 dark:border-indigo-800
             transition duration-500 ease-in-out"
             id="options-menu"
-            onClick={() => {
+            onClick={(event) => {
+              console.log('click');
+              
+              event.preventDefault();
+              event.stopPropagation();
               setIsDropDownOpen(!isDropdownOpen);
             }}
           >
