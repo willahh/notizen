@@ -1,6 +1,7 @@
 // https://github.com/ianstormtaylor/slate/blob/master/site/examples/markdown-shortcuts.tsx
 
 // Import the Slate editor factory.
+import { useSelector } from 'react-redux';
 import {
   Descendant,
   Editor,
@@ -10,12 +11,14 @@ import {
   Transforms,
 } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { RootState } from './../../../../common/rootReducer';
 import {
   setBulletListAction,
   SetBulletListActionPayload,
 } from '../../plugins/bulletlist/bulletlist.action';
 import { ElementType } from '../elements/elements';
 import { dispatchCommand } from './../../../../common/utils';
+import { useEffect, useState } from 'react';
 // import { BulletedListElement } from './custom-types'
 
 export type BulletedListElement = {
@@ -43,12 +46,14 @@ const SHORTCUTS = {
 export const withShortcuts = (
   editor: Editor & ReactEditor,
   dispatch,
-  noteId: string
+  selectedNoteId: string | undefined
 ) => {
+  console.log('[x2] withShortcuts noteId: ', selectedNoteId);
+
   const { deleteBackward, insertText } = editor;
 
   editor.insertText = (text) => {
-    console.log('[x] insertText', text);
+    console.log('[x2] insertText', text);
 
     const { selection } = editor;
 
@@ -62,7 +67,6 @@ export const withShortcuts = (
       const range = { anchor, focus: start };
       const beforeText = Editor.string(editor, range);
       const type = SHORTCUTS[beforeText];
-      // console.log('[x] type', type);
 
       if (type) {
         // TODO: All transformations should be made via a dispatchCommand
@@ -77,16 +81,19 @@ export const withShortcuts = (
 
         if (type === ElementType.ListItem) {
           const range = editor.selection;
-          const setBulletListActionPayload: SetBulletListActionPayload = {
-            noteId: noteId,
-            range: range,
-          };
-          dispatchCommand({
-            name: setBulletListAction.type,
-            action: setBulletListAction(setBulletListActionPayload),
-            dispatch,
-            payload: setBulletListActionPayload,
-          });
+
+          if (selectedNoteId) {
+            const setBulletListActionPayload: SetBulletListActionPayload = {
+              noteId: selectedNoteId,
+              range: range,
+            };
+            dispatchCommand({
+              name: setBulletListAction.type,
+              action: setBulletListAction(setBulletListActionPayload),
+              dispatch,
+              payload: setBulletListActionPayload,
+            });
+          }
         }
 
         return;

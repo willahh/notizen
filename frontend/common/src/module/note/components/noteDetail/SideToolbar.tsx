@@ -33,6 +33,7 @@ import { toggleHeadingOne } from './../../../editor/plugins/headingone/headingon
 import { toggleHeadingThree } from './../../../editor/plugins/headingthree/headingthree.service';
 import { toggleHeadingTwo } from './../../../editor/plugins/headingtwo/headingtwo.service';
 import { toggleBulletList } from './../../../editor/plugins/bulletlist/bulletlist.service';
+import { toggleNumberedList } from './../../../editor/plugins/numberedlist/numberedlist.service';
 
 interface StyleButton {
   noteId: string;
@@ -248,6 +249,10 @@ const StyleButton: React.FC<StyleButton> = ({ editor, noteId }) => {
                 <button
                   className="outline-none cursor-default text-base text-left"
                   role="menuitem"
+                  onClick={() => {
+                    const range = editor.selection;
+                    toggleNumberedList(editor, noteId, range, dispatch);
+                  }}
                 >
                   Number list
                 </button>

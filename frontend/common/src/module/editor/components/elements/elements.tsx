@@ -8,6 +8,7 @@ import HeadingOneElement from '../../plugins/headingone/headingone.component';
 import HeadingTwoElement from '../../plugins/headingtwo/headingtwo.component';
 import HeadingThreeElement from '../../plugins/headingthree/headingthree.component';
 import BulletListElement from '../../plugins/bulletlist/bulletlist.component';
+import NumberedListElement from '../../plugins/numberedlist/numberedlist.component';
 import BlockQuoteElement from '../../plugins/blockquote/blockquote.component';
 import TagElement from '../../plugins/tag/tag.component';
 import CodeElement from '../../plugins/code/code.component';
@@ -24,16 +25,14 @@ export enum ElementType {
   Heading6 = 'HEADING6',
   BulletList = 'BULLET_LIST',
   BulletListItem = 'BULLET_LIST_ITEM',
+  NumberedList = 'NUMBERED_LIST',
+  NumberedListItem = 'NUMBERED_LIST_ITEM',
   BlockQuote = 'BLOCK_QUOTE',
   Code = 'CODE',
   Image = 'IMAGE',
   Tag = 'TAG',
 
-  
-
-  
   BulletedList = 'BULLETED_LIST',
-  NumberedList = 'NUMBERED_LIST',
   ListItem = 'LIST_ITEM',
   Divider = 'DIVIDER',
 }
@@ -61,6 +60,12 @@ export const renderElement = (editor: Editor & ReactEditor, noteId: string) =>
         return <BulletListElement {...props} />;
       case ElementType.BulletListItem:
         return <li {...props.attributes}>{props.children}</li>;
+
+      case ElementType.NumberedList:
+        return <NumberedListElement {...props} />;
+      case ElementType.NumberedListItem:
+        return <li {...props.attributes}>{props.children}</li>;
+
       case ElementType.Code:
         return <CodeElement {...props} />;
       case ElementType.BlockQuote:
@@ -71,7 +76,6 @@ export const renderElement = (editor: Editor & ReactEditor, noteId: string) =>
         return <ImageElement {...props} />;
       case ElementType.BlockQuote:
         return <blockquote {...props.attributes}>{props.children}</blockquote>;
-
 
       // TODO: Refactor / remove
       case ElementType.BulletedList:

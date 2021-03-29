@@ -8,6 +8,7 @@ import { codeActionReducerMapBuilder } from '../editor/plugins/code/code.reducer
 import { headingOneActionReducerMapBuilder } from '../editor/plugins/headingone/headingone.reducer';
 import { headingThreeActionReducerMapBuilder } from '../editor/plugins/headingthree/headingthree.reducer';
 import { headingTwoActionReducerMapBuilder } from '../editor/plugins/headingtwo/headingtwo.reducer';
+import { NumberedListActionReducerMapBuilder } from '../editor/plugins/numberedlist/numberedlist.reducer';
 import { ParagraphActionReducerMapBuilder } from '../editor/plugins/paragraph/paragraph.reducer';
 import { tagActionReducerMapBuilder } from '../editor/plugins/tag/tag.reducer';
 import {
@@ -50,12 +51,14 @@ const notes = createSlice({
     tagActionReducerMapBuilder(
       codeActionReducerMapBuilder(
         blockQuoteActionReducerMapBuilder(
-          BulletListActionReducerMapBuilder(
-            headingThreeActionReducerMapBuilder(
-              headingTwoActionReducerMapBuilder(
-                headingOneActionReducerMapBuilder(
-                  ParagraphActionReducerMapBuilder(
-                    withEditorActionReducerMapBuilder(builder)
+          NumberedListActionReducerMapBuilder(
+            BulletListActionReducerMapBuilder(
+              headingThreeActionReducerMapBuilder(
+                headingTwoActionReducerMapBuilder(
+                  headingOneActionReducerMapBuilder(
+                    ParagraphActionReducerMapBuilder(
+                      withEditorActionReducerMapBuilder(builder)
+                    )
                   )
                 )
               )

@@ -46,9 +46,10 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   // Create a Slate editor object that won't change across renders.
+  
   const editor = useMemo(
     () => withShortcuts(withReact(createEditor()), dispatch, selectedNoteId),
-    []
+    [selectedNoteId]
   );
 
   const NoteTagsMemo = useMemo(() => <NoteTags />, []); // TODO: Double memo, no need
