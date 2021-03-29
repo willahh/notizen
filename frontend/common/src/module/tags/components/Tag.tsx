@@ -36,7 +36,7 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
         <a
           href="#"
           className={
-            'h-full text-gray-900 group flex items-center text-sm font-normal rounded-md select-none' +
+            'h-full text-gray-900 text-xs font-normal group flex items-center rounded-md select-none' +
             (false
               ? ' bg-gray-200 dark:bg-gray-800 dark:text-gray-200'
               : ' dark:text-gray-500')
@@ -147,7 +147,7 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
         <a
           href="#"
           className={
-            'h-full text-gray-900 group flex items-center text-sm font-normal rounded-md select-none' +
+            'h-full text-gray-900 group flex items-center text-xs font-normal rounded-md select-none' +
             (false
               ? ' bg-gray-200 dark:bg-gray-800 dark:text-gray-200'
               : ' dark:text-gray-500')
@@ -239,7 +239,7 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
       tagComponent = (
         <div
           className={
-            'h-full text-gray-900 group flex items-center text-sm font-normal rounded-md select-none' +
+            'h-full text-gray-900 group flex items-center text-xs font-normal rounded-md select-none' +
             (false
               ? ' bg-gray-200 dark:bg-gray-800 dark:text-gray-200'
               : ' dark:text-gray-500')

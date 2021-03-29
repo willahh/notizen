@@ -45,11 +45,11 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
     .slice(0, 100);
 
   let itemCls =
-    'relative overflow-hidden select-none border-l-4 duration-300 ease-in-out';
+    'relative overflow-hidden select-none duration-300 ease-in-out';
   let itemInnerCls =
     'relative py-5 px-4 h-24 duration-300 ease-in-out transition-all';
   if (isSelected) {
-    itemCls += ` border-${color.toLowerCase()}-700`;
+    itemCls += ` border-${color.toLowerCase()}-500`;
     itemInnerCls += ' transform left-2';
   } else {
     itemCls += ' border-transparent';
@@ -58,7 +58,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   const btnClassName = `relative inline-flex items-center p-2 
     border-1 border-gray-300 dark:border-gray-800
     
-    text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 focus:z-10 
+    text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 focus:z-10
     focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 rounded-md `;
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
         });
       }}
     >
-      <div className={itemCls}>
+      <div className={itemCls} style={{borderLeftWidth: '6px'}}>
         <div className={itemInnerCls}>
           <div className="flex justify-between space-x-3">
             <div className="min-w-0 flex-1">

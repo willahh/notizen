@@ -169,7 +169,7 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
                   className="note-page flex
                   xl:bg-white xl:dark:bg-black
                   transform ease-out duration-300 transition
-                  xl:shadow-2xl
+                  xl:shadow-lg
                  
                   "
                   style={{ minHeight: 600 }}
