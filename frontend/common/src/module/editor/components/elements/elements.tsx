@@ -10,6 +10,7 @@ import HeadingThreeElement from '../../plugins/headingthree/headingthree.compone
 import BulletListElement from '../../plugins/bulletlist/bulletlist.component';
 import NumberedListElement from '../../plugins/numberedlist/numberedlist.component';
 import BlockQuoteElement from '../../plugins/blockquote/blockquote.component';
+import DividerElement from '../../plugins/divider/divider.component';
 import TagElement from '../../plugins/tag/tag.component';
 import CodeElement from '../../plugins/code/code.component';
 import ImageElement from './elements/ImageElement';
@@ -76,6 +77,8 @@ export const renderElement = (editor: Editor & ReactEditor, noteId: string) =>
         return <ImageElement {...props} />;
       case ElementType.BlockQuote:
         return <blockquote {...props.attributes}>{props.children}</blockquote>;
+      case ElementType.Divider:
+        return <DividerElement {...props} />;
 
       // TODO: Refactor / remove
       case ElementType.BulletedList:
@@ -85,8 +88,6 @@ export const renderElement = (editor: Editor & ReactEditor, noteId: string) =>
       // TODO
       case ElementType.NumberedList:
         return <li {...props.attributes}>{props.children}</li>;
-      case ElementType.Divider:
-        return <hr className="bg-black dark:bg-indigo-800 h-1" />;
       default:
         return <ParagraphElement {...props} />;
     }

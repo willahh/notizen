@@ -5,6 +5,7 @@ import { withEditorActionReducerMapBuilder } from '../editor/editor.reducer';
 import { blockQuoteActionReducerMapBuilder } from '../editor/plugins/blockquote/blockquote.reducer';
 import { BulletListActionReducerMapBuilder } from '../editor/plugins/bulletlist/bulletlist.reducer';
 import { codeActionReducerMapBuilder } from '../editor/plugins/code/code.reducer';
+import { DividerActionReducerMapBuilder } from '../editor/plugins/divider/divider.reducer';
 import { headingOneActionReducerMapBuilder } from '../editor/plugins/headingone/headingone.reducer';
 import { headingThreeActionReducerMapBuilder } from '../editor/plugins/headingthree/headingthree.reducer';
 import { headingTwoActionReducerMapBuilder } from '../editor/plugins/headingtwo/headingtwo.reducer';
@@ -49,15 +50,17 @@ const notes = createSlice({
   extraReducers: (builder) => {
     // TODO
     tagActionReducerMapBuilder(
-      codeActionReducerMapBuilder(
-        blockQuoteActionReducerMapBuilder(
-          NumberedListActionReducerMapBuilder(
-            BulletListActionReducerMapBuilder(
-              headingThreeActionReducerMapBuilder(
-                headingTwoActionReducerMapBuilder(
-                  headingOneActionReducerMapBuilder(
-                    ParagraphActionReducerMapBuilder(
-                      withEditorActionReducerMapBuilder(builder)
+      DividerActionReducerMapBuilder(
+        codeActionReducerMapBuilder(
+          blockQuoteActionReducerMapBuilder(
+            NumberedListActionReducerMapBuilder(
+              BulletListActionReducerMapBuilder(
+                headingThreeActionReducerMapBuilder(
+                  headingTwoActionReducerMapBuilder(
+                    headingOneActionReducerMapBuilder(
+                      ParagraphActionReducerMapBuilder(
+                        withEditorActionReducerMapBuilder(builder)
+                      )
                     )
                   )
                 )
