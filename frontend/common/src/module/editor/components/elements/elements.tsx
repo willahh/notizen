@@ -11,6 +11,7 @@ import BulletListElement from '../../plugins/bulletlist/bulletlist.component';
 import NumberedListElement from '../../plugins/numberedlist/numberedlist.component';
 import BlockQuoteElement from '../../plugins/blockquote/blockquote.component';
 import DividerElement from '../../plugins/divider/divider.component';
+import TodoElement from '../../plugins/todo/todo.component';
 import TagElement from '../../plugins/tag/tag.component';
 import CodeElement from '../../plugins/code/code.component';
 import ImageElement from './elements/ImageElement';
@@ -32,6 +33,7 @@ export enum ElementType {
   Code = 'CODE',
   Image = 'IMAGE',
   Tag = 'TAG',
+  Todo = 'TODO',
 
   BulletedList = 'BULLETED_LIST',
   ListItem = 'LIST_ITEM',
@@ -60,7 +62,19 @@ export const renderElement = (editor: Editor & ReactEditor, noteId: string) =>
       case ElementType.BulletList:
         return <BulletListElement {...props} />;
       case ElementType.BulletListItem:
-        return <li {...props.attributes}>{props.children}</li>;
+        return (
+          <li
+            {...props.attributes}
+            className="relative flex"
+            style={{ left: '-20px', listStyle: 'none' }}
+          >
+            <div
+              className="w-2 h-2 bg-indigo-500 rounded-full pointer-events-none mr-4"
+              contentEditable={false}
+            ></div>
+            <div>{props.children}</div>
+          </li>
+        );
 
       case ElementType.NumberedList:
         return <NumberedListElement {...props} />;
@@ -79,6 +93,8 @@ export const renderElement = (editor: Editor & ReactEditor, noteId: string) =>
         return <blockquote {...props.attributes}>{props.children}</blockquote>;
       case ElementType.Divider:
         return <DividerElement {...props} />;
+      case ElementType.Todo:
+        return <TodoElement {...props} />;
 
       // TODO: Refactor / remove
       case ElementType.BulletedList:

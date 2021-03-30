@@ -35,6 +35,7 @@ import { toggleHeadingTwo } from './../../../editor/plugins/headingtwo/headingtw
 import { toggleBulletList } from './../../../editor/plugins/bulletlist/bulletlist.service';
 import { toggleNumberedList } from './../../../editor/plugins/numberedlist/numberedlist.service';
 import { toggleDivider } from './../../../editor/plugins/divider/divider.service';
+import { toggleTodo } from './../../../editor/plugins/todo/todo.service';
 
 interface StyleButton {
   noteId: string;
@@ -310,7 +311,10 @@ const SideToolbar: React.FC<IToolbarProps> = ({ editor, noteId }) => {
       <button
         type="button"
         data-tip="Todo list"
-        onClick={() => {}}
+        onClick={() => {
+          const range = editor.selection;
+          toggleTodo(editor, noteId, range, dispatch);
+        }}
         className="relative flex-initial items-center px-4 py-2 rounded-l-md border-1 border-gray-300 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white dark:bg-black dark:border-gray-800"
       >
         <span className={iconFillCls}>{ICON_CHECKBOX}</span>

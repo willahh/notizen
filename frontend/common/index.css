@@ -24,6 +24,12 @@ button {
   cursor: default;
 }
 
+/* li::marker {
+  color: #4236c2;
+  font-size: 14px;
+  content: "•";
+} */
+
 /* z-index */
 /* tooltip */
 .type-custom {
