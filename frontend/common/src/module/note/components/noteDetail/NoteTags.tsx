@@ -115,7 +115,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
   }
 
   return (
-    <div key={`NoteTags`} className="sticky top-0 flex justify-end p-2 z-10">
+    <div className="sticky top-0 flex justify-end p-2 z-10">
       <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row select-none">
         <div className="inline-flex mr-2">
           <div className="relative inline-flex items-center">
@@ -189,6 +189,7 @@ const NoteTags: React.FC<INoteTagsProps> = ({}) => {
                     } else {
                       el = (
                         <button
+                          key={`NoteTag-${index}`}
                           className={`flex w-4 h-4 mr-2
               rounded-full bg-${tagIconColorMap[tagIconColor]}-400
               shadow-sm 

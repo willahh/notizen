@@ -14,6 +14,7 @@ import {
   tagIconColorMap,
   tagIconIconMap,
 } from './../../../common/components/TagIcon';
+import { Transforms } from 'slate';
 // import TransitionGroup from 'react-transition-group/TransitionGroup';
 // import ReactTransitionGroup from 'react/lib/ReactTransitionGroup';
 
@@ -74,6 +75,10 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
       note-id={id}
       onMouseDown={() => {
         console.log('click');
+        // console.log('deselect editor');
+
+        // WARNING: This step is import to prevent some Error: Cannot find a descendant at path [0] in node errors
+        Transforms.deselect(window.editor);
 
         const payload: SetSelectedNoteIdActionPayload = {
           noteId: id,

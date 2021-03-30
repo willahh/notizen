@@ -12,7 +12,7 @@ import { UpdateNoteDTO } from '../../../../common/interfaces';
 import NoteTags from './NoteTags';
 import NotizenEditor from '../../../editor/components/Editor';
 import { createEditor, Editor, Node } from 'slate';
-import { NoteToolbar } from './NoteToolbar';
+// import { NoteToolbar } from './NoteToolbar';
 import { ReactEditor, withReact } from 'slate-react';
 import { SideToolbar } from './SideToolbar';
 import {
@@ -46,11 +46,17 @@ const NoteDetailEditNew: React.FC<INoteDetailProps> = ({}) => {
   const note = selectedNoteId ? notes[selectedNoteId] : null;
 
   // Create a Slate editor object that won't change across renders.
-  
-  const editor = useMemo(
-    () => withShortcuts(withReact(createEditor()), dispatch, selectedNoteId),
-    [selectedNoteId]
-  );
+  // This fix ... totally made my day(s) !!!!
+  // This fix the annooooooooying Error: Cannot find a descendant at path [0] in node 
+  // https://github.com/ianstormtaylor/slate/issues/4081#issuecomment-782136472
+  // The previous editor instanciation was made like this :
+  // const editor = useMemo(
+  //   () => withShortcuts(withReact(createEditor()), dispatch, selectedNoteId),
+  //   [selectedNoteId]
+  // );
+  const editorRef = useRef<Editor & ReactEditor>();
+  if (!editorRef.current) editorRef.current = withShortcuts(withReact(createEditor()), dispatch, selectedNoteId);
+  const editor = editorRef.current;
 
   const NoteTagsMemo = useMemo(() => <NoteTags />, []); // TODO: Double memo, no need
   // dispatch(setCurrentEditorAction({ editor: editor }));

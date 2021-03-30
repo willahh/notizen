@@ -241,6 +241,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
           const isSelected = formColor === TagColor[tagIconColor];
           return (
             <button
+              key={`tag-icon-${tagIconColor}`}
               data-tag-icon-color={tagIconColor}
               className={`flex w-4 h-4 mr-2
               rounded-full bg-${tagIconColorMap[tagIconColor]}-400

@@ -8,7 +8,9 @@ import {
 } from './note.actions';
 import { dispatchCommand, dispatchQuery } from './../../common/utils';
 import { useDispatch } from 'react-redux';
+import { Node } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { ElementType } from '../editor/components/elements/elements';
 
 export const addNoteAndSelect = async (dispatch) => {
   console.log('addNoteAndSelect');
@@ -16,9 +18,10 @@ export const addNoteAndSelect = async (dispatch) => {
   const noteId = uuidv4();
   const createNoteDTO: CreateNoteDTO = {
     id: noteId,
-    name: 'Ma super note',
+    name: 'Ma super note', // TODO: Locale
     content: [],
   };
+  
   const payload: CreateNoteActionPayload = {
     createNoteDTO: createNoteDTO,
   };

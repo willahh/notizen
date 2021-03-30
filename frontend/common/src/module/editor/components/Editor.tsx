@@ -1,4 +1,3 @@
-
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Editor, Element, Node, Text, Transforms } from 'slate';
@@ -8,11 +7,9 @@ import { INote, UpdateNoteDTO } from '../../../common/interfaces';
 import { dispatchCommand } from '../../../common/utils';
 import {
   updateNoteActionAction,
-  UpdateNoteActionPayload
+  UpdateNoteActionPayload,
 } from '../../note/note.actions';
-import {
-  getDecorateRangeForCode
-} from '../plugins/code/code.service';
+import { getDecorateRangeForCode } from '../plugins/code/code.service';
 import { onEditorKeydown } from '../service/editor.event.service';
 import { ElementType, renderElement } from './elements/elements';
 import { renderLeaf } from './leafs/Leaf';
@@ -178,4 +175,6 @@ export const NotizenEditor: React.FC<IEditor> = ({
   );
 };
 
-export default React.memo(NotizenEditor);
+// WARNING: Memoized Editor can maybe cause errors, try to re-enable it with precautions
+// export default React.memo(NotizenEditor);
+export default NotizenEditor;
