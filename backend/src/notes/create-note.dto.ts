@@ -17,5 +17,5 @@ export class CreateNoteDTO {
   readonly name: string;
 
   @IsArray()
-  readonly content: Array<Object>;
+  readonly content // INFO: Post don't works with type Array<Object> 
 }

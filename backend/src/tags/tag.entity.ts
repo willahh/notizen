@@ -1,4 +1,4 @@
-import { TagIcon } from 'src/notes/note-enum';
+import { TagIcon } from '../notes/note-enum';
 import {
   Column,
   CreateDateColumn,
