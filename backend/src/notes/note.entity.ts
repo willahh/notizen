@@ -30,6 +30,9 @@ export class Note {
   @Column({ default: false })
   isFav: boolean;
 
+  @Column({default: false})
+  isDeleted: boolean;
+
   @Column({
     type: 'enum',
     enum: NoteColor,
