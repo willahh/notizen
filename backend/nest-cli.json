@@ -1,6 +1,6 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "/Users/willahh/www/projects/notizen/backend/src",
   "compilerOptions": {
     "webpack": false
   }

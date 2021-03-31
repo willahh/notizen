@@ -6,7 +6,7 @@ module.exports = {
   password: 'password',
   database: 'notizen',
   entities: ['dist/**/*.entity{.ts,.js}'], // Fix needed to works @see https://docs.nestjs.com/techniques/database
-  migrations: ['dist/src/migrations/*.js'],
+  migrations: ['/Users/willahh/www/projects/notizen/backend/dist/migrations/*.js'], // TODO: Fix path
   cli: {
     migrationsDir: 'src/migrations',
   },
