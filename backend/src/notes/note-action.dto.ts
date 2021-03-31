@@ -1,6 +1,12 @@
-import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsEnum,
+
+  IsOptional,
+  IsString,
+  IsUUID
+} from 'class-validator';
 import { TagColor } from '../tags/tag-enum';
-import { NoteColor, TagIcon } from './note-enum';
+import { TagIcon } from './note-enum';
 
 export enum NoteAction {
   AddTag = 'ADD_TAG',
@@ -10,7 +16,6 @@ export enum NoteAction {
   RemoveToFav = 'REMOVE_TO_FAV',
   UpdateColor = 'UPDATE_COLOR',
 }
-
 
 export class NoteActionDto {
   @IsEnum(NoteAction)

@@ -46,6 +46,7 @@ export class NotesService {
 
   async findAll(
     paginationQuery: PaginationQueryDto,
+    isFav: boolean,
     debug = false,
     debugThrowError: boolean = false,
   ) {
@@ -59,11 +60,12 @@ export class NotesService {
     const { limit, offset } = paginationQuery;
 
     const notes = await this.connection
-    .createQueryBuilder(Note, "note")
-    .leftJoinAndSelect("note.tags", "tag")
-    .orderBy('note.id', 'DESC')
-    .addOrderBy('tag.name', 'ASC')
-    .getMany();
+      .createQueryBuilder(Note, 'note')
+      .where('note.isFav = :isFav', { isFav: isFav })
+      .leftJoinAndSelect('note.tags', 'tag')
+      .orderBy('note.id', 'DESC')
+      .addOrderBy('tag.name', 'ASC')
+      .getMany();
 
     return notes;
   }
@@ -270,7 +272,7 @@ export class NotesService {
         isActive: true,
         name: tagName,
         color: tagColor,
-        icon: tagIcon
+        icon: tagIcon,
       };
 
       const tag = this.tagRepository.create(createTagDTO);

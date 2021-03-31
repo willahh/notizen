@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { IsOptional } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
 import { TagsService } from 'src/tags/tags.service';
 import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
 import { CreateNoteDTO } from './create-note.dto';
@@ -27,6 +27,10 @@ class FindAllClass extends PaginationQueryDto {
 
   @IsOptional()
   debugThrowError: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isFav: boolean;
 }
 
 @Controller('notes')
@@ -37,9 +41,13 @@ export class NotesController {
   ) {}
 
   @Get()
-  findAll(@Query() { debug, debugThrowError, limit, offset }: FindAllClass) {
+  findAll(
+    @Query()
+    { debug, debugThrowError, limit, offset, isFav = false }: FindAllClass,
+  ) {
     return this.notesService.findAll(
       { limit: limit, offset: offset },
+      isFav,
       debug === 'true',
       debugThrowError === 'true',
     );
@@ -57,7 +65,7 @@ export class NotesController {
       debugThrowError === 'true',
     );
   }
-  
+
   @Post()
   create(
     @Body() createNoteDto: CreateNoteDTO,
