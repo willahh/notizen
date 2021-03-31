@@ -47,6 +47,8 @@ export class NotesService {
   async findAll(
     paginationQuery: PaginationQueryDto,
     isFav: boolean,
+    isDeleted: boolean,
+    tagId: string,
     debug = false,
     debugThrowError: boolean = false,
   ) {
@@ -58,13 +60,25 @@ export class NotesService {
       }
     }
     const { limit, offset } = paginationQuery;
+    console.log('isFav', isFav);
+    
 
-    const notes = await this.connection
+    const qb = await this.connection
       .createQueryBuilder(Note, 'note')
-      .where('note.isFav = :isFav', { isFav: isFav })
       .leftJoinAndSelect('note.tags', 'tag')
       .orderBy('note.id', 'DESC')
-      .addOrderBy('tag.name', 'ASC')
+      .addOrderBy('tag.name', 'ASC');
+    // if (isFav !== undefined) {
+      qb.andWhere('note.isFav = :isFav', { isFav });
+    // }
+    if (isDeleted !== undefined) {
+      qb.andWhere('note.isDeleted = :isDeleted', { isDeleted });
+    }
+    if (tagId) {
+      qb.andWhere('tag.id = :tagId', { tagId });
+    }
+
+    const notes = qb
       .getMany();
 
     return notes;
