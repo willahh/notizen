@@ -12,6 +12,7 @@ import { headingTwoActionReducerMapBuilder } from '../editor/plugins/headingtwo/
 import { NumberedListActionReducerMapBuilder } from '../editor/plugins/numberedlist/numberedlist.reducer';
 import { ParagraphActionReducerMapBuilder } from '../editor/plugins/paragraph/paragraph.reducer';
 import { tagActionReducerMapBuilder } from '../editor/plugins/tag/tag.reducer';
+import { BoldActionReducerMapBuilder } from '../editor/plugins/text/bold/bold.reducer';
 import { TodoActionReducerMapBuilder } from '../editor/plugins/todo/todo.reducer';
 import {
   addTagToNoteAction,
@@ -51,17 +52,19 @@ const notes = createSlice({
   extraReducers: (builder) => {
     // TODO (:p)
     tagActionReducerMapBuilder(
-      TodoActionReducerMapBuilder(
-        DividerActionReducerMapBuilder(
-          codeActionReducerMapBuilder(
-            blockQuoteActionReducerMapBuilder(
-              NumberedListActionReducerMapBuilder(
-                BulletListActionReducerMapBuilder(
-                  headingThreeActionReducerMapBuilder(
-                    headingTwoActionReducerMapBuilder(
-                      headingOneActionReducerMapBuilder(
-                        ParagraphActionReducerMapBuilder(
-                          withEditorActionReducerMapBuilder(builder)
+      BoldActionReducerMapBuilder(
+        TodoActionReducerMapBuilder(
+          DividerActionReducerMapBuilder(
+            codeActionReducerMapBuilder(
+              blockQuoteActionReducerMapBuilder(
+                NumberedListActionReducerMapBuilder(
+                  BulletListActionReducerMapBuilder(
+                    headingThreeActionReducerMapBuilder(
+                      headingTwoActionReducerMapBuilder(
+                        headingOneActionReducerMapBuilder(
+                          ParagraphActionReducerMapBuilder(
+                            withEditorActionReducerMapBuilder(builder)
+                          )
                         )
                       )
                     )

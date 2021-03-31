@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import { Editor } from 'slate';
+import BoldLeaf from './../../../editor/plugins/text/bold/bold.component'
 
 export enum LeafType {
   Default = 'DEFAULT',
@@ -14,14 +15,6 @@ export enum LeafType {
 
 const DefaultLeaf = (props: any) => {
   return <span {...props.attributes}>{props.children}</span>;
-};
-
-const BoldLeaf = (props: any) => {
-  return (
-    <strong {...props.attributes} className="font-bold">
-      {props.children}
-    </strong>
-  );
 };
 
 const ItalicLeaf = (props: any) => {
@@ -60,8 +53,6 @@ const BlockquoteNewLine = (props: any) => {
 
 export const renderLeaf = (editor: Editor) =>
   useCallback((props) => {
-    console.log('props.leaf.type', props.leaf.type);
-    
     switch (props.leaf.type) {
       case LeafType.Default:
         return <DefaultLeaf {...props} />;

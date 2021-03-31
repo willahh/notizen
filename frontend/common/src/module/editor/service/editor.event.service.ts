@@ -7,7 +7,7 @@ import {
 import { onEditorEnterKeydown as onCodeEditorEnterKeydown } from '../plugins/code/code.service';
 import { toggleHeadingOne } from '../plugins/headingone/headingone.service';
 import { toggleTag } from '../plugins/tag/tag.service';
-import { toggleBold } from './editor.action.service';
+import { toggleBold } from '../plugins/text/bold/bold.service';
 
 export const onEditorKeydown = (
   event,

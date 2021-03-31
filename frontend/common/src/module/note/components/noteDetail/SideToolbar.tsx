@@ -24,7 +24,6 @@ import {
   ICON_UNDO,
 } from '../../../../common/components/Icons';
 import { HOST_URL } from '../../../../common/constants';
-import { toggleBold } from '../../../editor/service/editor.action.service';
 import { toggleBlockQuote } from './../../../editor/plugins/blockquote/blockquote.service';
 import { toggleCode } from './../../../editor/plugins/code/code.service';
 import { toggleHeadingOne } from './../../../editor/plugins/headingone/headingone.service';
@@ -34,6 +33,7 @@ import { toggleBulletList } from './../../../editor/plugins/bulletlist/bulletlis
 import { toggleNumberedList } from './../../../editor/plugins/numberedlist/numberedlist.service';
 import { toggleDivider } from './../../../editor/plugins/divider/divider.service';
 import { toggleTodo } from './../../../editor/plugins/todo/todo.service';
+import { toggleBold } from './../../../editor/plugins/text/bold/bold.service';
 
 interface StyleButton {
   noteId: string;

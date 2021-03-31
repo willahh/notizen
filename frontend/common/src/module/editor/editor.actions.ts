@@ -2,12 +2,8 @@
  * Redux editor actions.
  *
  */
-import { Node, Range } from 'slate';
+import { Node } from 'slate';
 import { createAction } from './../../common/actions';
-import {
-  setBold,
-  unsetBold,
-} from './service/editor.action.service';
 
 /**
  * TODO: Try to not use this action as possible, use very specific actions like :
@@ -31,73 +27,3 @@ export const updateContentAction = createAction(
     };
   }
 );
-
-// /**
-//  * EDITOR_SET_DEFAULT
-//  */
-// export const EDITOR_SET_DEFAULT = 'EDITOR/EDITOR_SET_DEFAULT';
-// export interface SetDefaultActionPayload {
-//   noteId: string;
-//   range: Range;
-// }
-// export const setDefaultAction = createAction(
-//   EDITOR_SET_DEFAULT,
-//   (payload: SetDefaultActionPayload) => {
-//     return {
-//       payload: payload,
-//     };
-//   }
-// );
-
-// /**
-//  * EDITOR_UNSET_DEFAULT
-//  */
-// export const EDITOR_UNSET_DEFAULT = 'EDITOR/EDITOR_UNSET_DEFAULT';
-// export interface UnsetDefaultActionPayload {
-//   noteId: string;
-//   range: Range;
-// }
-// export const unsetDefaultAction = createAction(
-//   EDITOR_UNSET_DEFAULT,
-//   (payload: UnsetDefaultActionPayload) => {
-//     return {
-//       payload: payload,
-//     };
-//   }
-// );
-
-
-/**
- * EDITOR_SET_BOLD
- */
-export const EDITOR_SET_BOLD = 'EDITOR/EDITOR_SET_BOLD';
-export interface SetBoldActionPayload {
-  noteId: string;
-  range: Range;
-}
-export const setBoldAction = createAction(
-  EDITOR_SET_BOLD,
-  (payload: SetBoldActionPayload) => {
-    return {
-      payload: payload,
-    };
-  }
-);
-
-/**
- * EDITOR_UNSET_BOLD
- */
-export const EDITOR_UNSET_BOLD = 'EDITOR/EDITOR_UNSET_BOLD';
-export interface UnsetBoldActionPayload {
-  noteId: string;
-  range: Range;
-}
-export const unsetBoldAction = createAction(
-  EDITOR_UNSET_BOLD,
-  (payload: UnsetBoldActionPayload) => {
-    return {
-      payload: payload,
-    };
-  }
-);
-

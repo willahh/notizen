@@ -45,12 +45,13 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
     }, '')
     .slice(0, 100);
 
-  let itemCls =
-    'relative overflow-hidden select-none duration-300 ease-in-out';
+  let itemOuterCls = 'relative overflow-hidden focus:bg-gray-500';
+  let itemCls = 'relative overflow-hidden select-none duration-300 ease-in-out';
   let itemInnerCls =
     'relative py-5 px-4 h-24 duration-300 ease-in-out transition-all';
   if (isSelected) {
-    itemCls += ` border-${color.toLowerCase()}-500`;
+    itemOuterCls += ' bg-gray-100';
+    itemCls += ` border-${color.toLowerCase()}-500 `;
     itemInnerCls += ' transform left-2';
   } else {
     itemCls += ' border-transparent';
@@ -70,7 +71,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
   return (
     <li
       key={`NoteItem-${id}`}
-      className="relative overflow-hidden"
+      className={itemOuterCls}
       style={{ zIndex: 'auto' }}
       note-id={id}
       onMouseDown={() => {
@@ -91,7 +92,7 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
         });
       }}
     >
-      <div className={itemCls} style={{borderLeftWidth: '6px'}}>
+      <div className={itemCls} style={{ borderLeftWidth: '6px' }} tabIndex={0}>
         <div className={itemInnerCls}>
           <div className="flex justify-between space-x-3">
             <div className="min-w-0 flex-1">
@@ -99,7 +100,9 @@ const NoteItem: React.FC<INoteProps> = ({ id, content, name, tags, color }) => {
                 <p className="text-sm font-normal truncate text-gray-600 dark:text-gray-300">
                   {name}
                 </p>
-                <div className="text-sm font-thin truncate text-gray-600 dark:text-gray-300">{textPreview}</div>
+                <div className="text-sm font-thin truncate text-gray-600 dark:text-gray-300">
+                  {textPreview}
+                </div>
                 <div>
                   {tags.map((tag) => {
                     if (tag) {
