@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { dispatchCommand } from '../../../common/utils';
+import { dispatchCommand, dispatchQuery } from '../../../common/utils';
 import { Tag, Mode, UpdateTagDTO } from '../../../common/interfaces';
 import {
   deleteTagAction,
@@ -14,6 +14,7 @@ import {
   UpdateTagActionPayload,
   DeleteTagActionPayload,
 } from '../tags.actions';
+import { fetchNotesAction, FetchNotesActionPayload } from '../../../module/note/note.actions';
 
 interface TagProps {
   tag: Tag;
@@ -41,6 +42,17 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
               ? ' bg-gray-200 dark:bg-gray-800 dark:text-gray-200'
               : ' dark:text-gray-500')
           }
+          onClick={(e) => {
+            const payload: FetchNotesActionPayload = {
+              tagId: tag.id
+            };
+            dispatchQuery({
+              name: fetchNotesAction.typePrefix,
+              payload: payload,
+              action: fetchNotesAction(payload),
+              dispatch: dispatch,
+            });
+          }}
           onDoubleClick={() => {
             if (mode === Mode.Edit) {
               const payload: SetTagModeActionPayload = {
@@ -152,6 +164,17 @@ const TagComponent: React.FC<TagProps> = ({ tag, mode, deleteModeActive }) => {
               ? ' bg-gray-200 dark:bg-gray-800 dark:text-gray-200'
               : ' dark:text-gray-500')
           }
+          onClick={(e) => {
+            const payload: FetchNotesActionPayload = {
+              tagId: tag.id
+            };
+            dispatchQuery({
+              name: fetchNotesAction.typePrefix,
+              payload: payload,
+              action: fetchNotesAction(payload),
+              dispatch: dispatch,
+            });
+          }}
         >
           <svg
             className="text-gray-500 mr-3 h-6 w-6"

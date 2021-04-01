@@ -6,6 +6,10 @@ import { Auth } from '@notizen/frontend-common/src/module/auth/Auth';
 import { EditorTestPage } from '@notizen/frontend-common/src/module/editor/components/EditorTestPage';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { HOST_URL } from './common/constants';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { dispatchQuery } from './common/utils';
+import { fetchNotesAction, FetchNotesActionPayload } from './module/note/note.actions';
 
 const routes = [
   { path: `${HOST_URL}/`, name: 'Home', Component: Auth },
@@ -16,6 +20,19 @@ const routes = [
 ];
 
 function App() {
+  const dispatch = useDispatch();
+
+  // Initial calls
+  useEffect(() => {
+    const payload: FetchNotesActionPayload = {};
+    dispatchQuery({
+      name: fetchNotesAction.typePrefix,
+      payload: payload,
+      action: fetchNotesAction(payload),
+      dispatch: dispatch,
+    });
+  }, [dispatch]);
+
   return (
     <>
       <div className="relative">

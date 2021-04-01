@@ -9,6 +9,7 @@ import {
   updateNote,
   addTagToNote,
   removeTagToNote,
+  NotesQueryParams,
 } from '../../common/notizenAPI';
 import {
   NoteDetailResult,
@@ -19,7 +20,6 @@ import {
   NotesResult,
   CreateTagAndAddToNoteResult,
 } from '../../common/interfaces';
-
 
 /**
  * NOTES_SET_SELECTED_NOTE_ID
@@ -59,12 +59,13 @@ addAction(NOTES_FETCH_NOTE, fetchNoteAction);
  * NOTES_FETCH_NOTES
  */
 export const NOTES_FETCH_NOTES = 'NOTES/FETCH_NOTES';
-export interface FetchNotesActionPayload {}
+export interface FetchNotesActionPayload extends NotesQueryParams {}
 export const fetchNotesAction = createAsyncThunk<
   NotesResult,
   FetchNotesActionPayload
->(NOTES_FETCH_NOTES, async () => {
-  return await getNotes();
+>(NOTES_FETCH_NOTES, async (fetchNotesActionPayload) => {
+  const notesQueryParams = fetchNotesActionPayload;
+  return await getNotes(notesQueryParams);
 });
 addAction(NOTES_FETCH_NOTES, fetchNotesAction);
 

@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  fetchNotesAction,
+  FetchNotesActionPayload,
+} from '../../module/note/note.actions';
+import { dispatchQuery } from '../utils';
 import { Tags } from './../../module/tags/components/Tags';
 import { UserProfileCard } from './UserProfileCard';
 
 export type ISidebarDesktopProps = {};
 
 const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
+  const dispatch = useDispatch();
   const links = [
     { label: 'Clojure for the Brave and True', selected: true },
     { label: 'Personal notes', selected: false },
@@ -59,7 +66,19 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
               <div className="px-4 space-y-4">
                 <div>
                   <h2 className={headingCls}>Notes</h2>
-                  <a href="#" className={cls}>
+                  <a
+                    href="#"
+                    className={cls}
+                    onClick={(e) => {
+                      const payload: FetchNotesActionPayload = {};
+                      dispatchQuery({
+                        name: fetchNotesAction.typePrefix,
+                        payload: payload,
+                        action: fetchNotesAction(payload),
+                        dispatch: dispatch,
+                      });
+                    }}
+                  >
                     <svg
                       className="text-gray-500 mr-3 h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +129,21 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                     </svg>
                     <div className="truncate w-full">Todo</div>
                   </a>{' '}
-                  <a href="#" className={cls}>
+                  <a
+                    href="#"
+                    className={cls}
+                    onClick={(e) => {
+                      const payload: FetchNotesActionPayload = {
+                        isFav: true,
+                      };
+                      dispatchQuery({
+                        name: fetchNotesAction.typePrefix,
+                        payload: payload,
+                        action: fetchNotesAction(payload),
+                        dispatch: dispatch,
+                      });
+                    }}
+                  >
                     <svg
                       className="text-gray-500 mr-3 h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +160,21 @@ const SidebarDesktop: React.FC<ISidebarDesktopProps> = ({}) => {
                     </svg>
                     <div className="truncate w-full">Fav</div>
                   </a>
-                  <a href="#" className={cls}>
+                  <a
+                    href="#"
+                    className={cls}
+                    onClick={(e) => {
+                      const payload: FetchNotesActionPayload = {
+                        isDeleted: true,
+                      };
+                      dispatchQuery({
+                        name: fetchNotesAction.typePrefix,
+                        payload: payload,
+                        action: fetchNotesAction(payload),
+                        dispatch: dispatch,
+                      });
+                    }}
+                  >
                     <svg
                       className="text-gray-500 mr-3 h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"

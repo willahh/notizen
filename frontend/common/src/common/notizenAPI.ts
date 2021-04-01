@@ -56,14 +56,30 @@ const withUrl = (
 };
 
 /* ----------------- note ------------------------- */
-export async function getNotes(): Promise<NotesResult> {
+// TODO: Share with backend
+export interface NotesQueryParams {
+  start?: number;
+  limit?: number;
+  debug?: boolean;
+  debugThrowError?: boolean;
+  isFav?: boolean;
+  isDeleted?: boolean;
+  tagId?: string;
+}
+
+export async function getNotes(
+  notesQueryParams: NotesQueryParams
+): Promise<NotesResult> {
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
 
-  const url = withUrl(`${API_URL}/notes?limit=100`);
+  const url = withUrl(`${API_URL}/notes`);
+
   try {
-    const notesReponse = await axios.get<INote[]>(url);
+    const notesReponse = await axios.get<INote[]>(url, {
+      params: notesQueryParams,
+    });
     const noteAcc: Notes = {};
     const notes = notesReponse.data.reduce((m, note) => {
       m[note.id] = note;

@@ -39,15 +39,15 @@ const NoteList: React.FC<INoteProps> = () => {
   //   localStorage.setItem(LOCAL_STORAGE_NOTES_KEY, JSON.stringify(notes));
   // }, [notes]);
 
-  useEffect(() => {
-    const payload: FetchNotesActionPayload = {};
-    dispatchQuery({
-      name: fetchNotesAction.typePrefix,
-      payload: payload,
-      action: fetchNotesAction(payload),
-      dispatch: dispatch,
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const payload: FetchNotesActionPayload = {};
+  //   dispatchQuery({
+  //     name: fetchNotesAction.typePrefix,
+  //     payload: payload,
+  //     action: fetchNotesAction(payload),
+  //     dispatch: dispatch,
+  //   });
+  // }, [dispatch]);
 
   let noteListHtml = null;
 
@@ -72,7 +72,11 @@ const NoteList: React.FC<INoteProps> = () => {
         <div className="pointer-events-none absolute h-8 left-6 inset-x-0 z-10 bg-gradient-to-b from-gray-50 dark:from-gray-900"></div>
         <div className="pointer-events-none absolute h-16 left-6 bottom-0 inset-x-0 z-10 bg-gradient-to-t from-gray-50 dark:from-gray-900"></div>
         <div className="overflow-auto">
-          <TransitionGroup component="ul" className="divide-y-1 divide-gray-200 dark:divide-black " type="ul">
+          <TransitionGroup
+            component="ul"
+            className="divide-y-1 divide-gray-200 dark:divide-black "
+            type="ul"
+          >
             {notesList.map(
               ({
                 id,
