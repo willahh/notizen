@@ -14,7 +14,7 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src/**/*"
+    "/Users/willahh/www/projects/notizen/backend/src/**/*"
   ],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }
