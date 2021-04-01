@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { IsBoolean, IsOptional, IsUUID } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { TagsService } from 'src/tags/tags.service';
 import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
 import { CreateNoteDTO } from './create-note.dto';
@@ -21,6 +22,18 @@ interface findAll extends PaginationQueryDto {
   debugThrowError: false;
 }
 
+const toBoolean = (t, fieldName) => {
+  let ret = undefined;
+  if (t.obj[fieldName] === 'true') {
+    ret = true;
+  } else if (t.obj[fieldName] === 'false') {
+    ret = false;
+  } else {
+    ret = undefined;
+  }
+  return ret;
+};
+
 class FindAllClass extends PaginationQueryDto {
   @IsOptional()
   debug: string;
@@ -29,12 +42,14 @@ class FindAllClass extends PaginationQueryDto {
   debugThrowError: string;
 
   @IsBoolean()
+  @Transform((t) => toBoolean(t, 'isFav'), { toClassOnly: true })
   @IsOptional()
-  isFav: boolean;
+  readonly isFav: boolean;
 
   @IsBoolean()
+  @Transform((t) => toBoolean(t, 'isDeleted'), { toClassOnly: true })
   @IsOptional()
-  isDeleted: boolean;
+  readonly isDeleted: boolean;
 
   @IsUUID()
   @IsOptional()
@@ -62,10 +77,13 @@ export class NotesController {
     }: FindAllClass,
   ) {
     console.log('-->> isFav', isFav);
-    
+    console.log('-->> isDeleted', isDeleted);
+
     return this.notesService.findAll(
       { limit, offset },
-      isFav, isDeleted, tagId,
+      isFav,
+      isDeleted,
+      tagId,
       debug === 'true',
       debugThrowError === 'true',
     );

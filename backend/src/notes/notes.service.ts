@@ -61,16 +61,16 @@ export class NotesService {
     }
     const { limit, offset } = paginationQuery;
     console.log('isFav', isFav);
-    
+    console.log('isDeleted', isDeleted);
 
     const qb = await this.connection
       .createQueryBuilder(Note, 'note')
       .leftJoinAndSelect('note.tags', 'tag')
       .orderBy('note.id', 'DESC')
       .addOrderBy('tag.name', 'ASC');
-    // if (isFav !== undefined) {
+    if (isFav !== undefined) {
       qb.andWhere('note.isFav = :isFav', { isFav });
-    // }
+    }
     if (isDeleted !== undefined) {
       qb.andWhere('note.isDeleted = :isDeleted', { isDeleted });
     }
@@ -78,8 +78,7 @@ export class NotesService {
       qb.andWhere('tag.id = :tagId', { tagId });
     }
 
-    const notes = qb
-      .getMany();
+    const notes = qb.getMany();
 
     return notes;
   }
