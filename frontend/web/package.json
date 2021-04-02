@@ -21,9 +21,14 @@
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "babel-jest": "^26.6.3",
+    "concurrently": "^6.0.0",
     "cra-template": "1.0.3",
     "gh-pages": "^3.1.0",
+    "moment": "^2.29.1",
     "postcss": "^7.0.35",
+    "pouchdb-adapter-http": "^7.2.2",
+    "pouchdb-adapter-idb": "^7.2.2",
+    "pouchdb-server": "^4.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-multi-split-pane": "^0.3.2",
@@ -31,8 +36,12 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "react-spring": "^8.0.27",
+    "react-toastify": "^7.0.3",
     "react-tooltip": "^4.2.15",
     "react-transition-group": "^4.4.1",
+    "rxdb": "^9.15.0",
+    "rxjs": "^6.6.7",
+    "serve": "^11.3.2",
     "slate": "^0.59.0",
     "slate-react": "^0.59.0",
     "smooth-scrollbar-react": "^1.0.1",
@@ -64,7 +73,8 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "serve": "serve -s build",
-    "build-serve": "yarn build && yarn serve"
+    "build-serve": "yarn build && yarn serve",
+    "server": "pouchdb-server --host 127.0.0.1 -p 10102 -m -d ./db"
   },
   "eslintConfig": {
     "extends": "react-app"

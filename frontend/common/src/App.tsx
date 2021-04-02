@@ -9,7 +9,16 @@ import { HOST_URL } from './common/constants';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { dispatchQuery } from './common/utils';
-import { fetchNotesAction, FetchNotesActionPayload } from './module/note/note.actions';
+import {
+  fetchNotesAction,
+  FetchNotesActionPayload,
+} from './module/note/note.actions';
+
+// https://rxdb.info/install.html#npm
+(window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
 
 const routes = [
   { path: `${HOST_URL}/`, name: 'Home', Component: Auth },

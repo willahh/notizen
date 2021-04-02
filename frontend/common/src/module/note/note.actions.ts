@@ -10,7 +10,7 @@ import {
   addTagToNote,
   removeTagToNote,
   NotesQueryParams,
-} from '../../common/notizenAPI';
+} from '../../common/notizenAPI.pouchdb';
 import {
   NoteDetailResult,
   CreateNoteDTO,

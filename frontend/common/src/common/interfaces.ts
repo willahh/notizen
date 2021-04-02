@@ -47,7 +47,15 @@ export interface UpdateNoteDTO {
 export interface CreateNoteDTO {
   id: string;
   name?: string;
+  // content?: Array<Object>;
   content: Node[];
+  tags?: TagEntity[];
+  color?: NoteColor;
+  isFav?: boolean;
+  isDeleted?: boolean;
+  tagId?: string;
+  createDate?: string;
+  updateDate?: string;
 }
 
 // TODO: Share with the backend
