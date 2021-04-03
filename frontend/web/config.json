@@ -1,5 +1,9 @@
 {
   "couchdb": {
-    "uuid": "146eee83-2df3-487e-8035-d1f6589a1956"
-  }
+    "uuid": "146eee83-2df3-487e-8035-d1f6589a1956",
+    "database_dir": "./",
+    "couch_peruser": true
+  },
+  "admins": {},
+  "couch_peruser": true
 }

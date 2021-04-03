@@ -28,6 +28,7 @@
     "postcss": "^7.0.35",
     "pouchdb-adapter-http": "^7.2.2",
     "pouchdb-adapter-idb": "^7.2.2",
+    "pouchdb-adapter-indexeddb": "^7.2.2",
     "pouchdb-server": "^4.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

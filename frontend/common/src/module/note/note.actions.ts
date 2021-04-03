@@ -1,25 +1,25 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { addAction, createAction } from '../../common/actions';
 import {
+  CreateNoteDTO,
+  CreateTagAndAddToNoteResult,
+  NoteActionDTO,
+  NoteDetailResult,
+  NotesResult,
+  Tag,
+  UpdateNoteDTO,
+} from '../../common/interfaces';
+import {
+  addTagToNote,
   createNote,
+  createTagAndAddToNote,
   deleteNote,
   getNoteByNoteId,
   getNotes,
-  createTagAndAddToNote,
-  updateNote,
-  addTagToNote,
-  removeTagToNote,
   NotesQueryParams,
-} from '../../common/notizenAPI.pouchdb';
-import {
-  NoteDetailResult,
-  CreateNoteDTO,
-  UpdateNoteDTO,
-  NoteActionDTO,
-  Tag,
-  NotesResult,
-  CreateTagAndAddToNoteResult,
-} from '../../common/interfaces';
+  removeTagToNote,
+  updateNote,
+} from '../../database/notizenAPI.pouchdb';
 
 /**
  * NOTES_SET_SELECTED_NOTE_ID

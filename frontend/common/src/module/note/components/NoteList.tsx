@@ -87,6 +87,7 @@ const NoteList: React.FC<INoteProps> = () => {
                 tags,
                 color,
                 isFav,
+                isDeleted,
               }) => {
                 return (
                   <CSSTransition key={id} timeout={400} classNames="item">
@@ -99,6 +100,7 @@ const NoteList: React.FC<INoteProps> = () => {
                       tags={tags}
                       content={content}
                       isSelected={true}
+                      isDeleted={isDeleted}
                       color={color}
                       isFav={isFav}
                     ></NoteItem>

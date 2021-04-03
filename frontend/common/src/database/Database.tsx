@@ -4,51 +4,58 @@ import {
   createRxDatabase,
   RxCollection,
   RxDatabase,
-  RxDocument
+  RxDocument,
 } from 'rxdb';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate';
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication';
-import { Node } from 'slate';
-import { NoteColor, TagEntity } from './common/interfaces';
-import { noteSchema } from './Schema';
+import { INote, TagEntity } from '../common/interfaces';
+import { noteSchema, tagSchema } from './Schema';
 
+// ------------------- NOTE
 interface NoteDocMethods {
   // scream: (v: string) => string;
 }
 
-export type NoteDocType = {
-  id: string;
-  name?: string;
-  // content?: Array<Object>;
-  content?: Node[];
-  createDate?: string;
-  updateDate?: string;
-  tags?: TagEntity[];
-  color?: NoteColor;
-  isFav?: boolean;
-  isDeleted?: boolean;
-};
-
-export type NoteDocument = RxDocument<NoteDocType, NoteDocMethods>;
+export type NoteDocument = RxDocument<INote, NoteDocMethods>;
 
 type NoteCollectionMethods = {
   // countAllDocuments: () => Promise<number>;
 };
 
 type NoteCollection = RxCollection<
-  NoteDocType,
+  INote,
   NoteDocMethods,
   NoteCollectionMethods
 >;
 
+// ------------------- TAG
+interface TagDocMethods {
+  // scream: (v: string) => string;
+}
+
+export type TagDocument = RxDocument<TagEntity, TagDocMethods>;
+
+type TagCollectionMethods = {
+  // countAllDocuments: () => Promise<number>;
+};
+
+type TagCollection = RxCollection<
+  TagEntity,
+  TagDocMethods,
+  TagCollectionMethods
+>;
+
+// ------------------- DB
 type MyDatabaseCollections = {
   notes: NoteCollection;
+  tags: TagCollection;
 };
 
 type MyDatabase = RxDatabase<MyDatabaseCollections>;
 
 addRxPlugin(require('pouchdb-adapter-idb'));
+// addRxPlugin(require('pouchdb-adapter-indexeddb')); // New adapter not production ready yet
 addRxPlugin(require('pouchdb-adapter-http'));
 addRxPlugin(RxDBLeaderElectionPlugin);
 addRxPlugin(RxDBReplicationPlugin);
@@ -57,9 +64,9 @@ addRxPlugin(RxDBNoValidatePlugin);
 const collections = {
   notes: {
     schema: noteSchema,
+    sync: true,
     // methods: heroDocMethods,
     // statics: heroCollectionMethods
-    sync: true,
     // pouchSettings: {}, // (optional)
     // statics: {}, // (optional) ORM-functions for this collection
     // methods: {}, // (optional) ORM-functions for documents
@@ -69,7 +76,13 @@ const collections = {
     // autoMigrate: true, // (optional)
     // cacheReplacementPolicy: function(){}, // (optional) custom cache replacement policy
   },
+  tags: {
+    schema: tagSchema,
+    sync: true,
+  },
 };
+
+console.log('collections', collections);
 
 // TODO: Debug
 declare global {
@@ -85,8 +98,11 @@ let dbPromise: Promise<RxDatabase<MyDatabaseCollections>> | null = null;
 const _create = async () => {
   console.log('DatabaseService: creating database...');
   const db: MyDatabase = await createRxDatabase<MyDatabaseCollections>({
-    name: 'notizen',
+    name: 'notizen2',
     adapter: 'idb',
+    multiInstance: true, // https://www.npmjs.com/package/rxdb-utils#replication
+    ignoreDuplicate: false, // https://www.npmjs.com/package/rxdb-utils#replication
+    // adapter: 'indexeddb',  // New adapter not production ready yet
   });
   console.log('DatabaseService: created database');
   window['db'] = db; // INFO: Debug
@@ -140,10 +156,26 @@ const _create = async () => {
   //     }
   //   });
   // TODO: Filter by sync: true
+  console.log('b');
   Object.keys(collections).map((colName) => {
+    console.log('filter :', colName);
+
     try {
+      // const remoteUrl = syncURL + 'user' + colName + '/';
+      const remoteUrl = syncURL + colName + '/';
+      console.log('colName', colName);
+      console.log('remoteUrl', remoteUrl);
+
       return db[colName].sync({
-        remote: syncURL + colName + '/',
+        remote: remoteUrl
+
+        // A key is sent to the server, the server will filter documents
+        // Filter documents at the server level by by_userlogin
+        // Options is https://pouchdb.com/api.html#replication
+        // options: {
+        //   filter: 'app/by_userlogin',
+        //   query_params: { userlogin: userlogin },
+        // },
       });
     } catch (err) {
       console.error(err);
@@ -157,51 +189,3 @@ export const get = () => {
   if (!dbPromise) dbPromise = _create();
   return dbPromise;
 };
-
-// TODO: Debug
-(window as any).getDB = get;
-
-// // RXDB test
-// import {
-//   RxDatabase,
-//   /* ... */
-// } from 'rxdb';
-
-// import { createRxDatabase, addRxPlugin } from 'rxdb';
-// /**
-//  *
-//  *
-//  *
-//  *
-//  * TODO : Implement https://blog.logrocket.com/building-an-offline-first-app-with-react-and-rxdb-e97a1fa64356/
-//  *
-//  *
-//  *
-//  *
-//  */
-
-// console.log('[x] >>> a1');
-
-// (async () => {
-//   console.log('[x] >>> a2');
-//   // const db = await createRxDatabase({
-//   //   name: 'heroesdb', // <- name
-//   //   adapter: 'idb', // <- storage-adapter
-//   //   password: 'myPassword', // <- password (optional)
-//   //   multiInstance: true, // <- multiInstance (optional, default: true)
-//   //   eventReduce: false, // <- eventReduce (optional, default: true)
-//   // });
-
-//   // this adapter stores the data in indexeddb
-//   addRxPlugin(require('pouchdb-adapter-idb'));
-
-//   addRxPlugin(require('pouchdb-adapter-http'));
-
-//   const db = await createRxDatabase({
-//     name: 'mydatabase',
-//     adapter: 'idb' // name of the adapter
-//   });
-//   console.log('[x] >>> a3');
-
-//   console.dir(db);
-// })();

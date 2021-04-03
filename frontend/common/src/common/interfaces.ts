@@ -8,13 +8,14 @@ import { Node } from 'slate';
 // TODO: Share with backend
 export interface INote {
   id: string;
-  name?: string;
-  content: Node[];
   createDate: string;
   updateDate: string;
-  tags: Tag[];
-  isFav: boolean;
+  name?: string;
+  content: Node[];
   color: NoteColor;
+  isFav: boolean;
+  isDeleted: boolean;
+  tags: Tag[];
 }
 
 export interface Notes {
@@ -43,20 +44,7 @@ export interface UpdateNoteDTO {
   color?: NoteColor;
 }
 
-// TODO: Share with the backend
-export interface CreateNoteDTO {
-  id: string;
-  name?: string;
-  // content?: Array<Object>;
-  content: Node[];
-  tags?: TagEntity[];
-  color?: NoteColor;
-  isFav?: boolean;
-  isDeleted?: boolean;
-  tagId?: string;
-  createDate?: string;
-  updateDate?: string;
-}
+export interface CreateNoteDTO extends INote {}
 
 // TODO: Share with the backend
 export enum NoteAction {
@@ -118,16 +106,16 @@ export interface TagEntity {
   createDate: string;
   updateDate: string;
   name: string;
-  isActive: boolean;
   icon: TagIcon;
   color: TagColor;
+  isDeleted: boolean;
 }
 
 export interface CreateTagDTO {
   id: string;
   createDate: string;
   updateDate: string;
-  isActive: boolean;
+  isDeleted: boolean;
   icon: TagIcon;
   color: TagColor;
   name: string;
@@ -135,7 +123,7 @@ export interface CreateTagDTO {
 
 export interface UpdateTagDTO {
   updateDate?: string;
-  isActive?: boolean;
+  isDeleted?: boolean;
   icon?: TagIcon;
   color?: TagColor;
   name?: string;

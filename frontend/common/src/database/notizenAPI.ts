@@ -7,8 +7,6 @@
  * Maybe there is something to do to avoid this "duplication".
  */
 
-import * as Database from '../Database';
-
 import axios from 'axios';
 import {
   Notes,
@@ -25,9 +23,7 @@ import {
   NoteActionDTO,
   CreateTagAndAddToNoteResult,
   CreateTagDTO,
-  NoteColor,
-} from './interfaces';
-import { NoteDocument } from '../Database';
+} from '../common/interfaces';
 
 /* ----------------- debug ------------------------- */
 const DEBUG = false;
@@ -74,55 +70,42 @@ export interface NotesQueryParams {
 export async function getNotes(
   notesQueryParams: NotesQueryParams
 ): Promise<NotesResult> {
-  console.log('getNotes');
-
-  const db = await Database.get();
-  const docs = await db.notes.find().exec();
-  let notes = {};
-  try {
-    notes = docs.reduce((acc: any, doc: any) => {
-      const noteRow = doc.toJSON();
-      acc[noteRow.id] = noteRow;
-      return acc;
-    }, {});
-  } catch (err) {
-    console.error(err);
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
   }
 
-  // }
-  // const sub = db.notes
-  //   .find({
-  //     selector: {},
-  //     sort: [{ name: 'asc' }],
-  //   })
-  //   .$.subscribe((notes) => {
-  //     console.log('subscribe', notes);
+  const url = withUrl(`${API_URL}/notes`);
 
-  //     if (!notes) {
-  //       return;
-  //     }
-  //     console.log('reload notes-list ');
-  //     console.dir(notes);
-  //     // this.setState({ notes, loading: false });
-  //   });
-  // // this.subs.push(sub);
+  try {
+    const notesReponse = await axios.get<INote[]>(url, {
+      params: notesQueryParams,
+    });
+    const noteAcc: Notes = {};
+    const notes = notesReponse.data.reduce((m, note) => {
+      m[note.id] = note;
+      return m;
+    }, noteAcc);
 
-  // TODO
-  return {
-    notes: notes,
-  };
+    return {
+      notes: notes,
+    };
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function getNoteByNoteId(
   noteId: string
 ): Promise<NoteDetailResult> {
-  try {
-    const db = await Database.get();
-    const doc = await db.notes.findOne({ selector: { id: noteId } }).exec();
-    const note = <INote>doc.toJSON();
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
 
+  const url = withUrl(`${API_URL}/notes/${noteId}`);
+  try {
+    const notesReponse = await axios.get<INote>(url);
     return {
-      note: note,
+      note: notesReponse.data,
     };
   } catch (err) {
     throw err;
@@ -132,15 +115,15 @@ export async function getNoteByNoteId(
 export async function createNote(
   createNoteDTO: CreateNoteDTO
 ): Promise<NoteDetailResult> {
-  console.log('createNote', createNoteDTO);
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
 
+  const url = withUrl(`${API_URL}/notes`);
   try {
-    const db = await Database.get();
-    const doc = await db.notes.insert(createNoteDTO);
-    const note = <INote>doc.toJSON();
-
+    const response = await axios.post<INote>(url, createNoteDTO);
     return {
-      note: note,
+      note: response.data,
     };
   } catch (err) {
     throw err;
@@ -148,20 +131,18 @@ export async function createNote(
 }
 
 export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
-  try {
-    const db = await Database.get();
-    const query = await db.notes.findOne({ selector: { id: noteId } });
-    const response = await query.remove();
-    const note = <INote>response.toJSON();
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
 
+  const url = withUrl(`${API_URL}/notes/${noteId}`);
+  try {
+    const response = await axios.delete<INote>(url);
     return {
-      note: note,
+      note: response.data,
     };
   } catch (err) {
-    console.error(
-      "Une erreur est survenue, l'alignement des planètes n'est plus bon",
-      err
-    );
+    console.error('Une erreur est survenue', err);
     throw err;
   }
 }
@@ -169,14 +150,16 @@ export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
 export async function updateNote(
   updateNoteDTO: UpdateNoteDTO
 ): Promise<NoteDetailResult> {
+  if (!navigator.onLine) {
+    throw new Error(`No connection detected, cannot do request`);
+  }
+
   const { id } = updateNoteDTO;
+  const url = withUrl(`${API_URL}/notes/${id}`);
   try {
-    const db = await Database.get();
-    const query = await db.notes.findOne({ selector: { id: id } });
-    const response = await query.update(updateNoteDTO);
-    const note = <INote>response.toJSON();
+    const response = await axios.patch<INote>(url, updateNoteDTO);
     return {
-      note: note,
+      note: response.data,
     };
   } catch (err) {
     throw err;

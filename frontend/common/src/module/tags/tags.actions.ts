@@ -1,5 +1,9 @@
 import { Dispatch } from 'react';
-import { createTag, deleteTag, getTags } from '../../common/notizenAPI';
+import {
+  createTag,
+  deleteTag,
+  getTags,
+} from '../../database/notizenAPI.pouchdb';
 import {
   Mode,
   Tag,
@@ -10,7 +14,7 @@ import {
   TagEntity,
 } from '../../common/interfaces';
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import { updateTag } from '../../common/notizenAPI';
+import { updateTag } from '../../database/notizenAPI';
 import { dispatchCommand } from '../../common/utils';
 import { addAction } from '../../common/actions';
 
@@ -23,7 +27,7 @@ export const fetchTagsAction = createAsyncThunk<
   TagsResult,
   FetchTagsActionPayload
 >(TAGS_FETCH_TAGS, async () => {
-  return await getTags();
+  return await getTags({});
 });
 addAction(TAGS_FETCH_TAGS, fetchTagsAction);
 

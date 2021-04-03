@@ -5,25 +5,27 @@
  * When a new backend service is added, a new controller method is added to to expose the service,
  * then the frontend need to expose this service too.
  * Maybe there is something to do to avoid this "duplication".
+ *
+ * TODO: use Rxdb reactive functions, examples here : https://codesandbox.io/s/7zo06w5kr0?file=/src/hero-insert/hero-insert.jsx
  */
 
 import axios from 'axios';
+import * as Database from './Database';
 import {
-  Notes,
-  UpdateNoteDTO,
   CreateNoteDTO,
-  INote,
-  NoteDetailResult,
-  NotesResult,
-  TagsResult,
-  Tag,
-  Tags,
-  UpdateTagDTO,
-  TagResult,
-  NoteActionDTO,
   CreateTagAndAddToNoteResult,
   CreateTagDTO,
-} from './interfaces';
+  INote,
+  NoteActionDTO,
+  NoteDetailResult,
+  NotesResult,
+  Tag,
+  TagResult,
+  Tags,
+  TagsResult,
+  UpdateNoteDTO,
+  UpdateTagDTO,
+} from '../common/interfaces';
 
 /* ----------------- debug ------------------------- */
 const DEBUG = false;
@@ -70,44 +72,59 @@ export interface NotesQueryParams {
 export async function getNotes(
   notesQueryParams: NotesQueryParams
 ): Promise<NotesResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
+  console.log('getNotes', notesQueryParams);
 
-  const url = withUrl(`${API_URL}/notes`);
-
+  let notes = {};
   try {
-    const notesReponse = await axios.get<INote[]>(url, {
-      params: notesQueryParams,
-    });
-    const noteAcc: Notes = {};
-    const notes = notesReponse.data.reduce((m, note) => {
-      m[note.id] = note;
-      return m;
-    }, noteAcc);
-
-    return {
-      notes: notes,
-    };
+    const db = await Database.get();
+    const query = await db.notes.find().where(notesQueryParams);
+    const docs = await query.exec();
+    notes = docs.reduce((acc: any, doc: any) => {
+      const noteRow = doc.toJSON();
+      acc[noteRow.id] = noteRow;
+      return acc;
+    }, {});
   } catch (err) {
-    throw err;
+    console.error(err);
   }
+
+  // }
+  // const sub = db.notes
+  //   .find({
+  //     selector: {},
+  //     sort: [{ name: 'asc' }],
+  //   })
+  //   .$.subscribe((notes) => {
+  //     console.log('subscribe', notes);
+
+  //     if (!notes) {
+  //       return;
+  //     }
+  //     console.log('reload notes-list ');
+  //     console.dir(notes);
+  //     // this.setState({ notes, loading: false });
+  //   });
+  // // this.subs.push(sub);
+
+  // TODO
+  return {
+    notes: notes,
+  };
 }
 
 export async function getNoteByNoteId(
   noteId: string
 ): Promise<NoteDetailResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
-  const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
-    const notesReponse = await axios.get<INote>(url);
+    const db = await Database.get();
+    const doc = await db.notes.findOne({ selector: { id: noteId } }).exec();
+    const note = <INote>doc.toJSON();
+
     return {
-      note: notesReponse.data,
+      note: note,
     };
   } catch (err) {
+    console.error(err);
     throw err;
   }
 }
@@ -115,34 +132,42 @@ export async function getNoteByNoteId(
 export async function createNote(
   createNoteDTO: CreateNoteDTO
 ): Promise<NoteDetailResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
+  console.log('createNote', createNoteDTO);
 
-  const url = withUrl(`${API_URL}/notes`);
   try {
-    const response = await axios.post<INote>(url, createNoteDTO);
+    const db = await Database.get();
+    const docToInsert = {
+      _id: 'canidae:dog',
+      name: 'Dog',
+      latin: 'Canis lupus familiaris',
+    };
+    const doc = await db.notes.insert(createNoteDTO);
+    const note = <INote>doc.toJSON();
+
     return {
-      note: response.data,
+      note: note,
     };
   } catch (err) {
+    console.error(err);
     throw err;
   }
 }
 
 export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
-  const url = withUrl(`${API_URL}/notes/${noteId}`);
   try {
-    const response = await axios.delete<INote>(url);
+    const db = await Database.get();
+    const query = await db.notes.findOne({ selector: { id: noteId } });
+    const doc = await query.remove();
+    const note = <INote>doc.toJSON();
+
     return {
-      note: response.data,
+      note: note,
     };
   } catch (err) {
-    console.error('Une erreur est survenue', err);
+    console.error(
+      "Une erreur est survenue, l'alignement des planètes n'est plus bon",
+      err
+    );
     throw err;
   }
 }
@@ -150,22 +175,25 @@ export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
 export async function updateNote(
   updateNoteDTO: UpdateNoteDTO
 ): Promise<NoteDetailResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
+  console.log('updateNote', updateNote);
   const { id } = updateNoteDTO;
-  const url = withUrl(`${API_URL}/notes/${id}`);
   try {
-    const response = await axios.patch<INote>(url, updateNoteDTO);
+    const db = await Database.get();
+    const query = await db.notes.findOne({ selector: { id: id } });
+    const doc = await query.exec();
+    const note = <INote>(await doc.atomicPatch(updateNoteDTO)).toJSON();
+
     return {
-      note: response.data,
+      note: note,
     };
   } catch (err) {
+    console.error(err);
     throw err;
   }
 }
 
+/* ----------------- note - tags ------------------------- */
+// TODO !!!!!!!!
 export async function createTagAndAddToNote(
   noteActionDTO: NoteActionDTO
 ): Promise<CreateTagAndAddToNoteResult> {
@@ -192,6 +220,8 @@ export async function createTagAndAddToNote(
 export async function addTagToNote(
   noteActionDTO: NoteActionDTO
 ): Promise<NoteDetailResult> {
+  console.log('addTagToNote', noteActionDTO);
+
   if (!navigator.onLine) {
     throw new Error(`No connection detected, cannot do request`);
   }
@@ -230,27 +260,45 @@ export async function removeTagToNote(
 }
 
 /* ----------------- tags ------------------------- */
-export async function getTags(): Promise<TagsResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
-  const url = withUrl(`${API_URL}/tags?limit=100`);
-
+export interface TagsQueryParams {}
+export async function getTags(
+  tagsQueryParams: TagsQueryParams
+): Promise<TagsResult> {
   try {
-    const tagsResponse = await axios.get<Tag[]>(url);
-    const tagsAcc: Tags = {};
-    const tags = tagsResponse.data.reduce((m, tag) => {
-      m[tag.id] = tag;
-      return m;
-    }, tagsAcc);
+    const db = await Database.get();
+    const query = await db.tags.find().where(tagsQueryParams);
+    const docs = await query.exec();
+    const tags = docs.reduce((acc: any, doc: any) => {
+      const row = doc.toJSON();
+      acc[row.id] = row;
+      return acc;
+    }, {});
 
-    return {
-      tags: tags,
-    };
+    return tags;
   } catch (err) {
-    throw err;
+    console.error(err);
   }
+
+  // if (!navigator.onLine) {
+  //   throw new Error(`No connection detected, cannot do request`);
+  // }
+
+  // const url = withUrl(`${API_URL}/tags?limit=100`);
+
+  // try {
+  //   const tagsResponse = await axios.get<Tag[]>(url);
+  //   const tagsAcc: Tags = {};
+  //   const tags = tagsResponse.data.reduce((m, tag) => {
+  //     m[tag.id] = tag;
+  //     return m;
+  //   }, tagsAcc);
+
+  //   return {
+  //     tags: tags,
+  //   };
+  // } catch (err) {
+  //   throw err;
+  // }
 }
 
 export async function createTag(

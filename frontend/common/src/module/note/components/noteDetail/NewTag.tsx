@@ -391,7 +391,7 @@ const NewTag: React.FC<INewTagProps> = ({ noteId }) => {
                       name: filterText,
                       color: TagColor.GRAY,
                       icon: TagIcon.TAG,
-                      isActive: true,
+                      isDeleted: false,
                       mode: Mode.Default,
                     };
                     const payload: CreateTagAndAddToNoteActionPayload = {

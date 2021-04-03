@@ -79,7 +79,7 @@ const Tags: React.FC<ITagsProps> = ({}) => {
               name: 'New tag',
               createDate: new Date().toISOString(),
               updateDate: new Date().toISOString(),
-              isActive: false,
+              isDeleted: false,
               icon: TagIcon.TAG,
               color: TagColor.GRAY,
             };

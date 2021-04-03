@@ -1,19 +1,12 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { CreateNoteDTO } from '../../../common/interfaces';
-import {
-  createNoteAction,
-  CreateNoteActionPayload,
-} from '../note.actions';
-import { dispatchCommand } from '../../../common/utils';
 import { addNoteAndSelect } from '../note.service';
 
 export type INoteFilterProps = {};
 
 const NoteFilter: React.FC<INoteFilterProps> = ({}) => {
   console.log('NoteFilter');
-  
+
   const dispatch = useDispatch();
 
   return (

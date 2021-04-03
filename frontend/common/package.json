@@ -22,6 +22,7 @@
     "moment": "^2.29.1",
     "pouchdb-adapter-http": "^7.2.2",
     "pouchdb-adapter-idb": "^7.2.2",
+    "pouchdb-adapter-indexeddb": "^7.2.2",
     "pouchdb-server": "^4.2.0",
     "prismjs": "^1.23.0",
     "react": "^17.0.1",
