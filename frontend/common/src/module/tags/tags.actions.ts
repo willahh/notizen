@@ -1,22 +1,19 @@
-import { Dispatch } from 'react';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { addAction } from '../../common/actions';
+import {
+  CreateTagDTO,
+  Mode,
+  Tag,
+  TagResult,
+  TagsResult,
+  UpdateTagDTO,
+} from '../../common/interfaces';
 import {
   createTag,
   deleteTag,
   getTags,
+  updateTag,
 } from '../../database/notizenAPI.pouchdb';
-import {
-  Mode,
-  Tag,
-  UpdateTagDTO,
-  TagsResult,
-  TagResult,
-  CreateTagDTO,
-  TagEntity,
-} from '../../common/interfaces';
-import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import { updateTag } from '../../database/notizenAPI';
-import { dispatchCommand } from '../../common/utils';
-import { addAction } from '../../common/actions';
 
 /**
  * TAGS_FETCH_TAGS
@@ -125,7 +122,8 @@ export const createTagAction = createAsyncThunk<
   TagResult,
   CreateTagActionPayload
 >(TAGS_CREATE_TAG, async (payload) => {
-  console.log('createTagAction');
+  console.log('xxxxxxxxxxxxxxxxxxxxxxxxxx createTagAction');
+  console.log('createTagAction', payload);
 
   const { createTagDTO } = payload;
 
@@ -152,48 +150,6 @@ export const addTagLocal = createAction(
   }
 );
 addAction(TAGS_ADD_TAG_LOCAL, addTagLocal);
-
-/**
- * TAGS_CREATE_TAG_AND_EDIT
- * Custom action which dispatch 2 commands
- */
-export const createTagAndEdit = async (
-  createTagDTO: CreateTagDTO,
-  dispatch: Dispatch<any>
-) => {
-  console.log('createTagAndEdit');
-
-  const tagEntity: TagEntity = {
-    ...createTagDTO,
-  };
-  const createTagActionPayload: CreateTagActionPayload = {
-    createTagDTO: tagEntity,
-  };
-  const tag: Tag = {
-    ...tagEntity,
-    mode: Mode.Default,
-  };
-
-  // TODO: should await this call
-  // await dispatchCommand({
-  dispatchCommand({
-    name: createTagAction.typePrefix,
-    action: createTagAction(createTagActionPayload),
-    payload: createTagActionPayload,
-    dispatch,
-  });
-
-  const setTagModeActionPayload: SetTagModeActionPayload = {
-    tag: tag,
-    mode: Mode.Edit,
-  };
-  dispatchCommand({
-    name: setTagModeAction.name,
-    action: setTagModeAction(setTagModeActionPayload),
-    payload: setTagModeActionPayload,
-    dispatch,
-  });
-};
 
 /**
  * TAGS_UPDATE_TAG

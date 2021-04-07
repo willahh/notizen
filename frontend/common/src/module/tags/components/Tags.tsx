@@ -1,34 +1,29 @@
-import { v4 as uuidv4 } from 'uuid';
-import React from 'react';
-import { useEffect } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import {
+  Mode,
+  Tag
+} from '../../../common/interfaces';
 import { RootState } from '../../../common/rootReducer';
 import {
   dispatchCommand,
   dispatchQuery,
-  mapOfKeyValueToArrayOfMap,
+  mapOfKeyValueToArrayOfMap
 } from '../../../common/utils';
-import {
-  CreateTagDTO,
-  Mode,
-  Tag,
-  TagColor,
-  TagIcon,
-} from '../../../common/interfaces';
 import {
   fetchTagsAction,
   FetchTagsActionPayload,
   setModeAction,
-  SetModeActionPayload,
-  createTagAndEdit,
+  SetModeActionPayload
 } from '../tags.actions';
+import { createTagAndEdit } from '../tags.service';
 import { TagComponentMemoized } from './Tag';
 interface ITagsProps {}
 
 const Tags: React.FC<ITagsProps> = ({}) => {
   console.log('Tags');
-  
+
   const dispatch = useDispatch();
   const { error, isLoading, tags } = useSelector(
     (state: RootState) => state.tags
@@ -73,17 +68,7 @@ const Tags: React.FC<ITagsProps> = ({}) => {
           className="text-black dark:text-white ml-2"
           title="Create"
           onClick={() => {
-            const tagId = uuidv4();
-            const tagDTO: CreateTagDTO = {
-              id: tagId,
-              name: 'New tag',
-              createDate: new Date().toISOString(),
-              updateDate: new Date().toISOString(),
-              isDeleted: false,
-              icon: TagIcon.TAG,
-              color: TagColor.GRAY,
-            };
-            createTagAndEdit(tagDTO, dispatch);
+            createTagAndEdit(dispatch);
           }}
         >
           <svg

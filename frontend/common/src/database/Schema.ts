@@ -1,7 +1,6 @@
 // https://codesandbox.io/s/7zo06w5kr0?file=/src/Database.jsx:0-2306
 import { RxJsonSchema } from 'rxdb';
-import { INote, TagEntity } from './../common/interfaces';
-
+import { INote, NoteTagEntity, TagEntity } from './../common/interfaces';
 
 export const noteSchema: RxJsonSchema<INote> = {
   title: 'Note schema',
@@ -85,6 +84,34 @@ export const tagSchema: RxJsonSchema<TagEntity> = {
     isDeleted: {
       type: 'boolean',
       default: false,
+    },
+  },
+};
+
+export const notesTagsSchema: RxJsonSchema<NoteTagEntity> = {
+  title: 'NotesTags schema',
+  description: `NotesTags schema V1. 
+  This is used to store relations between notes and tags.`,
+  version: 0,
+  type: 'object',
+  properties: {
+    id: {
+      type: 'string', // TODO: Check if uuid type exist
+      primary: true,
+    },
+    noteId: {
+      type: 'string', // TODO: Check if uuid type exist
+    },
+    tagId: {
+      type: 'string', // TODO: Check if uuid type exist
+    },
+    createDate: {
+      type: 'string', // TODO Check if date type exist
+      default: '', // TODO: Default date timestamp
+    },
+    updateDate: {
+      type: 'string', // TODO Check if date type exist
+      default: '', // TODO: Default date timestamp
     },
   },
 };

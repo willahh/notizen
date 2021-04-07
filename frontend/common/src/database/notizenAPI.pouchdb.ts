@@ -11,6 +11,7 @@
 
 import axios from 'axios';
 import * as Database from './Database';
+import { v4 as uuidv4 } from 'uuid';
 import {
   CreateNoteDTO,
   CreateTagAndAddToNoteResult,
@@ -20,12 +21,14 @@ import {
   NoteDetailResult,
   NotesResult,
   Tag,
+  TagEntity,
   TagResult,
   Tags,
   TagsResult,
   UpdateNoteDTO,
   UpdateTagDTO,
 } from '../common/interfaces';
+import { getCurrentUserInfo } from './Auth';
 
 /* ----------------- debug ------------------------- */
 const DEBUG = false;
@@ -115,6 +118,8 @@ export async function getNotes(
 export async function getNoteByNoteId(
   noteId: string
 ): Promise<NoteDetailResult> {
+  console.log('getNoteByNoteId noteId', noteId);
+
   try {
     const db = await Database.get();
     const doc = await db.notes.findOne({ selector: { id: noteId } }).exec();
@@ -135,12 +140,8 @@ export async function createNote(
   console.log('createNote', createNoteDTO);
 
   try {
+    // https://blog.cloudant.com/2019/05/24/Partitioned-Databases-with-Cloudant-Libraries.html#insert-data-into-a-partition
     const db = await Database.get();
-    const docToInsert = {
-      _id: 'canidae:dog',
-      name: 'Dog',
-      latin: 'Canis lupus familiaris',
-    };
     const doc = await db.notes.insert(createNoteDTO);
     const note = <INote>doc.toJSON();
 
@@ -154,6 +155,8 @@ export async function createNote(
 }
 
 export async function deleteNote(noteId: string): Promise<NoteDetailResult> {
+  console.log('deleteNote', noteId);
+
   try {
     const db = await Database.get();
     const query = await db.notes.findOne({ selector: { id: noteId } });
@@ -222,19 +225,28 @@ export async function addTagToNote(
 ): Promise<NoteDetailResult> {
   console.log('addTagToNote', noteActionDTO);
 
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
-  const { noteId } = noteActionDTO;
-  const url = withUrl(`${API_URL}/notes/${noteId}/actions`, false, 2000);
   try {
-    const response = await axios.post<INote>(url, noteActionDTO);
-    const note = response.data;
+    const userInfo = getCurrentUserInfo();
+    const noteTagId = userInfo.userId + ':' +  uuidv4();
+    const { noteId, tagId } = noteActionDTO;
+    // https://blog.cloudant.com/2019/05/24/Partitioned-Databases-with-Cloudant-Libraries.html#insert-data-into-a-partition
+    const db = await Database.get();
+    await db.notestags.insert({
+      id: noteTagId,
+      noteId: noteId,
+      tagId: tagId,
+      createDate: new Date().toISOString(),
+      updateDate: new Date().toISOString(),
+    });
+
+    const noteDoc = await db.notes.findOne({ selector: { id: noteId } }).exec();
+    const note = <INote>noteDoc.toJSON();
+
     return {
       note: note,
     };
   } catch (err) {
+    console.error(err);
     throw err;
   }
 }
@@ -274,47 +286,25 @@ export async function getTags(
       return acc;
     }, {});
 
-    return tags;
+    return { tags: tags };
   } catch (err) {
     console.error(err);
   }
-
-  // if (!navigator.onLine) {
-  //   throw new Error(`No connection detected, cannot do request`);
-  // }
-
-  // const url = withUrl(`${API_URL}/tags?limit=100`);
-
-  // try {
-  //   const tagsResponse = await axios.get<Tag[]>(url);
-  //   const tagsAcc: Tags = {};
-  //   const tags = tagsResponse.data.reduce((m, tag) => {
-  //     m[tag.id] = tag;
-  //     return m;
-  //   }, tagsAcc);
-
-  //   return {
-  //     tags: tags,
-  //   };
-  // } catch (err) {
-  //   throw err;
-  // }
 }
 
 export async function createTag(
   createTagDTO: CreateTagDTO
 ): Promise<TagResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
-  const url = withUrl(`${API_URL}/tags/`, true);
   try {
-    const response = await axios.post<Tag>(url, createTagDTO);
+    const db = await Database.get();
+    const doc = await db.tags.insert(createTagDTO);
+    const tag = <TagEntity>doc.toJSON();
+
     return {
-      tagEntity: response.data,
+      tagEntity: tag,
     };
   } catch (err) {
+    console.error(err);
     throw err;
   }
 }
@@ -323,33 +313,38 @@ export async function updateTag(
   tagId: string,
   updateTagDto: UpdateTagDTO
 ): Promise<TagResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
-
-  const url = withUrl(`${API_URL}/tags/${tagId}`);
   try {
-    const response = await axios.patch<Tag>(url, updateTagDto);
+    const db = await Database.get();
+    const query = await db.tags.findOne({ selector: { id: tagId } });
+    const doc = await query.exec();
+    const tag = <TagEntity>(await doc.atomicPatch(updateTagDto)).toJSON();
+
     return {
-      tagEntity: response.data,
+      tagEntity: tag,
     };
   } catch (err) {
+    console.error(err);
     throw err;
   }
 }
 
 export async function deleteTag(tagId: string): Promise<TagResult> {
-  if (!navigator.onLine) {
-    throw new Error(`No connection detected, cannot do request`);
-  }
+  console.log('deleteTag', tagId);
 
-  const url = withUrl(`${API_URL}/tags/${tagId}`, true);
   try {
-    const response = await axios.delete(url);
+    const db = await Database.get();
+    const query = await db.tags.findOne({ selector: { id: tagId } });
+    const doc = await query.remove();
+    const tag = <TagEntity>doc.toJSON();
+
     return {
-      tagEntity: response.data,
+      tagEntity: tag,
     };
   } catch (err) {
+    console.error(
+      "Une erreur est survenue, l'alignement des planètes n'est plus bon",
+      err
+    );
     throw err;
   }
 }

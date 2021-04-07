@@ -144,3 +144,16 @@ export interface TagsResult {
 export interface TagResult {
   tagEntity: TagEntity;
 }
+
+
+
+
+
+// NOTE/Tag ------------------------
+export interface NoteTagEntity {
+  id: string;
+  noteId: string;
+  tagId: string;
+  createDate: string;
+  updateDate: string;
+}

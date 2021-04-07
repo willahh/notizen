@@ -41,8 +41,7 @@ const tags = createSlice({
        * TAGS_CREATE_TAG
        */
       .addCase(createTagAction.pending, (state, action) => {
-        console.log('createTagAction.pending', action);
-
+        console.log('createTagAction.pending', action, state);
         const tag: Tag = {
           ...action.meta.arg.createTagDTO,
           mode: Mode.Default,

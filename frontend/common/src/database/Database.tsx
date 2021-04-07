@@ -7,10 +7,11 @@ import {
   RxDocument,
 } from 'rxdb';
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election';
+import views from 'rxdb-utils';
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate';
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication';
-import { INote, TagEntity } from '../common/interfaces';
-import { noteSchema, tagSchema } from './Schema';
+import { INote, NoteTagEntity, TagEntity } from '../common/interfaces';
+import { noteSchema, notesTagsSchema, tagSchema } from './Schema';
 
 // ------------------- NOTE
 interface NoteDocMethods {
@@ -46,10 +47,24 @@ type TagCollection = RxCollection<
   TagCollectionMethods
 >;
 
+// ------------------- NoteTag
+interface NoteTagDocMethods {}
+
+export type NoteTagDocument = RxDocument<NoteTagEntity, NoteTagDocMethods>;
+
+type NoteTagCollectionMethods = {};
+
+type NoteTagCollection = RxCollection<
+  NoteTagEntity,
+  NoteTagDocMethods,
+  NoteTagCollectionMethods
+>;
+
 // ------------------- DB
 type MyDatabaseCollections = {
   notes: NoteCollection;
   tags: TagCollection;
+  notestags: NoteTagCollection;
 };
 
 type MyDatabase = RxDatabase<MyDatabaseCollections>;
@@ -60,6 +75,7 @@ addRxPlugin(require('pouchdb-adapter-http'));
 addRxPlugin(RxDBLeaderElectionPlugin);
 addRxPlugin(RxDBReplicationPlugin);
 addRxPlugin(RxDBNoValidatePlugin);
+addRxPlugin(views);
 
 const collections = {
   notes: {
@@ -78,6 +94,10 @@ const collections = {
   },
   tags: {
     schema: tagSchema,
+    sync: true,
+  },
+  notestags: {
+    schema: notesTagsSchema,
     sync: true,
   },
 };
@@ -167,7 +187,7 @@ const _create = async () => {
       console.log('remoteUrl', remoteUrl);
 
       return db[colName].sync({
-        remote: remoteUrl
+        remote: remoteUrl,
 
         // A key is sent to the server, the server will filter documents
         // Filter documents at the server level by by_userlogin
