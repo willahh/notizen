@@ -1,15 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+// import { app } from '../../database/database';
 import { HOST_URL } from '../../common/constants';
 import loginBackgroundImage from './../../../assets/notizen-icon.svg';
+// import * as Realm from "realm-web";
+
+
+// const UserDetail: React.FC<{ user: Realm.User }> = ({ user }) => {
+//   return (
+//     <div className="dark:text-white">
+//       <h1>Logged in with anonymous id: {user.id}</h1>
+//     </div>
+//   );
+// };
+
+// // Create a component that lets an anonymous user log in
+// const Login: React.FC<{ setUser: (user: Realm.User) => void }> = ({
+//   setUser,
+// }) => {
+//   const loginAnonymous = async () => {
+//     const user: Realm.User = await app.logIn(Realm.Credentials.anonymous());
+//     setUser(user);
+//   };
+//   return <button onClick={loginAnonymous} className="dark:text-white">Log In</button>;
+// };
 
 export type IAuthProps = {};
 
 const Auth: React.FC<IAuthProps> = ({}) => {
+  // Keep the logged in Realm user in local state. This lets the app re-render
+  // whenever the current user changes (e.g. logs in or logs out).
+  // const [user, setUser] = React.useState<Realm.User | null>(app.currentUser);
+
   return (
     <div className="min-h-screen bg-white dark:bg-black flex">
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
+          {/* {user ? <UserDetail user={user} /> : <Login setUser={setUser} />} */}
           <div>
             <img
               className="h-12 w-auto"
@@ -172,7 +199,7 @@ const Auth: React.FC<IAuthProps> = ({}) => {
                 </div>
                 <div>
                   <Link to={`${HOST_URL}/note`}>
-                  {/* <Link to="/note"> */}
+                    {/* <Link to="/note"> */}
                     <button
                       type="submit"
                       className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white dark:text-black bg-indigo-600 dark:bg-indigo-400 hover:bg-indigo-700 dark:hover:bg-indigo-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

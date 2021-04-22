@@ -9,7 +9,12 @@ import { HOST_URL } from './common/constants';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { dispatchQuery } from './common/utils';
-import { fetchNotesAction, FetchNotesActionPayload } from './module/note/note.actions';
+import {
+  fetchNotesAction,
+  FetchNotesActionPayload,
+} from './module/note/note.actions';
+import { REALM_APP_ID } from './database/database';
+// import { app } from './database/database';
 
 const routes = [
   { path: `${HOST_URL}/`, name: 'Home', Component: Auth },
@@ -69,3 +74,106 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+// // ------------------------------
+// import * as Realm from 'realm-web';
+// // import Realm from "realm";
+
+
+// const app: Realm.App = new Realm.App({ id: REALM_APP_ID });
+// console.log('app', app);
+
+// // import Realm from 'realm-web';
+// const login = async () => {
+//   console.log('login');
+
+//   // Create an anonymous credential
+//   const credentials = Realm.Credentials.anonymous();
+//   try {
+//     // Authenticate the user
+//     const user: Realm.User = await app.logIn(credentials);
+//     console.log('user', user);
+
+//     // `App.currentUser` updates to match the logged in user
+//     // assert(user.id === app.currentUser.id);
+//     return user;
+//   } catch (err) {
+//     console.error('Failed to log in', err);
+//   }
+// };
+
+// // Debug
+// declare global {
+//   interface Window {
+//     mongodb: any;
+//   }
+// }
+
+// (async () => {
+//   console.log('init Realm');
+
+//   const user = await login();
+//   console.log('user', user);
+//   console.log('app.currentUser', app.currentUser);
+
+//   // const realm = await Realm.open({
+//   //   schema: [DogSchema],
+//   //   sync: {
+//   //     user: app.currentUser,
+//   //     partitionValue: "myPartition",
+//   //   },
+//   // });
+  
+
+//   // Realm sync
+//   // const NoteSchema = {
+//   //   name: 'Note',
+//   //   properties: {
+//   //     name: 'string',
+//   //   },
+//   // };
+//   // const config = {
+//   //   schema: [NoteSchema],
+//   //   sync: {
+//   //     user: app.currentUser,
+//   //     partitionValue: '_partition',
+//   //   },
+//   // };
+//   // const realm = await Realm.open(config);
+//   // console.log('realm', realm);
+  
+
+//   // const summed: number = await user.functions.sum(2, 3);
+//   // console.log('summed', summed);
+
+//   const mongodb = app.currentUser.mongoClient('notizen-realm-service-name');
+//   window.mongodb = mongodb;
+//   console.log('mongodb', mongodb);
+
+//   const notes = mongodb.db('NotizenProductionDb').collection('note');
+//   // const notes = mongodb.db("NotizenProductionDb").collection<INote>("note"); // TODO: Add type
+
+//   console.log('notes', notes);
+
+//   // FIND
+//   const notesResult = await notes.find();
+//   console.log('notesResult');
+
+//   // TODO: Types
+//   // type InsertOneResult = Realm.Services
+//   // const result = await notes.insertOne({
+//   //   name: "lily of the valley",
+//   //   color: "white",
+//   //   _partition: "Store 47",
+//   // });
+//   // console.log(result);
+// })();

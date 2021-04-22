@@ -33,8 +33,13 @@ declare global {
     RangeRef: any;
     ReactEditor: any;
     debugCurrentEditorValue: any;
+    __DEV__: boolean;
   }
 }
+
+
+window.__DEV__ = true;
+
 window.Editor = Editor;
 window.Transforms = Transforms;
 window.Text = Text;
